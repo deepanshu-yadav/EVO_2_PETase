@@ -1,0 +1,5 @@
+biopython
+openpyxl
+pandas
+CodonTransformer
+scikit-learn
