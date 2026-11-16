@@ -1,0 +1,7 @@
+family	n_examples	n_prompts	yield_mean	novel_yield_mean	novel_yield_sem	kept_pct
+bla	2	10	10.0	0.0	0.0	0.0
+bla	4	10	17.5	2.5	2.5	14.3
+bla	8	10	22.5	17.5	3.8	77.8
+bla	16	10	40.0	37.5	9.3	93.8
+bla	32	10	60.0	55.0	8.2	91.7
+bla	64	10	67.5	65.0	8.5	96.3

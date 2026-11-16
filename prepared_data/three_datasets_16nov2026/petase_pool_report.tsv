@@ -1,0 +1,930 @@
+id	source	status	detail
+202	PANDA	dropped	length 380 outside 240-305
+301	PANDA	dropped	length 211 outside 240-305
+305	PANDA	dropped	length 232 outside 240-305
+307	PANDA	dropped	length 178 outside 240-305
+407	PANDA	dropped	length 393 outside 240-305
+PET27	PANDA	dropped	length 341 outside 240-305
+PET30	PANDA	dropped	length 343 outside 240-305
+BurPL	PANDA	dropped	length 412 outside 240-305
+PAZy|1 IsPETase	PAZy	candidate	trimmed 290->263; best seed IsPETase id=1.00 cov=1.00
+PAZy|2 PET5	PAZy	candidate	trimmed 310->286; best seed PET5_OaCut id=1.00 cov=1.00
+PAZy|3 PET6	PAZy	candidate	trimmed 298->295; best seed PET6 id=0.95 cov=0.93
+PAZy|4 PET12	PAZy	candidate	trimmed 298->269; best seed PET12_PbPL id=1.00 cov=1.00
+PAZy|5 PLE628	PAZy	candidate	trimmed 307->280; best seed Ple628 id=1.00 cov=1.00
+PAZy|6 PLE629	PAZy	candidate	trimmed 316->289; best seed Ple629 id=1.00 cov=0.99
+PAZy|7 PpCutA	PAZy	candidate	trimmed 302->275; best seed PoCut id=1.00 cov=1.00
+PAZy|9 PE-H	PAZy	candidate	trimmed 304->279; best seed PE-H id=1.00 cov=1.00
+PAZy|10 PmC	PAZy	candidate	trimmed 258->258; best seed PmC id=0.93 cov=1.00
+PAZy|11 Mors1	PAZy	candidate	trimmed 319->291; best seed MORS1 id=1.00 cov=1.00
+PAZy|13 MG8	PAZy	candidate	trimmed 307->280; best seed MG8 id=1.00 cov=1.00
+PAZy|14 EstB	PAZy	dropped	not a PETase-class homolog: best seed 412 id=0.24 cov=0.41
+PAZy|15 RgPETase	PAZy	candidate	trimmed 292->267; best seed RgPETase id=1.00 cov=1.00
+PAZy|16 LCC	PAZy	candidate	trimmed 293->259; best seed LCC id=1.00 cov=1.00
+PAZy|17 BhrPETase	PAZy	candidate	trimmed 293->259; best seed BhrPETase id=1.00 cov=1.00
+PAZy|18 Cut190	PAZy	candidate	trimmed 304->260; best seed Thh_Est id=0.71 cov=0.99
+PAZy|19 TfH	PAZy	candidate	trimmed 301->261; best seed TfCut2 id=1.00 cov=1.00
+PAZy|20 BTA-2	PAZy	candidate	trimmed 301->262; best seed 706_BTA2 id=1.00 cov=1.00
+PAZy|21 Thf42_Cut1	PAZy	dropped	exact duplicate
+PAZy|23 Tfu_0882	PAZy	candidate	trimmed 319->262; best seed 705_ThC_Cut2 id=1.00 cov=1.00
+PAZy|24 TfCut1	PAZy	candidate	trimmed 319->261; best seed 704_TfCut1 id=1.00 cov=1.00
+PAZy|25 TfCut2	PAZy	candidate	trimmed 262->261; best seed 714_TfCut2 id=1.00 cov=1.00
+PAZy|30 Tcur_1278	PAZy	candidate	trimmed 289->261; best seed 601_Tcur1278 id=1.00 cov=1.00
+PAZy|31 Tcur0390	PAZy	candidate	trimmed 292->263; best seed 602_Tcur0390 id=1.00 cov=1.00
+PAZy|32 Thh_Est	PAZy	dropped	exact duplicate
+PAZy|33 Est1	PAZy	candidate	trimmed 296->262; best seed 708 id=1.00 cov=1.00
+PAZy|34 Tha_Cut1	PAZy	dropped	exact duplicate
+PAZy|35 Est119	PAZy	candidate	trimmed 300->262; best seed 717_Est119 id=1.00 cov=1.00
+PAZy|36 BsEstB	PAZy	dropped	not a PETase-class homolog: best seed 305 id=0.30 cov=0.53
+PAZy|37 PHL-7	PAZy	dropped	exact duplicate
+PAZy|38 PET27	PAZy	dropped	trimmed length 341: best seed PET27 id=1.00 cov=1.00
+PAZy|39 PET30	PAZy	dropped	trimmed length 343: best seed PET30 id=1.00 cov=1.00
+PAZy|40 PET2	PAZy	candidate	trimmed 308->281; best seed 401_PET2 id=1.00 cov=1.00
+PAZy|41 PET46	PAZy	dropped	exact duplicate
+PAZy|42 CalB	PAZy	dropped	not a PETase-class homolog: best seed CaPETase id=0.29 cov=0.53
+PAZy|43 FsC	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.30 cov=0.33
+PAZy|44 HiC	PAZy	dropped	not a PETase-class homolog: best seed GlacPETase id=0.30 cov=0.30
+PAZy|116 PBATHRf	PAZy	dropped	not a PETase-class homolog: best seed 503 id=0.28 cov=0.71
+PAZy|120 Cbotu_EstA	PAZy	dropped	not a PETase-class homolog: best seed 301 id=0.31 cov=0.43
+PAZy|132 101	PAZy	dropped	not a PETase-class homolog: best seed 405 id=0.33 cov=0.40
+PAZy|133 102	PAZy	dropped	not a PETase-class homolog: best seed 202 id=0.33 cov=0.26
+PAZy|134 202	PAZy	dropped	exact duplicate
+PAZy|135 204	PAZy	dropped	exact duplicate
+PAZy|136 211	PAZy	dropped	exact duplicate
+PAZy|137 214	PAZy	dropped	exact duplicate
+PAZy|138 301	PAZy	dropped	exact duplicate
+PAZy|139 305	PAZy	dropped	exact duplicate
+PAZy|140 307	PAZy	dropped	exact duplicate
+PAZy|141 403	PAZy	dropped	exact duplicate
+PAZy|142 405	PAZy	dropped	exact duplicate
+PAZy|143 406	PAZy	dropped	exact duplicate
+PAZy|144 407	PAZy	dropped	exact duplicate
+PAZy|145 409	PAZy	dropped	exact duplicate
+PAZy|146 412	PAZy	dropped	exact duplicate
+PAZy|147 503	PAZy	dropped	exact duplicate
+PAZy|148 CtPl	PAZy	candidate	trimmed 270->267; best seed 504_CtPL id=1.00 cov=1.00
+PAZy|149 606	PAZy	dropped	exact duplicate
+PAZy|150 607-Nsp	PAZy	candidate	trimmed 310->262; best seed ScPETase id=0.85 cov=1.00
+PAZy|151 611	PAZy	dropped	exact duplicate
+PAZy|152 701	PAZy	dropped	exact duplicate
+PAZy|153 702	PAZy	dropped	exact duplicate
+PAZy|154 711	PAZy	dropped	exact duplicate
+PAZy|171 PHL-2	PAZy	candidate	trimmed 260->260; best seed PC4 id=0.75 cov=0.98
+PAZy|172 PHL-1	PAZy	candidate	trimmed 260->260; best seed PC4 id=0.74 cov=0.98
+PAZy|173 PHL-3	PAZy	candidate	trimmed 259->258; best seed PHL3 id=1.00 cov=1.00
+PAZy|174 PHL-4	PAZy	candidate	trimmed 257->257; best seed PET40 id=0.65 cov=0.98
+PAZy|175 PHL-5	PAZy	candidate	trimmed 257->257; best seed PET40 id=0.65 cov=0.98
+PAZy|176 PHL-6	PAZy	candidate	trimmed 257->257; best seed PET40 id=0.65 cov=0.98
+PAZy|177 Sub1	PAZy	dropped	not a PETase-class homolog: best seed 706_BTA2 id=0.34 cov=0.33
+PAZy|178 RgCut-2	PAZy	candidate	trimmed 279->255; best seed RgCut-II id=1.00 cov=1.00
+PAZy|179 PsCut	PAZy	candidate	trimmed 302->275; best seed PsCut id=1.00 cov=1.00
+PAZy|180 PbauzCut	PAZy	candidate	trimmed 302->275; best seed PbauzCut id=1.00 cov=1.00
+PAZy|182 FoCut5a	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.28 cov=0.35
+PAZy|183 MRCUT1	PAZy	dropped	not a PETase-class homolog: best seed CaPETase id=0.31 cov=0.18
+PAZy|184 PET1	PAZy	candidate	trimmed 315->282; best seed DmPETase id=1.00 cov=1.00
+PAZy|185 SM14est	PAZy	candidate	trimmed 284->259; best seed SM14est id=1.00 cov=1.00
+PAZy|195 BurPL	PAZy	dropped	trimmed length 412: best seed BurPL id=1.00 cov=1.00
+PAZy|196 PET40	PAZy	dropped	exact duplicate
+PAZy|197 PbsA	PAZy	candidate	trimmed 304->263; best seed AdCut id=1.00 cov=1.00
+PAZy|200 Hfor_PE-H	PAZy	candidate	trimmed 304->277; best seed PoCut id=0.88 cov=1.00
+PAZy|201 PaCut	PAZy	candidate	trimmed 298->275; best seed PaCut id=1.00 cov=1.00
+PAZy|209 Lip4_120	PAZy	dropped	not a PETase-class homolog: best seed PET6 id=0.55 cov=0.10
+PAZy|210 Est8_89	PAZy	dropped	not a PETase-class homolog: best seed PET46 id=0.35 cov=0.53
+PAZy|211 Est11_32	PAZy	dropped	not a PETase-class homolog: best seed 211 id=0.32 cov=0.92
+PAZy|212 Est18_23	PAZy	dropped	not a PETase-class homolog: best seed 214 id=0.28 cov=0.82
+PAZy|213 Ces19_14	PAZy	dropped	not a PETase-class homolog: best seed 211 id=0.31 cov=0.79
+PAZy|214 Ces39_5	PAZy	dropped	not a PETase-class homolog: best seed 204 id=0.29 cov=0.90
+PAZy|215 CaPETase	PAZy	candidate	trimmed 299->258; best seed CaPETase id=1.00 cov=1.00
+PAZy|223 HG-2	PAZy	dropped	not a PETase-class homolog: best seed PET46 id=0.30 cov=0.98
+PAZy|224 HG-3	PAZy	dropped	not a PETase-class homolog: best seed PET46 id=0.33 cov=0.98
+PAZy|225 HG-4	PAZy	dropped	not a PETase-class homolog: best seed 701 id=0.37 cov=0.37
+PAZy|226 HG-5	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.38 cov=0.38
+PAZy|227 jmPE13	PAZy	dropped	exact duplicate
+PAZy|228 jmPE14	PAZy	dropped	exact duplicate
+PAZy|230 TaC	PAZy	dropped	not a PETase-class homolog: best seed PET5_OaCut id=0.35 cov=0.13
+PAZy|231 DmC	PAZy	dropped	not a PETase-class homolog: best seed 204 id=0.52 cov=0.10
+PAZy|232 RtC	PAZy	dropped	not a PETase-class homolog: best seed 405 id=0.37 cov=0.14
+PAZy|235 LipMRD9	PAZy	dropped	not a PETase-class homolog: best seed 606 id=0.23 cov=0.40
+PAZy|236 dsPETase01	PAZy	candidate	trimmed 287->259; best seed SM14est id=0.70 cov=1.00
+PAZy|237 dsPETase05	PAZy	candidate	trimmed 301->257; best seed PmC id=0.64 cov=0.98
+PAZy|238 dsPETase06	PAZy	candidate	trimmed 292->258; best seed GlacPETase id=0.48 cov=0.97
+PAZy|240 Dkca1	PAZy	dropped	not a PETase-class homolog: best seed 606 id=0.35 cov=0.51
+PAZy|241 PpPETase	PAZy	candidate	trimmed 298->275; best seed PpPETase id=1.00 cov=1.00
+PAZy|242 ScPETase	PAZy	candidate	trimmed 300->262; best seed ScPETase id=1.00 cov=1.00
+PAZy|243 HGMP01	PAZy	dropped	not a PETase-class homolog: best seed PmC id=0.24 cov=0.79
+PAZy|244 PD3	PAZy	dropped	not a PETase-class homolog: best seed 305 id=0.33 cov=0.84
+PAZy|256 APET-5	PAZy	dropped	trimmed length 209: best seed 301 id=0.43 cov=0.92
+PAZy|257 KbPETase	PAZy	candidate	trimmed 254->254; best seed 602_Tcur0390 id=0.52 cov=0.89
+PAZy|258 APET-15	PAZy	candidate	trimmed 259->259; best seed 405 id=0.64 cov=0.93
+PAZy|259 APET-17	PAZy	candidate	trimmed 263->263; best seed IsPETase id=0.98 cov=1.00
+PAZy|260 APET-19	PAZy	candidate	trimmed 254->254; best seed 405 id=0.55 cov=0.93
+PAZy|261 APET-20	PAZy	candidate	trimmed 267->259; best seed SIBER_1 id=0.49 cov=0.99
+PAZy|262 APET-23	PAZy	dropped	not a PETase-class homolog: best seed 305 id=0.34 cov=0.84
+PAZy|263 APET-24	PAZy	candidate	trimmed 248->240; best seed PmC id=0.45 cov=0.91
+PAZy|264 APET-25	PAZy	candidate	trimmed 256->249; best seed PmC id=0.47 cov=0.91
+PAZy|265 APET-26	PAZy	dropped	trimmed length 239: best seed PmC id=0.42 cov=0.93
+PAZy|266 APET-27	PAZy	candidate	trimmed 253->252; best seed PmC id=0.64 cov=0.97
+PAZy|267 APET-28	PAZy	candidate	trimmed 244->242; best seed PmC id=0.52 cov=0.92
+PAZy|268 APET-29	PAZy	candidate	trimmed 276->273; best seed 708 id=0.43 cov=0.82
+PAZy|269 APET-32	PAZy	candidate	trimmed 263->258; best seed GlacPETase id=0.45 cov=0.98
+PAZy|270 Mipa-P	PAZy	candidate	trimmed 294->254; best seed ScPETase id=0.55 cov=0.97
+PAZy|271 1628	PAZy	dropped	trimmed length 396: best seed 407 id=0.63 cov=0.77
+PAZy|272 1611	PAZy	dropped	trimmed length 401: best seed 407 id=0.64 cov=0.73
+PAZy|273 1625	PAZy	dropped	trimmed length 398: best seed 407 id=0.65 cov=0.71
+PAZy|274 1603	PAZy	dropped	trimmed length 398: best seed 407 id=0.63 cov=0.77
+PAZy|275 1663	PAZy	candidate	trimmed 289->255; best seed 602_Tcur0390 id=0.51 cov=0.89
+PAZy|276 Kubu-P	PAZy	candidate	trimmed 288->254; best seed CaPETase id=0.50 cov=0.90
+PAZy|277 1538	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.66 cov=0.70
+PAZy|278 1465	PAZy	dropped	trimmed length 387: best seed 407 id=0.71 cov=0.90
+PAZy|279 1621	PAZy	dropped	trimmed length 398: best seed 407 id=0.63 cov=0.76
+PAZy|280 1617	PAZy	dropped	trimmed length 394: best seed 407 id=0.65 cov=0.72
+PAZy|281 1534	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.68 cov=0.67
+PAZy|282 1489	PAZy	dropped	trimmed length 395: best seed 407 id=0.71 cov=0.90
+PAZy|283 1521	PAZy	dropped	trimmed length 391: best seed 407 id=0.66 cov=1.00
+PAZy|284 1525	PAZy	dropped	trimmed length 402: best seed 407 id=0.66 cov=0.71
+PAZy|285 1468	PAZy	dropped	trimmed length 385: best seed 407 id=0.67 cov=0.93
+PAZy|286 1507	PAZy	candidate	trimmed 275->255; best seed 601_Tcur1278 id=0.57 cov=0.90
+PAZy|287 1491	PAZy	dropped	trimmed length 391: best seed 407 id=0.75 cov=0.77
+PAZy|288 1821	PAZy	candidate	trimmed 378->266; best seed PET12_PbPL id=0.45 cov=1.00
+PAZy|289 1477	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.69 cov=0.66
+PAZy|290 1482	PAZy	dropped	trimmed length 384: best seed 407 id=0.69 cov=0.89
+PAZy|291 1522	PAZy	candidate	trimmed 276->255; best seed 601_Tcur1278 id=0.58 cov=0.90
+PAZy|292 1546	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.66 cov=0.70
+PAZy|293 385	PAZy	candidate	trimmed 272->260; best seed 601_Tcur1278 id=0.74 cov=0.99
+PAZy|294 1642	PAZy	dropped	trimmed length 366: best seed 407 id=0.61 cov=0.92
+PAZy|295 917	PAZy	candidate	trimmed 297->259; best seed 601_Tcur1278 id=0.83 cov=0.99
+PAZy|296 1537	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.68 cov=0.68
+PAZy|297 1519	PAZy	dropped	trimmed length 374: best seed 407 id=0.67 cov=0.71
+PAZy|298 1678	PAZy	dropped	trimmed length 393: best seed 407 id=0.67 cov=0.86
+PAZy|299 1496	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.70 cov=0.65
+PAZy|300 1169	PAZy	candidate	trimmed 276->255; best seed PET40 id=0.63 cov=0.99
+PAZy|301 1637	PAZy	dropped	trimmed length 395: best seed 407 id=0.62 cov=0.76
+PAZy|302 1463	PAZy	candidate	trimmed 265->255; best seed 601_Tcur1278 id=0.62 cov=0.90
+PAZy|303 1545	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.67 cov=0.67
+PAZy|304 554	PAZy	candidate	trimmed 309->262; best seed PC4 id=0.94 cov=1.00
+PAZy|305 1573	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.81 cov=0.68
+PAZy|306 1654	PAZy	dropped	trimmed length 392: best seed 407 id=0.58 cov=0.97
+PAZy|307 1555	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.65 cov=0.70
+PAZy|308 1591	PAZy	dropped	trimmed length 397: best seed 407 id=0.63 cov=0.77
+PAZy|309 1620	PAZy	dropped	trimmed length 393: best seed 407 id=0.62 cov=0.76
+PAZy|310 1240	PAZy	candidate	trimmed 303->258; best seed ScPETase id=0.59 cov=0.96
+PAZy|311 1594	PAZy	dropped	trimmed length 397: best seed 407 id=0.63 cov=0.77
+PAZy|312 1457	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.80 cov=0.65
+PAZy|313 247	PAZy	candidate	trimmed 288->263; best seed PC4 id=0.67 cov=0.98
+PAZy|314 1641	PAZy	dropped	trimmed length 408: best seed 407 id=0.55 cov=0.90
+PAZy|315 1309	PAZy	candidate	trimmed 286->259; best seed 503 id=0.80 cov=0.98
+PAZy|316 414	PAZy	candidate	trimmed 289->259; best seed PC4 id=0.77 cov=0.99
+PAZy|317 1506	PAZy	dropped	trimmed length 388: best seed 407 id=0.68 cov=0.87
+PAZy|318 1493	PAZy	dropped	trimmed length 402: best seed 407 id=0.78 cov=0.99
+PAZy|319 1395	PAZy	candidate	trimmed 288->253; best seed 611 id=0.56 cov=0.97
+PAZy|320 1478	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.69 cov=0.66
+PAZy|321 1571	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.67 cov=0.67
+PAZy|322 169	PAZy	candidate	trimmed 308->257; best seed SIBER_1 id=0.95 cov=1.00
+PAZy|323 1638	PAZy	candidate	trimmed 277->254; best seed CaPETase id=0.50 cov=0.97
+PAZy|324 1868	PAZy	dropped	trimmed length 424: best seed 407 id=0.49 cov=0.99
+PAZy|325 1718	PAZy	candidate	trimmed 337->283; best seed 407 id=0.62 cov=0.73
+PAZy|326 401	PAZy	candidate	trimmed 296->260; best seed 601_Tcur1278 id=0.75 cov=0.99
+PAZy|327 1392	PAZy	candidate	trimmed 287->275; best seed 405 id=0.61 cov=0.97
+PAZy|328 486	PAZy	candidate	trimmed 300->260; best seed 601_Tcur1278 id=0.74 cov=0.99
+PAZy|329 1424	PAZy	candidate	trimmed 316->267; best seed 405 id=0.57 cov=0.87
+PAZy|330 1475	PAZy	candidate	trimmed 375->276; best seed 407 id=0.79 cov=0.70
+PAZy|331 282	PAZy	candidate	trimmed 299->261; best seed ScPETase id=0.75 cov=1.00
+PAZy|332 1635	PAZy	dropped	trimmed length 394: best seed 407 id=0.66 cov=0.73
+PAZy|333 1228	PAZy	candidate	trimmed 281->274; best seed 405 id=0.55 cov=0.97
+PAZy|334 1876	PAZy	dropped	trimmed length 399: best seed BurPL id=0.42 cov=0.82
+PAZy|335 1340	PAZy	candidate	trimmed 298->285; best seed 405 id=0.58 cov=0.96
+PAZy|336 191	PAZy	candidate	trimmed 316->262; best seed ScPETase id=0.80 cov=0.99
+PAZy|337 PC3	PAZy	candidate	trimmed 292->261; best seed 601_Tcur1278 id=0.85 cov=1.00
+PAZy|338 PC4	PAZy	candidate	trimmed 309->262; best seed PC4 id=1.00 cov=1.00
+PAZy|339 PC5	PAZy	candidate	trimmed 307->263; best seed PET40 id=0.85 cov=1.00
+PAZy|340 PC6	PAZy	candidate	trimmed 300->262; best seed 705_ThC_Cut2 id=0.90 cov=1.00
+PAZy|341 PC8	PAZy	candidate	trimmed 303->284; best seed 403 id=0.93 cov=0.99
+PAZy|381 DP003	PAZy	candidate	trimmed 259->259; best seed bbPET0069 id=0.98 cov=1.00
+PAZy|382 DP006	PAZy	candidate	trimmed 263->263; best seed 601_Tcur1278 id=0.55 cov=0.98
+PAZy|383 DP007	PAZy	candidate	trimmed 266->258; best seed 601_Tcur1278 id=0.57 cov=0.99
+PAZy|384 DP008	PAZy	candidate	trimmed 264->260; best seed PET40 id=0.61 cov=0.98
+PAZy|385 DP016	PAZy	candidate	trimmed 280->274; best seed 405 id=0.63 cov=0.97
+PAZy|386 DP017	PAZy	candidate	trimmed 257->257; best seed 405 id=0.63 cov=0.94
+PAZy|387 DP021	PAZy	dropped	trimmed length 382: best seed 407 id=0.51 cov=0.94
+PAZy|388 DP038	PAZy	candidate	trimmed 266->266; best seed 504_CtPL id=0.61 cov=1.00
+PAZy|389 DP039	PAZy	candidate	trimmed 267->267; best seed 504_CtPL id=0.72 cov=1.00
+PAZy|390 DP040	PAZy	candidate	trimmed 269->269; best seed 405 id=0.54 cov=0.96
+PAZy|391 DP043	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.64 cov=0.66
+PAZy|392 DP054	PAZy	candidate	trimmed 261->261; best seed 405 id=0.61 cov=0.93
+PAZy|393 DP056	PAZy	candidate	trimmed 263->263; best seed PET40 id=0.69 cov=0.98
+PAZy|394 DP057	PAZy	candidate	trimmed 287->259; best seed PHL7 id=0.75 cov=0.99
+PAZy|395 DP059	PAZy	dropped	trimmed length 381: best seed 407 id=0.58 cov=0.90
+PAZy|396 DP061	PAZy	dropped	trimmed length 392: best seed 407 id=0.64 cov=0.73
+PAZy|397 DP068	PAZy	dropped	trimmed length 399: best seed 407 id=0.55 cov=0.97
+PAZy|398 DP078	PAZy	candidate	trimmed 273->273; best seed PpPETase id=0.86 cov=0.99
+PAZy|399 DP080	PAZy	candidate	trimmed 259->259; best seed PET40 id=0.55 cov=0.97
+PAZy|400 DP081	PAZy	dropped	trimmed length 374: best seed 407 id=0.57 cov=0.96
+PAZy|401 DP082	PAZy	candidate	trimmed 259->259; best seed PET40 id=0.66 cov=0.98
+PAZy|402 DP084	PAZy	candidate	trimmed 257->257; best seed 601_Tcur1278 id=0.73 cov=0.99
+PAZy|403 DP089	PAZy	candidate	trimmed 257->257; best seed ScPETase id=0.61 cov=0.98
+PAZy|404 DP090	PAZy	candidate	trimmed 268->258; best seed PC4 id=0.68 cov=0.99
+PAZy|405 DP092	PAZy	dropped	trimmed length 417: best seed 407 id=0.52 cov=0.94
+PAZy|406 ESM006	PAZy	dropped	trimmed length 390: best seed 407 id=0.70 cov=0.89
+PAZy|407 ESM010	PAZy	dropped	trimmed length 423: best seed 407 id=0.49 cov=0.99
+PAZy|408 ESM012	PAZy	dropped	trimmed length 401: best seed 407 id=0.59 cov=0.92
+PAZy|409 ESM021	PAZy	dropped	trimmed length 382: best seed 407 id=0.47 cov=0.97
+PAZy|410 ESM024	PAZy	dropped	trimmed length 420: best seed 407 id=0.49 cov=0.99
+PAZy|411 ESM026	PAZy	dropped	trimmed length 416: best seed 407 id=0.49 cov=0.97
+PAZy|412 ESM033	PAZy	dropped	trimmed length 380: best seed 407 id=0.62 cov=0.89
+PAZy|413 ESM035	PAZy	dropped	trimmed length 382: best seed 407 id=0.70 cov=0.89
+PAZy|414 ESM038	PAZy	dropped	trimmed length 417: best seed 407 id=0.50 cov=0.97
+PAZy|415 ESM043	PAZy	dropped	trimmed length 391: best seed 407 id=0.57 cov=0.95
+PAZy|416 ESM045	PAZy	candidate	trimmed 256->256; best seed RgCut-II id=0.81 cov=1.00
+PAZy|417 ESM050	PAZy	candidate	trimmed 244->244; best seed 611 id=0.55 cov=0.93
+PAZy|418 ESM052	PAZy	dropped	trimmed length 395: best seed 407 id=0.60 cov=0.92
+PAZy|419 ESM058	PAZy	dropped	trimmed length 397: best seed 407 id=0.63 cov=0.76
+PAZy|420 ESM059	PAZy	dropped	trimmed length 399: best seed 407 id=0.63 cov=0.72
+PAZy|421 ESM060	PAZy	dropped	trimmed length 371: best seed 407 id=0.53 cov=0.98
+PAZy|422 ESM061	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.67 cov=0.67
+PAZy|423 ESM062	PAZy	dropped	trimmed length 391: best seed 407 id=0.66 cov=0.71
+PAZy|424 ESM064	PAZy	dropped	trimmed length 374: best seed 407 id=0.54 cov=0.90
+PAZy|425 ESM065	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.68 cov=0.67
+PAZy|426 ESM069	PAZy	dropped	trimmed length 396: best seed 407 id=0.64 cov=0.73
+PAZy|427 ESM070	PAZy	dropped	trimmed length 352: best seed 407 id=0.63 cov=0.91
+PAZy|428 ESM080	PAZy	dropped	trimmed length 394: best seed 407 id=0.66 cov=0.74
+PAZy|429 ESM081	PAZy	dropped	trimmed length 375: best seed 407 id=0.54 cov=0.90
+PAZy|430 ESM082	PAZy	candidate	trimmed 251->251; best seed 601_Tcur1278 id=0.59 cov=0.91
+PAZy|431 ESM084	PAZy	dropped	trimmed length 375: best seed 407 id=0.60 cov=0.86
+PAZy|432 ESM090	PAZy	candidate	trimmed 251->251; best seed 601_Tcur1278 id=0.59 cov=0.90
+PAZy|433 ESM093	PAZy	candidate	trimmed 251->251; best seed 601_Tcur1278 id=0.61 cov=0.90
+PAZy|434 ESM096	PAZy	candidate	trimmed 273->273; best seed PaCut id=0.91 cov=0.99
+PAZy|435 ESM097	PAZy	dropped	trimmed length 384: best seed 407 id=0.64 cov=0.75
+PAZy|436 ESM101	PAZy	dropped	trimmed length 393: best seed 407 id=0.67 cov=0.71
+PAZy|437 ESM121	PAZy	dropped	trimmed length 325: best seed 407 id=0.63 cov=0.76
+PAZy|438 ESM128	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.64 cov=0.65
+PAZy|439 ESM130	PAZy	dropped	trimmed length 393: best seed 407 id=0.65 cov=0.72
+PAZy|440 ESM136	PAZy	dropped	trimmed length 386: best seed 407 id=0.56 cov=0.92
+PAZy|441 ESM139	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.60 cov=0.67
+PAZy|442 ESM140	PAZy	candidate	trimmed 260->260; best seed PET40 id=0.93 cov=0.99
+PAZy|443 ESM144	PAZy	candidate	trimmed 251->251; best seed 601_Tcur1278 id=0.58 cov=0.95
+PAZy|444 ESM156	PAZy	candidate	trimmed 262->262; best seed PET40 id=0.70 cov=0.99
+PAZy|445 ESM157	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.62 cov=0.66
+PAZy|446 ESM159	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.61 cov=0.66
+PAZy|447 ESM160	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.61 cov=0.65
+PAZy|448 ESM167	PAZy	candidate	trimmed 260->260; best seed PC4 id=0.95 cov=0.99
+PAZy|449 ESM169	PAZy	candidate	trimmed 266->266; best seed 504_CtPL id=0.61 cov=1.00
+PAZy|450 ESM173	PAZy	dropped	trimmed length 393: best seed 407 id=0.63 cov=0.74
+PAZy|451 ESM177	PAZy	candidate	trimmed 251->251; best seed 601_Tcur1278 id=0.57 cov=0.90
+PAZy|452 ESM186	PAZy	candidate	trimmed 277->277; best seed PsCut id=0.76 cov=1.00
+PAZy|453 TEP010	PAZy	dropped	trimmed length 394: best seed 407 id=0.62 cov=0.76
+PAZy|454 TEP014	PAZy	candidate	trimmed 261->261; best seed 705_ThC_Cut2 id=0.89 cov=1.00
+PAZy|455 TEP024	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.69 cov=0.67
+PAZy|456 TEP037	PAZy	candidate	trimmed 259->259; best seed 611 id=0.79 cov=1.00
+PAZy|457 TEP041	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.76 cov=0.66
+PAZy|458 TEP054	PAZy	dropped	trimmed length 397: best seed 407 id=0.67 cov=0.70
+PAZy|459 TEP061	PAZy	candidate	trimmed 256->256; best seed SIBER_1 id=0.90 cov=1.00
+PAZy|460 TEP067	PAZy	candidate	trimmed 279->273; best seed 405 id=0.64 cov=0.97
+PAZy|461 TEP083	PAZy	candidate	trimmed 291->291; best seed 407 id=0.63 cov=0.71
+PAZy|462 TEP091	PAZy	candidate	trimmed 255->255; best seed 606 id=0.72 cov=0.97
+PAZy|463 TEP092	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.66 cov=0.67
+PAZy|464 TEP097	PAZy	dropped	trimmed length 398: best seed 407 id=0.59 cov=0.94
+PAZy|465 TEP101	PAZy	candidate	trimmed 272->272; best seed 405 id=0.55 cov=0.96
+PAZy|466 TEP102	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.71 cov=0.67
+PAZy|467 TEP103	PAZy	candidate	trimmed 248->248; best seed PET40 id=0.49 cov=0.92
+PAZy|468 TEP105	PAZy	candidate	trimmed 261->260; best seed 611 id=0.81 cov=1.00
+PAZy|469 TEP109	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.68 cov=0.66
+PAZy|470 TEP111	PAZy	dropped	trimmed length 364: best seed 407 id=0.61 cov=0.92
+PAZy|471 TEP114	PAZy	dropped	trimmed length 377: best seed 407 id=0.57 cov=0.94
+PAZy|472 TEP163	PAZy	dropped	trimmed length 392: best seed 407 id=0.67 cov=0.94
+PAZy|473 TEP164	PAZy	dropped	trimmed length 392: best seed 407 id=0.64 cov=0.91
+PAZy|474 TEP165	PAZy	dropped	trimmed length 391: best seed 407 id=0.60 cov=0.87
+PAZy|475 TEP168	PAZy	dropped	trimmed length 393: best seed 407 id=0.63 cov=0.74
+PAZy|476 TEP178	PAZy	candidate	trimmed 257->257; best seed 601_Tcur1278 id=0.73 cov=0.98
+PAZy|477 TEP181	PAZy	dropped	not a PETase-class homolog: best seed 407 id=0.66 cov=0.67
+PAZy|478 TEP189	PAZy	candidate	trimmed 242->242; best seed 611 id=0.55 cov=0.86
+PAZy|479 TEP194	PAZy	candidate	trimmed 261->257; best seed SIBER_1 id=0.81 cov=0.98
+PAZy|480 KaPETase	PAZy	candidate	trimmed 286->261; best seed PC4 id=0.73 cov=0.99
+PAZy|481 Sis	PAZy	candidate	trimmed 282->263; best seed 708 id=0.53 cov=1.00
+PAZy|483 DIEGO	PAZy	candidate	trimmed 293->259; best seed BhrPETase id=0.89 cov=1.00
+PAZy|484 TA21	PAZy	dropped	not a PETase-class homolog: best seed 204 id=0.33 cov=0.66
+PAZy|485 TA26	PAZy	dropped	not a PETase-class homolog: best seed 204 id=0.35 cov=0.82
+PAZy|486 TA29	PAZy	dropped	not a PETase-class homolog: best seed 211 id=0.41 cov=0.61
+PAZy|489 GuaPA	PAZy	dropped	not a PETase-class homolog: best seed 611 id=0.31 cov=0.84
+PAZy|494 E4	PAZy	dropped	not a PETase-class homolog: best seed 611 id=0.35 cov=0.16
+PAZy|495 PET93	PAZy	dropped	not a PETase-class homolog: best seed 305 id=0.29 cov=0.85
+PAZy|496 PET94	PAZy	dropped	trimmed length 333: best seed PsCut id=0.35 cov=0.70
+PAZy|523 bbPET0069	PAZy	dropped	exact duplicate
+PAZy|524 HaloPETase1	PAZy	candidate	trimmed 289->257; best seed PmC id=0.64 cov=0.98
+PAZy|525 HaloPETase2	PAZy	candidate	trimmed 289->258; best seed PmC id=0.63 cov=0.98
+PAZy|526 HaloPETase3	PAZy	candidate	trimmed 290->258; best seed PmC id=0.65 cov=0.97
+PAZy|527 HaloPETase4	PAZy	candidate	trimmed 288->258; best seed PmC id=0.64 cov=0.97
+PAZy|528 HaloPETase5	PAZy	candidate	trimmed 305->279; best seed PE-H id=0.81 cov=0.99
+PAZy|529 HaloPETase6	PAZy	candidate	trimmed 301->275; best seed PpPL id=0.82 cov=0.99
+PAZy|530 BhEstB	PAZy	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.35 cov=0.29
+PAZy|531 LactoPETase	PAZy	dropped	not a PETase-class homolog: best seed PET46 id=0.34 cov=0.98
+PAZy|532 LipBv	PAZy	dropped	not a PETase-class homolog: best seed 503 id=0.28 cov=0.32
+PAZy|533 LipSh1	PAZy	dropped	not a PETase-class homolog: best seed BurPL id=0.26 cov=0.41
+PAZy|534 LipSh2	PAZy	dropped	not a PETase-class homolog: best seed ScPETase id=0.24 cov=0.28
+PAZy|535 LipSh3	PAZy	dropped	not a PETase-class homolog: best seed ScPETase id=0.24 cov=0.28
+PAZy|536 SM0281	PAZy	dropped	not a PETase-class homolog: best seed 211 id=0.27 cov=0.94
+PAZy|537 NmCut	PAZy	dropped	not a PETase-class homolog: best seed LCC id=0.26 cov=0.75
+PAZy|538 R75estA	PAZy	candidate	trimmed 282->258; best seed PmC id=0.82 cov=1.00
+PlasticDB|00001|PHB_depolymerase|Ralstonia_pickettii|PHB_PHA|BAA04986.1	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.29 cov=0.41
+PlasticDB|00002|PHA_depolymerase|Pseudomonas_fluorescens|PHO_PHA|AAA64538.1	PlasticDB	dropped	not a PETase-class homolog: best seed PpPETase id=0.27 cov=0.30
+PlasticDB|00003|PHB_depolymerase-A|Paucimonas_lemoignei|PHB_PHA|AAA65705.1	PlasticDB	dropped	not a PETase-class homolog: best seed 301 id=0.30 cov=0.75
+PlasticDB|00004|PHB_depolymerase|Paucimonas_lemoignei|PHB_PHA|WP_132258119.1	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.32 cov=0.33
+PlasticDB|00005|PHA_depolymerase_B|Paucimonas_lemoignei|PHB_PHA|AAB17150.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.27 cov=0.93
+PlasticDB|00006|PHB_depolymerase|Paucimonas_lemoignei|PHB_PHA|WP_132257894.1	PlasticDB	dropped	not a PETase-class homolog: best seed 301 id=0.25 cov=0.77
+PlasticDB|00007|PHB_depolymerase|Paucimonas_lemoignei|PHB_PHA|WP_132256575.1	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.37 cov=0.17
+PlasticDB|00008|Cutinase|Fusarium_verticillioides|PCL|Q96UT0.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.27 cov=0.37
+PlasticDB|00009|Cutinase|Fusarium_verticillioides|PCL|Q96US9.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.29 cov=0.37
+PlasticDB|00010|PVA_dehydrogenase|Pseudomonas_sp.|PVA|BAA09321.1	PlasticDB	dropped	not a PETase-class homolog: best seed CaPETase id=0.30 cov=0.41
+PlasticDB|00011|PHB_depolymerase|Comamonas_acidovorans|PHB_PHA|BAA19791.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.33 cov=0.22
+PlasticDB|00012|PHB_depolymerase|Alcaligenes_faecalis|PHB_PHA|AAB40611.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.28 cov=0.51
+PlasticDB|00013|PU_esterase_|Comamonas_acidovorans|PU|BAA76305.1	PlasticDB	dropped	not a PETase-class homolog: best seed 406 id=0.31 cov=0.38
+PlasticDB|00014|PHB_depolymerase|Acidovorax_sp.|PHB_PPL_PHA|BAA35137.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.33 cov=0.22
+PlasticDB|00015|PHB_depolymerase|Comamonas_acidovorans|P3HP_P4HB_PEA_PES_PHB_PHA|BAA19791.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00016|Polyurethane_esterase_A|Pseudomonas_chlororaphis|PU|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.30 cov=0.45
+PlasticDB|00017|PHB_depolymerase|Comamonas_testosteroni|PHB_PHA|BAA22882.1	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.35 cov=0.21
+PlasticDB|00018|PHB_depolymerase|Pseudomonas_stutzeri|P3HP_P4HB_PEA_PES_PHB_PHA|BAA32541.1	PlasticDB	dropped	not a PETase-class homolog: best seed AdCut id=0.31 cov=0.56
+PlasticDB|00019|PHB_depolymerase|Ralstonia_pickettii|P3HP_P4HB_PEA_PES_PHB_PHA|AAA21974.1	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.27 cov=0.49
+PlasticDB|00020|PHB_depolymerase|Talaromyces_funiculosus|PHB_PHA|BAG32152.1	PlasticDB	dropped	not a PETase-class homolog: best seed 211 id=0.55 cov=0.08
+PlasticDB|00021|Polyurethane_esterase_A|Pseudomonas_chlororaphis|PU|AAD22743.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00022|Oxidized_PVA_hydrolase|Pseudomonas_sp.|O-PVA|BAA94192.1	PlasticDB	dropped	not a PETase-class homolog: best seed 717_Est119 id=0.28 cov=0.39
+PlasticDB|00023|Polyurethanase|Pseudomonas_chlororaphis|PU|AAF01331.1	PlasticDB	dropped	not a PETase-class homolog: best seed 707_ThA_cut1 id=0.29 cov=0.19
+PlasticDB|00024|PBS_depolymerase|Acidovorax_delafieldii|PBS|BAB86909.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00025|PHB_depolymerase|Caldimonas_manganoxidans|PHB_PHA|BAA92354.1	PlasticDB	dropped	not a PETase-class homolog: best seed CaPETase id=0.26 cov=0.52
+PlasticDB|00026|PHB_depolymerase|Marinobacter_sp.|PHB_PHA|BAC15574.1	PlasticDB	dropped	not a PETase-class homolog: best seed AdCut id=0.27 cov=0.54
+PlasticDB|00027|PLA_depolymerase|Paenibacillus_amylolyticus|PLA|BAC67195.1	PlasticDB	dropped	not a PETase-class homolog: best seed 701 id=0.27 cov=0.61
+PlasticDB|00028|PHB_depolymerase|Azospirillum_brasilense|PHB_PHA|AAQ05770.1	PlasticDB	dropped	not a PETase-class homolog: best seed PmC id=0.40 cov=0.22
+PlasticDB|00029|PHA_depolymerase|Schlegelella_thermodepolymerans|P(3HB-co-3MP)_PHA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.34 cov=0.20
+PlasticDB|00030|PHB_depolymerase|Schlegelella_sp.|PHB_PHA|AAT09963.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00031|PHB_depolymerase|Schlegelella_sp.|PHB_PHA|AAT09963.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00032|PEG_dehydrogenase|Sphingomonas_macrogoltabidus|PEG|BAF98451.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET6 id=0.28 cov=0.48
+PlasticDB|00033|PVA_hydrolase|Sphingomonas_sp.|PVA_O-PVA|BAD95542.3	PlasticDB	dropped	not a PETase-class homolog: best seed 611 id=0.33 cov=0.21
+PlasticDB|00034|Cutinase|Aspergillus_oryzae|PBS_PBSA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed CaPETase id=0.29 cov=0.29
+PlasticDB|00035|PEG_aldehyde_dehydrogenase|Streptomyces_sp.|PEG|BAF98449.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET5_OaCut id=0.30 cov=0.19
+PlasticDB|00036|MCL_PHA_depolymerase|Pseudomonas_alcaligenes|PCL_PHA_PHBV_PHPV|AAQ72538.1	PlasticDB	dropped	non-standard residues
+PlasticDB|00037|Cutinase|Cryptococcus_sp.|PBS_PCL_PHB_PLA_PHA|BAC67242.1	PlasticDB	dropped	not a PETase-class homolog: best seed GlacPETase id=0.29 cov=0.30
+PlasticDB|00038|PHB_depolymerase|Cupriavidus_necator|PHB_PHA|CAJ96855.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET46 id=0.29 cov=0.77
+PlasticDB|00039|PHB_depolymerase|Bacillus_megaterium|PHB_PHA|BAF35850.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET40 id=0.25 cov=0.63
+PlasticDB|00040|Protease|Parengyodontium_album|PLA|P06873	PlasticDB	dropped	not a PETase-class homolog: best seed 602_Tcur0390 id=0.30 cov=0.44
+PlasticDB|00041|Polyurethanase|Pseudomonas_chlororaphis|PU|ABM54447.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.31 cov=0.48
+PlasticDB|00042|Nylon_Oligomer_Degrading_Enzyme|Agromyces_sp.|Nylon|BAE97629.1	PlasticDB	dropped	not a PETase-class homolog: best seed 707_ThA_cut1 id=0.25 cov=0.45
+PlasticDB|00043|Nylon_Oligomer_Degrading_Enzyme|Agromyces_sp.|Nylon|BAE97621.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.37 cov=0.17
+PlasticDB|00044|Nylon_Oligomer_Degrading_Enzyme|Agromyces_sp.|Nylon|BAE97630.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.37 cov=0.17
+PlasticDB|00045|Nylon_hydrolase|Agromyces_sp.|Nylon|BAE97622.2	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.47 cov=0.35
+PlasticDB|00046|Polyurethanase|Pseudomonas_chlororaphis|PU|ABM54446.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00047|PLA_depolymerase|Uncultured_bacterium|PLA_PBS_PBSA_PCL_PES_PHB_PHA|BAF57213.1	PlasticDB	dropped	not a PETase-class homolog: best seed 704_TfCut1 id=0.32 cov=0.38
+PlasticDB|00048|PLA_depolymerase|Uncultured_bacterium|PBS_PBSA_PCL_PES_PLA_PHA|BAF57214.1	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.56 cov=0.19
+PlasticDB|00049|PLA_depolymerase|Uncultured_bacterium|PBS_PBSA_PCL_PES_PHB_PLA_PHA|BAF57210.1	PlasticDB	dropped	not a PETase-class homolog: best seed PmC id=0.28 cov=0.29
+PlasticDB|00050|PLA_depolymerase|Uncultured_bacterium|PLA|BAF57211.1	PlasticDB	dropped	not a PETase-class homolog: best seed PmC id=0.30 cov=0.39
+PlasticDB|00051|Cutinase|Aspergillus_oryzae|PCL|3GBS_A	PlasticDB	dropped	not a PETase-class homolog: best seed CaPETase id=0.29 cov=0.29
+PlasticDB|00052|Lipase|Pseudomonas_aeruginosa|PBSA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed GlacPETase id=0.38 cov=0.31
+PlasticDB|00053|PHB_depolymerase|Diaphorobacter_sp.|PHB_PHBV_PHA|ACI48814.2	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.27 cov=0.44
+PlasticDB|00054|Esterase|Thermobifida_alba|PCL|BAI99230.2	PlasticDB	dropped	exact duplicate
+PlasticDB|00055|Esterase|Thermobifida_alba|PCL|BAK48590.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00056|Lipase|Burkholderia_cepacia|PBSA|NA	PlasticDB	candidate	trimmed 370->286; best seed DmPETase id=0.35 cov=0.74
+PlasticDB|00057|Cutinase|Thermobifida_fusca|PET|ADV92528.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00058|Cutinase|Thermobifida_cellulosilytica|PET|ADV92527.1	PlasticDB	candidate	trimmed 261->261; best seed 705_ThC_Cut2 id=1.00 cov=1.00
+PlasticDB|00059|Cutinase|Thermobifida_cellulosilytica|PET|ADV92526.1	PlasticDB	candidate	trimmed 261->260; best seed TfCut2 id=1.00 cov=1.00
+PlasticDB|00060|PHB_depolymerase|Rhodospirillum_rubrum|PHB_PHA|ABC22769.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.35 cov=0.30
+PlasticDB|00061|Alkane_hydroxylase|Pseudomonas_sp.|PE|NA	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.45 cov=0.08
+PlasticDB|00062|Cutinase|Uncultured_bacterium|PCL_PET|AEV21261.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00063|PHB_depolymerase|Paucimonas_lemoignei|PHB_PHA|Q939Q9	PlasticDB	dropped	not a PETase-class homolog: best seed PET46 id=0.46 cov=0.09
+PlasticDB|00064|MCL_PHA_depolymerase|Bdellovibrio_bacteriovorus|PHA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 602_Tcur0390 id=0.27 cov=0.73
+PlasticDB|00065|Hydrolase|Pseudomonas_sp.|Nylon|P13397	PlasticDB	dropped	not a PETase-class homolog: best seed LCC id=0.37 cov=0.29
+PlasticDB|00066|PHB_depolymerase|Pseudomonas_mendocina|PHB_PHA|AEZ06355.1	PlasticDB	dropped	not a PETase-class homolog: best seed AdCut id=0.32 cov=0.56
+PlasticDB|00067|PHB_depolymerase|Streptomyces_ascomycinicus|PHB_PHA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed F148 id=0.29 cov=0.94
+PlasticDB|00068|Cutinase|Pseudozyma_antarctica|PBS-Blend_PBSA-Blend|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 412 id=0.30 cov=0.28
+PlasticDB|00069|Chitinase|Streptomyces_thermoviolaceus|PCL|NA	PlasticDB	dropped	not a PETase-class homolog: best seed PHL3 id=0.25 cov=0.44
+PlasticDB|00070|3HB_oligomer_hydrolase|Paracoccus_denitrificans|PHB_PHA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed PET46 id=0.41 cov=0.26
+PlasticDB|00071|3HV_dehydrogenase|Paracoccus_denitrificans|P3HV_PHBV_PHA|NA	PlasticDB	dropped	not a PETase-class homolog: best seed PmC id=0.27 cov=0.37
+PlasticDB|00072|PHB_depolymerase|Bacillus_thuringiensis|PHB_PHA|EAO52570.1	PlasticDB	dropped	not a PETase-class homolog: best seed 307 id=0.33 cov=0.28
+PlasticDB|00073|Cutinase|Thermobifida_fusca|PET|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.33 cov=0.14
+PlasticDB|00074|Cutinase|Saccharomonospora_viridis|PBAT_PBS_PBSA_PCL_PET_PHB_PLA_PHA|BAO42836.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00075|Cutinase|Fusarium_oxysporum|PCL_PET|5AJH_A	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.28 cov=0.35
+PlasticDB|00076|Cutinase|Saccharomonospora_viridis|PBAT_PBS_PBSA_PCL_PET_PHB_PLA_PHA|NA	PlasticDB	dropped	exact duplicate
+PlasticDB|00077|Esterase|Clostridium_botulinum|PBAT|AKZ20828.1	PlasticDB	dropped	not a PETase-class homolog: best seed 301 id=0.31 cov=0.43
+PlasticDB|00078|Esterase|Clostridium_botulinum|PBAT|AKZ20829.1	PlasticDB	dropped	not a PETase-class homolog: best seed 301 id=0.35 cov=0.46
+PlasticDB|00079|Esterase|Clostridium_hathewayi|PBAT|EFC94627.1	PlasticDB	dropped	not a PETase-class homolog: best seed bbPET0069 id=0.31 cov=0.69
+PlasticDB|00080|Lipase|Pelosinus_fermentans|PBAT|EIW29778.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET6 id=0.32 cov=0.28
+PlasticDB|00081|Polyurethanase_A|Pseudomonas_protegens|PU|WP_011061486.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.31 cov=0.45
+PlasticDB|00082|Polyurethanase_B|Pseudomonas_protegens|PU|WP_011061489.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.34 cov=0.42
+PlasticDB|00083|PETase|Ideonella_sakaiensis|PET_PEF|A0A0K8P6T7	PlasticDB	dropped	exact duplicate
+PlasticDB|00084|MHETase|Ideonella_sakaiensis|PET|A0A0K8P8E7	PlasticDB	dropped	not a PETase-class homolog: best seed 403 id=0.32 cov=0.64
+PlasticDB|00085|Carboxylesterase|Uncultured_bacterium|PBAT|AOR05752.1	PlasticDB	dropped	not a PETase-class homolog: best seed LCC id=0.31 cov=0.74
+PlasticDB|00086|Carboxylesterase|Uncultured_bacterium|PBAT|AOR05751.1	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.34 cov=0.16
+PlasticDB|00087|Polyesterase|Pseudomonas_pseudoalcaligenes|PBAT|AMW89397.1	PlasticDB	dropped	not a PETase-class homolog: best seed LCC id=0.34 cov=0.23
+PlasticDB|00088|Carboxylesterase|Uncultured_bacterium|PBAT|AOR05753.1	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.32 cov=0.07
+PlasticDB|00089|Carboxylesterase|Uncultured_bacterium|PBAT|AOR05749.1	PlasticDB	dropped	not a PETase-class homolog: best seed Thh_Est id=0.31 cov=0.55
+PlasticDB|00090|Carboxylesterase|Uncultured_bacterium|PBAT|AOR05750.1	PlasticDB	dropped	not a PETase-class homolog: best seed DmPETase id=0.28 cov=0.54
+PlasticDB|00091|Carboxylesterase|Uncultured_bacterium|PBAT|AOR05748.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET30 id=0.29 cov=0.38
+PlasticDB|00092|Cutinase|Fusarium_solani|PMCL|1AGY	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.30 cov=0.33
+PlasticDB|00093|PVA_dehydrogenase|Stenotrophomonas_rhizophila|PVA|AOA73724.1	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.35 cov=0.19
+PlasticDB|00094|Polyurethanase|Pseudomonas_sp.|PU|POM09750.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.31 cov=0.34
+PlasticDB|00095|PET-hydrolase|Vibrio_gazogenes|PCL_PET|ASA57064.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00096|PETase|Ideonella_sakaiensis|PET_PEF|NA	PlasticDB	dropped	exact duplicate
+PlasticDB|00097|PETase|Oleispira_antarctica|PCL_PET|CCK74972.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00098|PETase|Uncultured_bacterium|PCL_PET|ACC95208.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00099|PETase|Polyangium_brachysporum|PCL_PET|AKJ29164.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00100|Esterase|Aspergillus_fumigatus|PBS_PCL_PES_PHB_PLA_PHA|NA	PlasticDB	dropped	exact duplicate
+PlasticDB|00101|PHB_depolymerase|Azotobacter_vinelandii|PHB_PHA|WP_012699077.1	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.32 cov=0.22
+PlasticDB|00102|Hydrolase|Streptomyces_sp.|PCL|DAC80635.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00103|Esterase|Pseudozyma_antarctica|PBS_PBSA_PCL|BBB03504.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.39 cov=0.19
+PlasticDB|00104|Alkane_monooxygenase|Paenibacillus_sp.|LDPE|AYO90679.1	PlasticDB	dropped	not a PETase-class homolog: best seed bbPET0069 id=0.40 cov=0.12
+PlasticDB|00105|Polyester_hydrolase|Pseudomonas_aestusnigri|PET_PU|WP_088276085.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00106|Cutinase|Thermobifida_fusca|PET|CBY05530.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00107|Cutinase|Thermobifida_alba|PET|ADV92525.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00108|Serine_hydrolase|Thermobifida_halotolerans|PET|AFA45122.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00109|Triacylglycerol_lipase|Polyangium_brachysporum|PET|AKJ29164.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00110|Triacylglycerol_lipase|Thermomonospora_curvata|PET|ACY96861.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00111|Alkane-1_monooxygenase|Acinetobacter_johnsonii|PS|AZN65426.1	PlasticDB	dropped	not a PETase-class homolog: best seed RgPETase id=0.30 cov=0.15
+PlasticDB|00112|PHB_depolymerase|Delftia_acidovorans|PHB_PHA|KFJ10595.1	PlasticDB	dropped	not a PETase-class homolog: best seed SIBER_1 id=0.43 cov=0.17
+PlasticDB|00113|Cutinase|Moniliophthora_roreri|PES_PCL_PET|KTB31184.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00114|Latex-clearing-protein|Streptomyces_sp.|NR|Q3L8N0	PlasticDB	dropped	not a PETase-class homolog: best seed 405 id=0.36 cov=0.25
+PlasticDB|00115|Rubber-oxygenase|Steroidobacter_cummioxidans|NR|Q7X0P3	PlasticDB	dropped	not a PETase-class homolog: best seed 412 id=0.35 cov=0.22
+PlasticDB|00116|Rubber-oxygenase|Steroidobacter_cummioxidans|NR|A0A1S6Q8F9	PlasticDB	dropped	not a PETase-class homolog: best seed 606 id=0.48 cov=0.12
+PlasticDB|00117|Rubber-oxygenase|Rhizobacter_gummiphilus|NR|BAS44780.1	PlasticDB	dropped	not a PETase-class homolog: best seed PmC id=0.36 cov=0.24
+PlasticDB|00118|Cutinase|Pseudomonas_oleovorans|PCL_PET|ADK73612.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00119|Lipase|Halopseudomonas_pelagia|PET|ANP21910.1	PlasticDB	candidate	trimmed 307->280; best seed MG8 id=0.75 cov=1.00
+PlasticDB|00120|Cutinase|Pseudomonas_mendocina|PET|2FX5_A	PlasticDB	dropped	exact duplicate
+PlasticDB|00121|Cutinase|Humicola_insolens|PET|A0A075B5G4	PlasticDB	dropped	exact duplicate
+PlasticDB|00122|Cutinase|Fusarium_solani|PET|AAA33335.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00123|Lipase|Moesziomyces_antarcticus|PET|P41365	PlasticDB	dropped	exact duplicate
+PlasticDB|00124|Polyester_hydrolase|Moraxella_sp.|PET_PCL_PU_PHB_PBS_PLA_PHA|P19833	PlasticDB	dropped	exact duplicate
+PlasticDB|00125|PETase|Uncultured_bacterium|PET|GBD22443.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00126|Hydrolase|Thermobifida_fusca|PET|Q6A0I4	PlasticDB	dropped	exact duplicate
+PlasticDB|00127|Hydrolase|Thermobifida_fusca|PET|CAH17554.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00128|Cutinase|Thermobifida_fusca|PET|Q47RJ6	PlasticDB	dropped	exact duplicate
+PlasticDB|00129|Cutinase|Thermobifida_fusca|PET|AET05798.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00130|Protease|Pseudomonas_fluorescens|PU|AAF66684.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.30 cov=0.48
+PlasticDB|00131|Cutinase|Thermobifida_fusca|PET|AET05799.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00132|Cutinase|Thermobifida_cellulosilytica|PET_PLA|ADV92526.1	PlasticDB	candidate	trimmed 262->261; best seed TfCut2 id=1.00 cov=1.00
+PlasticDB|00133|Cutinase|Thermobifida_cellulosilytica|PET_PLA|ADV92527.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00134|nitrobenzylesterase|Bacillus_subtilis|PET|ADH43200.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00135|Hydrolase|Thermomonospora_curvata|PET_PCL|D1A2H1	PlasticDB	dropped	exact duplicate
+PlasticDB|00136|Hydrolase|Uncultured_bacterium|PET|7CUV_A	PlasticDB	candidate	trimmed 258->258; best seed PHL7 id=1.00 cov=1.00
+PlasticDB|00137|Polyester_hydrolase|Uncultured_bacterium|PET_PCL|7NEI_B	PlasticDB	candidate	trimmed 267->259; best seed PHL7 id=1.00 cov=1.00
+PlasticDB|00138|Polyester_hydrolase|Uncultured_bacterium|PET|LT571440	PlasticDB	dropped	exact duplicate
+PlasticDB|00139|Polyester_hydrolase|Uncultured_bacterium|PET|LT571441	PlasticDB	dropped	exact duplicate
+PlasticDB|00140|Polyester_hydrolase|Uncultured_bacterium|PET|LT571442	PlasticDB	dropped	exact duplicate
+PlasticDB|00141|Polyester_hydrolase|Uncultured_bacterium|PET|LT571443	PlasticDB	dropped	exact duplicate
+PlasticDB|00142|Polyester_hydrolase|Uncultured_bacterium|PET|LT571444	PlasticDB	dropped	exact duplicate
+PlasticDB|00143|Polyester_hydrolase|Uncultured_bacterium|PET|LT571445	PlasticDB	dropped	exact duplicate
+PlasticDB|00144|Esterase|Aequorivita_sp.|PET_PU_PCL|WP_111881932.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00145|Esterase|Kaistella_jeonii|PET_PU_PCL|WP_039353427.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00146|Esterase|Aequorivita_viscosa|PU_PCL|WP_073216622.1	PlasticDB	dropped	trimmed length 342: best seed PET27 id=0.75 cov=1.00
+PlasticDB|00147|Esterase|Aequorivita_vladivostokensis|PU_PCL|WP_052671284.1	PlasticDB	dropped	trimmed length 342: best seed PET27 id=0.89 cov=1.00
+PlasticDB|00148|Protease|Amycolatopsis_orientalis|PLA|B0FLR6	PlasticDB	dropped	not a PETase-class homolog: best seed IsPETase id=0.30 cov=0.32
+PlasticDB|00149|Protease|Amycolatopsis_orientalis|PLA|B0FY08	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.32 cov=0.24
+PlasticDB|00150|Hydrolase|Alcanivorax_borkumensis|PLA_PHBV_PCL_PBSA_PES_PHA|Q0VLQ1	PlasticDB	dropped	not a PETase-class homolog: best seed 307 id=0.35 cov=0.29
+PlasticDB|00151|Hydrolase|Rhodopseudomonas_palustris|PLA_PCL_PBSA|Q6N9M9	PlasticDB	dropped	not a PETase-class homolog: best seed 211 id=0.37 cov=0.43
+PlasticDB|00152|Protease|Lederbergia_lenta|PLA|P29600	PlasticDB	dropped	not a PETase-class homolog: best seed 711 id=0.35 cov=0.65
+PlasticDB|00153|Protease|Lederbergia_lenta|PLA|P29599	PlasticDB	dropped	not a PETase-class homolog: best seed PET5_OaCut id=0.28 cov=0.76
+PlasticDB|00154|Protease|Bacillus_licheniformis|PLA|P00780	PlasticDB	dropped	not a PETase-class homolog: best seed F148 id=0.27 cov=0.77
+PlasticDB|00155|Esterase|Alcanivorax_borkumensis|PLA_PCL_PBSA|CAL16645.1	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.26 cov=0.85
+PlasticDB|00156|Esterase|Uncultured_bacterium|PLA_PCL_PBSA|AGT96415.1	PlasticDB	dropped	not a PETase-class homolog: best seed LCC id=0.35 cov=0.59
+PlasticDB|00157|Esterase|Alcanivorax_borkumensis|PLA_PBSA|CAL16699.1	PlasticDB	dropped	not a PETase-class homolog: best seed SIBER_1 id=0.33 cov=0.37
+PlasticDB|00158|Esterase|Uncultured_bacterium|PLA|AHG30919.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET30 id=0.30 cov=0.61
+PlasticDB|00159|Esterase|Uncultured_bacterium|PLA|AGT96414.1	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.31 cov=0.31
+PlasticDB|00160|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ92291.1	PlasticDB	dropped	not a PETase-class homolog: best seed 708 id=0.25 cov=0.48
+PlasticDB|00161|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ93939.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.26 cov=0.14
+PlasticDB|00162|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ95139.1	PlasticDB	dropped	not a PETase-class homolog: best seed 606 id=0.23 cov=0.31
+PlasticDB|00163|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|AAP85930.1	PlasticDB	dropped	not a PETase-class homolog: best seed ScPETase id=0.34 cov=0.22
+PlasticDB|00164|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ95805.1	PlasticDB	dropped	not a PETase-class homolog: best seed 305 id=0.28 cov=0.38
+PlasticDB|00165|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ97183.1	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.32 cov=0.69
+PlasticDB|00166|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ93348.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.51 cov=0.14
+PlasticDB|00167|PHA_depolymerase|Cupriavidus_necator|PHA_PHB|CAJ92475.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET46 id=0.37 cov=0.38
+PlasticDB|00168|Hydrolase|Paenarthrobacter_ureafaciens|Nylon|P13398	PlasticDB	dropped	not a PETase-class homolog: best seed 601_Tcur1278 id=0.34 cov=0.49
+PlasticDB|00169|Hydrolase|Paenarthrobacter_ureafaciens|Nylon|P07061	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.37 cov=0.17
+PlasticDB|00170|Hydrolase|Paenarthrobacter_ureafaciens|Nylon|Q79F77	PlasticDB	dropped	not a PETase-class homolog: best seed PoCut id=0.34 cov=0.31
+PlasticDB|00171|Nylon_hydrolase|Paenarthrobacter_ureafaciens|Nylon|Q1EPR4	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.46 cov=0.32
+PlasticDB|00172|Polyamidase|Nocardia_farcinica|Nylon|WP_011209364.1	PlasticDB	dropped	not a PETase-class homolog: best seed PHL7 id=0.40 cov=0.22
+PlasticDB|00173|Esterase|Pseudomonas_sp.|PET|WP_085690612.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00174|Laccase|Rhodococcus_ruber|LDPE|NA	PlasticDB	dropped	not a PETase-class homolog: best seed BurPL id=0.35 cov=0.06
+PlasticDB|00175|Hydrolase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	exact duplicate
+PlasticDB|00176|Hydrolase|Rhizobacter_gummiphilus|PET|A0A1W6L588_9BURK	PlasticDB	dropped	exact duplicate
+PlasticDB|00177|PHA_depolymerase|Pseudomonas_putida|PHA|AAN70570.1	PlasticDB	candidate	trimmed 283->274; best seed PET46 id=0.35 cov=0.73
+PlasticDB|00178|Hydrolase|Rhodococcus_fascians|PBAT_PBS_PBSA_PCL_PES|A0A7I8E2Z4_RHOSO	PlasticDB	dropped	exact duplicate
+PlasticDB|00179|Hydrolase|Bacillus_pumilus|PBAT_PBSA_PES_PCL|A0A1E1FNX8_BACPU	PlasticDB	dropped	not a PETase-class homolog: best seed 606 id=0.23 cov=0.40
+PlasticDB|00180|Laccase|Psychrobacter_sp.|PE|UVG67878.1	PlasticDB	dropped	not a PETase-class homolog: best seed 406 id=0.32 cov=0.37
+PlasticDB|00181|Lipase|Pseudomonas_chlororaphis|PLA_PHA_PES_PCL|AIC18917.1	PlasticDB	dropped	not a PETase-class homolog: best seed bbPET0069 id=0.31 cov=0.38
+PlasticDB|00182|Lipase|Pseudomonas_chlororaphis|PLA_PHA_PES_PCL|AIC19151.1	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.30 cov=0.86
+PlasticDB|00183|PETase|Marinobacter_sp.|PET_PBSeT_PBAT_Ecovio-FT|UUT36764.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00184|PETase|Marinobacter_sp.|PET_PBSeT_PBAT_Ecovio-FT|UUT36763.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00185|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 202 id=0.33 cov=0.26
+PlasticDB|00186|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	trimmed length 380: best seed 202 id=1.00 cov=1.00
+PlasticDB|00187|PETase|Uncultured_bacterium|PET|NA	PlasticDB	candidate	trimmed 250->242; best seed 204 id=1.00 cov=1.00
+PlasticDB|00188|PETase|Uncultured_bacterium|PET|NA	PlasticDB	candidate	trimmed 272->264; best seed 211 id=1.00 cov=1.00
+PlasticDB|00189|PETase|Uncultured_bacterium|PET|NA	PlasticDB	candidate	trimmed 248->240; best seed 214 id=1.00 cov=1.00
+PlasticDB|00190|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	trimmed length 211: best seed 301 id=1.00 cov=1.00
+PlasticDB|00191|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	trimmed length 232: best seed 305 id=1.00 cov=1.00
+PlasticDB|00192|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	trimmed length 178: best seed 307 id=1.00 cov=1.00
+PlasticDB|00193|PETase|Uncultured_bacterium|PET|NA	PlasticDB	candidate	trimmed 290->281; best seed 401_PET2 id=1.00 cov=1.00
+PlasticDB|00194|PETase|Ketobacter_sp.|PET|NA	PlasticDB	candidate	trimmed 292->284; best seed 403 id=1.00 cov=1.00
+PlasticDB|00195|PETase|Actinomycetota_bacterium|PET|NA	PlasticDB	candidate	trimmed 283->275; best seed 405 id=1.00 cov=1.00
+PlasticDB|00196|PETase|Micromonosporaceae_bacterium|PET|NA	PlasticDB	dropped	trimmed length 393: best seed 407 id=1.00 cov=1.00
+PlasticDB|00197|PETase|Ketobacter_sp.|PET|NA	PlasticDB	candidate	trimmed 277->269; best seed 409 id=1.00 cov=1.00
+PlasticDB|00198|PETase|Ketobacter_alkanivorans|PET|NA	PlasticDB	candidate	trimmed 291->283; best seed 412 id=1.00 cov=1.00
+PlasticDB|00199|PETase|Nocardioidaceae_bacterium|PET|NA	PlasticDB	candidate	trimmed 267->259; best seed 503 id=1.00 cov=1.00
+PlasticDB|00200|PETase|Caldimonas_taiwanensis|PET|NA	PlasticDB	candidate	trimmed 278->267; best seed 504_CtPL id=1.00 cov=1.00
+PlasticDB|00201|PETase|Marinactinospora_thermotolerans|PET|NA	PlasticDB	candidate	trimmed 271->263; best seed 606 id=1.00 cov=1.00
+PlasticDB|00202|PETase|Saccharopolyspora_flava|PET|NA	PlasticDB	candidate	trimmed 269->261; best seed 611 id=1.00 cov=1.00
+PlasticDB|00203|PETase|Thermobifida_fusca|PET|NA	PlasticDB	candidate	trimmed 270->262; best seed 701 id=1.00 cov=1.00
+PlasticDB|00204|PETase|Thermobifida_fusca|PET|NA	PlasticDB	candidate	trimmed 271->263; best seed 702 id=1.00 cov=1.00
+PlasticDB|00205|PETase|Thermobifida_alba|PET|NA	PlasticDB	candidate	trimmed 270->262; best seed 708 id=1.00 cov=1.00
+PlasticDB|00206|PETase|Thermobifida_cellulosilytica|PET|NA	PlasticDB	candidate	trimmed 269->261; best seed 711 id=1.00 cov=1.00
+PlasticDB|00207|PETase|Thermobifida_halotolerans|PET|NA	PlasticDB	dropped	not a PETase-class homolog: best seed Thh_Est id=0.87 cov=0.46
+PlasticDB|00208|PETase|Thermobifida_cellulosilytica|PET|NA	PlasticDB	candidate	trimmed 273->265; best seed 716 id=1.00 cov=1.00
+PlasticDB|00209|Oxidoreductase|Bacillus_velezensis|PU_PBAT|UOM43036.1	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.44 cov=0.11
+PlasticDB|00210|Lipase|Pseudomonas_chlororaphis|PHBV_PHA_PLA_PCL_PES|EY04_02420	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.47 cov=0.13
+PlasticDB|00211|Lipase|Pseudomonas_chlororaphis|PHBV_PHA_PLA_PCL_PES|EY04_21540	PlasticDB	dropped	not a PETase-class homolog: best seed 204 id=0.32 cov=0.53
+PlasticDB|00212|PHA_depolymerase|Pseudomonas_chlororaphis|PHBV_PHA_PLA_PCL_PES|EY04_01535	PlasticDB	dropped	not a PETase-class homolog: best seed PET46 id=0.33 cov=0.73
+PlasticDB|00213|Lipase|Moraxella_sp.|PET|P19833	PlasticDB	dropped	exact duplicate
+PlasticDB|00214|Lipase|Olespira_antarctica|PET|R4YKL9	PlasticDB	dropped	exact duplicate
+PlasticDB|00215|PHB_depolymerase|Lihuaxuella_thermophila|PHB_PHA_PHBH_PHBVH_PLA_PCL|WP_089972404.1	PlasticDB	dropped	not a PETase-class homolog: best seed PET46 id=0.29 cov=0.85
+PlasticDB|00216|Cutinase|Marinactinospora_thermotolerans|PET|SJZ42839	PlasticDB	candidate	trimmed 311->263; best seed 606 id=1.00 cov=1.00
+PlasticDB|00217|Hydrolase|Geomyces_sp.|PBS_PBSA_PCL|KFY49210.1	PlasticDB	dropped	not a PETase-class homolog: best seed PHL7 id=0.26 cov=0.57
+PlasticDB|00218|Chitinase|Geomyces_sp.|PBS_PBSA_PCL|KFY57494.1	PlasticDB	dropped	not a PETase-class homolog: best seed 503 id=0.31 cov=0.17
+PlasticDB|00219|Chitin_deacetylase|Rhizopus_oryzae|LDPE|AAP57213	PlasticDB	dropped	not a PETase-class homolog: best seed PET12_PbPL id=0.28 cov=0.33
+PlasticDB|00220|Esterase|Candidatus_bathyarchaeota|PET|RLI42440.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00221|Carboxylesterase|Thermobacillus_composti|PBAT|WP_015255658.1	PlasticDB	dropped	not a PETase-class homolog: best seed TfCut2 id=0.37 cov=0.29
+PlasticDB|00222|Copper_oxidase|Rhodococcus_opacus|PE|AII11185.1	PlasticDB	dropped	not a PETase-class homolog: best seed CaPETase id=0.31 cov=0.36
+PlasticDB|00223|Copper_oxidase|Rhodococcus_opacus|PE|AII11221	PlasticDB	dropped	not a PETase-class homolog: best seed PHL7 id=0.32 cov=0.23
+PlasticDB|00224|Hydrolase|Halopseudomonas_formosensis|PU|WP_090538641.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00225|Cutinase|Rhodococcus_sp.|PCL_PET|UNZ22463.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00226|Polyesterase|Streptomyces_sp.|PET|DAC80635	PlasticDB	dropped	exact duplicate
+PlasticDB|00227|Polyester_hydrolase|Thermoanaerobacter_sp.|PET|7NEI_A	PlasticDB	dropped	exact duplicate
+PlasticDB|00228|Hydrolase|Amycolatopsis_sp.|PCL_PET_PU|WAU86704	PlasticDB	dropped	exact duplicate
+PlasticDB|00229|PETase|Clonostachys_rosea|PCL_PET|NA	PlasticDB	dropped	not a PETase-class homolog: best seed GlacPETase id=0.46 cov=0.23
+PlasticDB|00230|PETase|Clonostachys_rosea|PCL|NA	PlasticDB	dropped	not a PETase-class homolog: best seed 211 id=0.59 cov=0.08
+PlasticDB|00231|PETase|Rhizobacter_sp._|PET|MBX3624429.1	PlasticDB	candidate	trimmed 288->266; best seed 504_CtPL id=0.61 cov=1.00
+PlasticDB|00232|PETase|Piscinibacter_gummiphilus|PET|MBX3624429.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00233|PETase|Pseudomonas_fluvialis|PET|WP_184682765.1	PlasticDB	candidate	trimmed 298->275; best seed PpPETase id=0.87 cov=1.00
+PlasticDB|00234|PETase|Rhizobacter_sp.|PET|MBX3621832.1	PlasticDB	candidate	trimmed 280->256; best seed RgCut-II id=0.81 cov=1.00
+PlasticDB|00235|PETase|Pseudomonas_subflava|PET|WP_252275389.1	PlasticDB	candidate	trimmed 296->275; best seed PaCut id=0.91 cov=1.00
+PlasticDB|00236|PETase|Rhizobacter_sp.|PET|MBT9528079.1	PlasticDB	candidate	trimmed 299->266; best seed 504_CtPL id=0.61 cov=1.00
+PlasticDB|00237|PETase|Halopseudomonas_yangmingensis|PET|WP_093473685.1	PlasticDB	candidate	trimmed 303->277; best seed PsCut id=0.76 cov=1.00
+PlasticDB|00238|PETase|Jonesia_denitrificans|PET|ACV09511	PlasticDB	candidate	trimmed 319->260; best seed bbPET0069 id=0.98 cov=1.00
+PlasticDB|00239|PETase|Actinokineospora_alba|PET|TDP67440.1	PlasticDB	candidate	trimmed 294->264; best seed 601_Tcur1278 id=0.54 cov=1.00
+PlasticDB|00240|PETase|Actinokineospora_spheciospongiae|PET|WP_035284691	PlasticDB	candidate	trimmed 297->258; best seed 601_Tcur1278 id=0.57 cov=0.99
+PlasticDB|00241|PETase|Herbihabitans_rhizosphaerae|PET|WP_130342639	PlasticDB	candidate	trimmed 297->260; best seed PET40 id=0.61 cov=0.98
+PlasticDB|00242|PETase|Actinomadura_physcomitrii|PET|WP_151597653.1	PlasticDB	candidate	trimmed 310->274; best seed 405 id=0.63 cov=0.97
+PlasticDB|00243|PETase|Actinokineospora_xionganensis|PET|WP_187224800.1	PlasticDB	candidate	trimmed 283->270; best seed 405 id=0.63 cov=0.95
+PlasticDB|00244|PETase|Dactylosporangium_sp.|PET|MBT8227529.1	PlasticDB	dropped	trimmed length 383: best seed 407 id=0.51 cov=0.94
+PlasticDB|00245|PETase|Actinokineospora_spheciospongiae|PET|WP_233427406.1	PlasticDB	candidate	trimmed 299->272; best seed 405 id=0.54 cov=0.96
+PlasticDB|00246|PETase|Actinoplanes_sp.|PET|WP_229068674.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.64 cov=0.66
+PlasticDB|00247|PETase|Actinomadura_rayongensis|PET|WP_161104454.1	PlasticDB	candidate	trimmed 295->277; best seed 405 id=0.61 cov=0.97
+PlasticDB|00248|PETase|Actinomycetes_bacterium|PET|MGYP001489421514	PlasticDB	candidate	trimmed 303->263; best seed PET40 id=0.69 cov=0.98
+PlasticDB|00249|PETase|Acidimicrobiales_bacterium|PET|MBN2622270.1	PlasticDB	candidate	trimmed 322->259; best seed PHL7 id=0.75 cov=0.99
+PlasticDB|00250|PETase|Micromonosporales_bacterium|PET|MGYP001121581011	PlasticDB	dropped	trimmed length 382: best seed 407 id=0.59 cov=0.91
+PlasticDB|00251|PETase|Paractinoplanes_polyasparticus|PET|WP_221382552.1	PlasticDB	dropped	trimmed length 393: best seed 407 id=0.64 cov=0.73
+PlasticDB|00252|PETase|Micromonosporales_bacterium|PET|MGYP000271253724	PlasticDB	dropped	exact duplicate
+PlasticDB|00253|PETase|Thermoleophilaceae_bacterium|PET|MBJ7347705.1	PlasticDB	candidate	trimmed 292->261; best seed PET40 id=0.55 cov=0.98
+PlasticDB|00254|PETase|Micromonosporales_bacterium|PET|MGYP000221121644	PlasticDB	dropped	exact duplicate
+PlasticDB|00255|PETase|Paractinoplanes_durhamensis|PET|WP_203733135.1	PlasticDB	candidate	trimmed 295->261; best seed PET40 id=0.65 cov=1.00
+PlasticDB|00256|PETase|Hamadaea_sp.|PET|NUT34383.1	PlasticDB	candidate	trimmed 285->258; best seed 601_Tcur1278 id=0.73 cov=0.99
+PlasticDB|00257|PETase|Promicromonospora_panici|PET|WP_129786244.1	PlasticDB	candidate	trimmed 287->258; best seed ScPETase id=0.61 cov=0.98
+PlasticDB|00258|PETase|Streptomyces_sp.|PET|WP_233872418.1	PlasticDB	candidate	trimmed 314->258; best seed PC4 id=0.68 cov=0.99
+PlasticDB|00259|PETase|Microbispora_catharanthi|PET|WP_139580723.1	PlasticDB	dropped	trimmed length 418: best seed 407 id=0.52 cov=0.94
+PlasticDB|00260|PETase|Saccharothrix_sp.|PET|WP_267938240.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00261|PETase|Microbispora|PET|WP_167521412.1	PlasticDB	dropped	trimmed length 424: best seed 407 id=0.49 cov=0.99
+PlasticDB|00262|PETase|Solwaraspora_sp.|PET|WBC00352.1	PlasticDB	dropped	trimmed length 402: best seed 407 id=0.59 cov=0.92
+PlasticDB|00263|PETase|Microbispora_oryzae|PET|WP_210157342.1	PlasticDB	dropped	trimmed length 383: best seed 407 id=0.47 cov=0.97
+PlasticDB|00264|PETase|Microbispora_triticiradicis|PET|MBO4274871.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00265|PETase|Microbispora_sp.|PET|WP_232326807.1	PlasticDB	dropped	trimmed length 417: best seed 407 id=0.49 cov=0.97
+PlasticDB|00266|PETase|Phytohabitans_rumicis|PET|GFJ87714.1	PlasticDB	dropped	trimmed length 381: best seed 407 id=0.62 cov=0.89
+PlasticDB|00267|PETase|Saccharothrix_deserti|PET|WP_158852571.1	PlasticDB	dropped	trimmed length 383: best seed 407 id=0.70 cov=0.89
+PlasticDB|00268|PETase|Microbispora_sp.|PET|WP_182904095.1	PlasticDB	dropped	trimmed length 418: best seed 407 id=0.50 cov=0.97
+PlasticDB|00269|PETase|Streptomyces_sp.|PET|WP_031525917.1	PlasticDB	dropped	trimmed length 392: best seed 407 id=0.57 cov=0.95
+PlasticDB|00270|PETase|Acidimicrobiales_bacterium|PET|GIU85367.1	PlasticDB	candidate	trimmed 276->260; best seed 611 id=0.55 cov=0.93
+PlasticDB|00271|PETase|Paractinoplanes_deccanensis|PET|WP_203777396.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00272|PETase|Phytohabitans_houttuyneae|PET|WP_173061649.1	PlasticDB	dropped	trimmed length 398: best seed 407 id=0.63 cov=0.76
+PlasticDB|00273|PETase|Micromonospora_craterilacus|PET|WP_111214096.1	PlasticDB	dropped	trimmed length 400: best seed 407 id=0.63 cov=0.72
+PlasticDB|00274|PETase|Paractinoplanes_rishiriensis|PET|WP_203790592.1	PlasticDB	dropped	trimmed length 372: best seed 407 id=0.53 cov=0.98
+PlasticDB|00275|PETase|Plantactinospora_alkalitolerans|PET|MBF9135495.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.67 cov=0.67
+PlasticDB|00276|PETase|Micromonospora_taraxaci|PET|TWG17167.1	PlasticDB	dropped	trimmed length 392: best seed 407 id=0.66 cov=0.71
+PlasticDB|00277|PETase|Phytohabitans_aurantiacus|PET|GLI01021.1	PlasticDB	dropped	trimmed length 375: best seed 407 id=0.54 cov=0.90
+PlasticDB|00278|PETase|Micromonospora_qiuiae|PET|WP_204038550.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.68 cov=0.67
+PlasticDB|00279|PETase|Micromonospora_saelicesensis|PET|WP_181548579.1	PlasticDB	dropped	trimmed length 397: best seed 407 id=0.64 cov=0.73
+PlasticDB|00280|PETase|Micromonospora_sp.|PET|GHJ08786.1	PlasticDB	dropped	trimmed length 355: best seed 407 id=0.63 cov=0.91
+PlasticDB|00281|PETase|Micromonospora_rifamycinica|PET|WP_084261341.1	PlasticDB	dropped	trimmed length 395: best seed 407 id=0.66 cov=0.74
+PlasticDB|00282|PETase|Micromonospora_sp.|PET|WP_265247586.1	PlasticDB	dropped	trimmed length 376: best seed 407 id=0.54 cov=0.90
+PlasticDB|00283|PETase|Dactylosporangium_vinaceum|PET|UAC02078.1	PlasticDB	candidate	trimmed 269->255; best seed 601_Tcur1278 id=0.59 cov=0.92
+PlasticDB|00284|PETase|Actinoallomurus_spadix|PET|WP_252811421.1	PlasticDB	dropped	trimmed length 376: best seed 407 id=0.60 cov=0.86
+PlasticDB|00285|PETase|Dactylosporangium_sucinum|PET|WP_229836555.1	PlasticDB	candidate	trimmed 285->255; best seed 601_Tcur1278 id=0.59 cov=0.90
+PlasticDB|00286|PETase|Dactylosporangium_siamense|PET|WP_239135698.1	PlasticDB	candidate	trimmed 279->255; best seed 601_Tcur1278 id=0.61 cov=0.90
+PlasticDB|00287|PETase|Dactylosporangium_matsuzakiense|PET|WP_271190254.1	PlasticDB	dropped	trimmed length 393: best seed 407 id=0.64 cov=0.77
+PlasticDB|00288|PETase|Micromonospora_sp.|PET|MBW4703769.1	PlasticDB	dropped	trimmed length 394: best seed 407 id=0.67 cov=0.71
+PlasticDB|00289|PETase|Micromonospora_sp.|PET|WP_247684544.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00290|PETase|Verrucosispora_sp.|PET|WP_269740835.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.63 cov=0.66
+PlasticDB|00291|PETase|Micromonospora_sp.|PET|MCF0091346.1	PlasticDB	dropped	trimmed length 394: best seed 407 id=0.65 cov=0.72
+PlasticDB|00292|PETase|Actinoplanes_ianthinogenes|PET|GGR16917.1	PlasticDB	dropped	trimmed length 386: best seed 407 id=0.56 cov=0.92
+PlasticDB|00293|PETase|Amycolatopsis_sp.|PET|WP_199199185.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.60 cov=0.67
+PlasticDB|00294|PETase|Amycolatopsis_sp.|PET|WP_247056560.1	PlasticDB	candidate	trimmed 308->263; best seed PET40 id=0.93 cov=1.00
+PlasticDB|00295|PETase|Catellatospora_bangladeshensis|PET|WP_239125827.1	PlasticDB	candidate	trimmed 288->255; best seed 601_Tcur1278 id=0.58 cov=0.95
+PlasticDB|00296|PETase|Paractinoplanes_tereljensis|PET|WP_203812622.1	PlasticDB	candidate	trimmed 293->263; best seed PET40 id=0.70 cov=0.99
+PlasticDB|00297|PETase|Micromonospora_acroterricola|PET|PWR09075.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.62 cov=0.66
+PlasticDB|00298|PETase|Rhizocola_hellebori|PET|WP_203906211.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.61 cov=0.66
+PlasticDB|00299|PETase|Asanoa_hainanensis|PET|WP_144022925.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.61 cov=0.66
+PlasticDB|00300|PETase|Amycolatopsis_tolypomycina|PET|WP_091317053.1	PlasticDB	candidate	trimmed 309->262; best seed PC4 id=0.94 cov=1.00
+PlasticDB|00301|PETase|Micromonospora_sp.|PET|MTK05241.1	PlasticDB	dropped	trimmed length 394: best seed 407 id=0.63 cov=0.74
+PlasticDB|00302|PETase|Catellatospora_methionotrophica|PET|WP_239086781.1	PlasticDB	candidate	trimmed 290->255; best seed 601_Tcur1278 id=0.57 cov=0.90
+PlasticDB|00303|PETase|Verrucosispora_sioxanthis|PET|WP_164449727.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.67 cov=0.67
+PlasticDB|00304|PETase|Thermobifida_cellulosilytica|PET|MGYP001477358452	PlasticDB	dropped	exact duplicate
+PlasticDB|00305|PETase|Streptomyces_sp.|PET|WP_264933993.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.69 cov=0.67
+PlasticDB|00306|PETase|Actinomycetes_bacterium|PET|MGYP000321434903	PlasticDB	dropped	exact duplicate
+PlasticDB|00307|PETase|Crossiella_sp.|PET|WP_256510026.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00308|PETase|Dactylosporangium_aurantiacum|PET|WP_260709492.1	PlasticDB	dropped	trimmed length 397: best seed 407 id=0.67 cov=0.70
+PlasticDB|00309|PETase|Microbispora_rosea|PET|GGO06455.1	PlasticDB	candidate	trimmed 296->257; best seed SIBER_1 id=0.90 cov=1.00
+PlasticDB|00310|PETase|Actinomadura_sp.|PET|WP_149259982.1	PlasticDB	candidate	trimmed 309->273; best seed 405 id=0.64 cov=0.97
+PlasticDB|00311|PETase|Micromonosporaceae_bacterium|PET|MBN1171866.1	PlasticDB	candidate	trimmed 325->292; best seed 407 id=0.63 cov=0.71
+PlasticDB|00312|PETase|Cellulomonas_iranensis|PET|MBO9569276.1	PlasticDB	candidate	trimmed 284->258; best seed ScPETase id=0.70 cov=0.97
+PlasticDB|00313|PETase|Plantactinospora_endophytica|PET|GIG90696.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.66 cov=0.67
+PlasticDB|00314|PETase|Streptomyces_swartbergensis|PET|WP_086599340.1	PlasticDB	dropped	trimmed length 398: best seed 407 id=0.59 cov=0.94
+PlasticDB|00315|PETase|Actinomadura_atramentaria|PET|WP_019633337.1	PlasticDB	candidate	trimmed 301->276; best seed 405 id=0.55 cov=0.96
+PlasticDB|00316|PETase|Streptomyces_sp.|PET|WP_109361459.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.71 cov=0.67
+PlasticDB|00317|PETase|Kutzneria_sp.|PET|WP_211769896.1	PlasticDB	candidate	trimmed 293->275; best seed DmPETase id=0.51 cov=0.89
+PlasticDB|00318|PETase|Saccharopolyspora_hirsuta|PET|WP_150070118.1	PlasticDB	candidate	trimmed 295->260; best seed 611 id=0.81 cov=1.00
+PlasticDB|00319|PETase|Kibdelosporangium_banguiense|PET|MBP2328848.1	PlasticDB	dropped	not a PETase-class homolog: best seed 407 id=0.68 cov=0.66
+PlasticDB|00320|PETase|Micromonospora_carbonacea|PET|WP_260422593.1	PlasticDB	dropped	trimmed length 397: best seed 407 id=0.63 cov=0.77
+PlasticDB|00321|PETase|Actinoallomurus_spadix|PET|WP_252811421.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00322|PETase|Streptomyces_sp.|PET|WP_218517662.1	PlasticDB	dropped	trimmed length 393: best seed 407 id=0.67 cov=0.94
+PlasticDB|00323|PETase|Crossiella_sp.|PET|WP_256510519.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00324|PETase|Micromonospora_sp.|PET|WP_233604767.1	PlasticDB	dropped	trimmed length 392: best seed 407 id=0.60 cov=0.87
+PlasticDB|00325|PETase|Micromonospora_lutea|PET|WP_239095870.1	PlasticDB	dropped	trimmed length 394: best seed 407 id=0.63 cov=0.74
+PlasticDB|00326|PETase|Hamadaea_flava|PET|WP_253762837.1	PlasticDB	candidate	trimmed 287->258; best seed 601_Tcur1278 id=0.73 cov=0.99
+PlasticDB|00327|PETase|Actinoplanes_ianthinogenes|PET|WP_212846608.1	PlasticDB	dropped	trimmed length 386: best seed 407 id=0.56 cov=0.92
+PlasticDB|00328|PETase|Acidimicrobiales_bacterium|PET|GIU85371.1	PlasticDB	dropped	exact duplicate
+PlasticDB|00329|PETase|Sphaerisporangium_fuscum|PET|WP_250563816.1	PlasticDB	candidate	trimmed 277->257; best seed SIBER_1 id=0.81 cov=0.98
+IsPETase	PANDA	KEPT	
+TfCut2	PANDA	KEPT	
+LCC	PANDA	KEPT	
+PHL7	PANDA	KEPT	
+PHL3	PANDA	dropped	0.98 identical to a kept sequence
+705_ThC_Cut2	PANDA	dropped	0.93 identical to a kept sequence
+704_TfCut1	PANDA	dropped	0.94 identical to a kept sequence
+PmC	PANDA	KEPT	
+BhrPETase	PANDA	dropped	0.94 identical to a kept sequence
+Thh_Est	PANDA	KEPT	
+707_ThA_cut1	PANDA	dropped	0.98 identical to a kept sequence
+601_Tcur1278	PANDA	KEPT	
+602_Tcur0390	PANDA	KEPT	
+PE-H	PANDA	KEPT	
+401_PET2	PANDA	KEPT	
+PET6	PANDA	KEPT	
+PET12_PbPL	PANDA	KEPT	
+PET5_OaCut	PANDA	KEPT	
+204	PANDA	KEPT	
+211	PANDA	KEPT	
+214	PANDA	KEPT	
+403	PANDA	KEPT	
+405	PANDA	KEPT	
+406	PANDA	KEPT	
+409	PANDA	KEPT	
+412	PANDA	KEPT	
+503	PANDA	KEPT	
+504_CtPL	PANDA	KEPT	
+606	PANDA	KEPT	
+611	PANDA	KEPT	
+701	PANDA	dropped	0.97 identical to a kept sequence
+702	PANDA	dropped	0.99 identical to a kept sequence
+703_Thf42_cut1	PANDA	dropped	0.98 identical to a kept sequence
+706_BTA2	PANDA	dropped	0.92 identical to a kept sequence
+708	PANDA	KEPT	
+711	PANDA	KEPT	
+714_TfCut2	PANDA	dropped	0.99 identical to a kept sequence
+716	PANDA	dropped	0.94 identical to a kept sequence
+717_Est119	PANDA	dropped	0.95 identical to a kept sequence
+Ple629	PANDA	KEPT	
+Ple628	PANDA	KEPT	
+CaPETase	PANDA	KEPT	
+PC4	PANDA	KEPT	
+PET40	PANDA	dropped	0.93 identical to a kept sequence
+MORS1	PANDA	KEPT	
+PpPL	PANDA	dropped	0.94 identical to a kept sequence
+OaPL	PANDA	dropped	1.00 identical to a kept sequence
+RgPETase	PANDA	KEPT	
+RgCut-II	PANDA	KEPT	
+PsCut	PANDA	KEPT	
+PbauzCut	PANDA	dropped	0.94 identical to a kept sequence
+PaCut	PANDA	KEPT	
+AdCut	PANDA	KEPT	
+PoCut	PANDA	dropped	0.91 identical to a kept sequence
+MG8	PANDA	KEPT	
+GlacPETase	PANDA	KEPT	
+SIBER_1	PANDA	KEPT	
+SM14est	PANDA	KEPT	
+DmPETase	PANDA	KEPT	
+PET46	PANDA	KEPT	
+bbPET0069	PANDA	KEPT	
+jmPE13	PANDA	KEPT	
+jmPE14	PANDA	dropped	0.93 identical to a kept sequence
+F148	PANDA	KEPT	
+PpPETase	PANDA	dropped	0.91 identical to a kept sequence
+ScPETase	PANDA	KEPT	
+PAZy|1 IsPETase	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|2 PET5	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|3 PET6	PAZy	KEPT	
+PAZy|4 PET12	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|5 PLE628	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|6 PLE629	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|7 PpCutA	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|9 PE-H	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|10 PmC	PAZy	dropped	0.93 identical to a kept sequence
+PAZy|11 Mors1	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|13 MG8	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|15 RgPETase	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|16 LCC	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|17 BhrPETase	PAZy	dropped	0.94 identical to a kept sequence
+PAZy|18 Cut190	PAZy	KEPT	
+PAZy|19 TfH	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|20 BTA-2	PAZy	dropped	0.92 identical to a kept sequence
+PAZy|23 Tfu_0882	PAZy	dropped	0.93 identical to a kept sequence
+PAZy|24 TfCut1	PAZy	dropped	0.94 identical to a kept sequence
+PAZy|25 TfCut2	PAZy	dropped	0.99 identical to a kept sequence
+PAZy|30 Tcur_1278	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|31 Tcur0390	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|33 Est1	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|35 Est119	PAZy	dropped	0.95 identical to a kept sequence
+PAZy|40 PET2	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|148 CtPl	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|150 607-Nsp	PAZy	KEPT	
+PAZy|171 PHL-2	PAZy	KEPT	
+PAZy|172 PHL-1	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|173 PHL-3	PAZy	dropped	0.98 identical to a kept sequence
+PAZy|174 PHL-4	PAZy	KEPT	
+PAZy|175 PHL-5	PAZy	dropped	0.98 identical to a kept sequence
+PAZy|176 PHL-6	PAZy	dropped	0.98 identical to a kept sequence
+PAZy|178 RgCut-2	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|179 PsCut	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|180 PbauzCut	PAZy	dropped	0.94 identical to a kept sequence
+PAZy|184 PET1	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|185 SM14est	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|197 PbsA	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|200 Hfor_PE-H	PAZy	KEPT	
+PAZy|201 PaCut	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|215 CaPETase	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|236 dsPETase01	PAZy	KEPT	
+PAZy|237 dsPETase05	PAZy	KEPT	
+PAZy|238 dsPETase06	PAZy	KEPT	
+PAZy|241 PpPETase	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|242 ScPETase	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|257 KbPETase	PAZy	KEPT	
+PAZy|258 APET-15	PAZy	KEPT	
+PAZy|259 APET-17	PAZy	dropped	0.97 identical to a kept sequence
+PAZy|260 APET-19	PAZy	KEPT	
+PAZy|261 APET-20	PAZy	KEPT	
+PAZy|263 APET-24	PAZy	KEPT	
+PAZy|264 APET-25	PAZy	KEPT	
+PAZy|266 APET-27	PAZy	dropped	0.92 identical to a kept sequence
+PAZy|267 APET-28	PAZy	KEPT	
+PAZy|268 APET-29	PAZy	KEPT	
+PAZy|269 APET-32	PAZy	KEPT	
+PAZy|270 Mipa-P	PAZy	KEPT	
+PAZy|275 1663	PAZy	KEPT	
+PAZy|276 Kubu-P	PAZy	KEPT	
+PAZy|286 1507	PAZy	KEPT	
+PAZy|288 1821	PAZy	KEPT	
+PAZy|291 1522	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|293 385	PAZy	KEPT	
+PAZy|295 917	PAZy	KEPT	
+PAZy|300 1169	PAZy	KEPT	
+PAZy|302 1463	PAZy	KEPT	
+PAZy|304 554	PAZy	dropped	0.94 identical to a kept sequence
+PAZy|310 1240	PAZy	KEPT	
+PAZy|313 247	PAZy	KEPT	
+PAZy|315 1309	PAZy	KEPT	
+PAZy|316 414	PAZy	KEPT	
+PAZy|319 1395	PAZy	KEPT	
+PAZy|322 169	PAZy	dropped	0.95 identical to a kept sequence
+PAZy|323 1638	PAZy	KEPT	
+PAZy|325 1718	PAZy	KEPT	
+PAZy|326 401	PAZy	KEPT	
+PAZy|327 1392	PAZy	KEPT	
+PAZy|328 486	PAZy	KEPT	
+PAZy|329 1424	PAZy	KEPT	
+PAZy|330 1475	PAZy	KEPT	
+PAZy|331 282	PAZy	KEPT	
+PAZy|333 1228	PAZy	KEPT	
+PAZy|335 1340	PAZy	KEPT	
+PAZy|336 191	PAZy	KEPT	
+PAZy|337 PC3	PAZy	KEPT	
+PAZy|338 PC4	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|339 PC5	PAZy	KEPT	
+PAZy|340 PC6	PAZy	KEPT	
+PAZy|341 PC8	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|381 DP003	PAZy	dropped	0.98 identical to a kept sequence
+PAZy|382 DP006	PAZy	KEPT	
+PAZy|383 DP007	PAZy	KEPT	
+PAZy|384 DP008	PAZy	KEPT	
+PAZy|385 DP016	PAZy	KEPT	
+PAZy|386 DP017	PAZy	KEPT	
+PAZy|388 DP038	PAZy	KEPT	
+PAZy|389 DP039	PAZy	KEPT	
+PAZy|390 DP040	PAZy	KEPT	
+PAZy|392 DP054	PAZy	KEPT	
+PAZy|393 DP056	PAZy	KEPT	
+PAZy|394 DP057	PAZy	KEPT	
+PAZy|398 DP078	PAZy	KEPT	
+PAZy|399 DP080	PAZy	KEPT	
+PAZy|401 DP082	PAZy	KEPT	
+PAZy|402 DP084	PAZy	KEPT	
+PAZy|403 DP089	PAZy	KEPT	
+PAZy|404 DP090	PAZy	KEPT	
+PAZy|416 ESM045	PAZy	KEPT	
+PAZy|417 ESM050	PAZy	KEPT	
+PAZy|430 ESM082	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|432 ESM090	PAZy	KEPT	
+PAZy|433 ESM093	PAZy	dropped	0.92 identical to a kept sequence
+PAZy|434 ESM096	PAZy	dropped	0.91 identical to a kept sequence
+PAZy|442 ESM140	PAZy	dropped	0.92 identical to a kept sequence
+PAZy|443 ESM144	PAZy	KEPT	
+PAZy|444 ESM156	PAZy	KEPT	
+PAZy|448 ESM167	PAZy	dropped	0.95 identical to a kept sequence
+PAZy|449 ESM169	PAZy	KEPT	
+PAZy|451 ESM177	PAZy	dropped	0.92 identical to a kept sequence
+PAZy|452 ESM186	PAZy	KEPT	
+PAZy|454 TEP014	PAZy	dropped	0.98 identical to a kept sequence
+PAZy|456 TEP037	PAZy	KEPT	
+PAZy|459 TEP061	PAZy	dropped	0.90 identical to a kept sequence
+PAZy|460 TEP067	PAZy	KEPT	
+PAZy|461 TEP083	PAZy	KEPT	
+PAZy|462 TEP091	PAZy	KEPT	
+PAZy|465 TEP101	PAZy	KEPT	
+PAZy|467 TEP103	PAZy	KEPT	
+PAZy|468 TEP105	PAZy	KEPT	
+PAZy|476 TEP178	PAZy	KEPT	
+PAZy|478 TEP189	PAZy	KEPT	
+PAZy|479 TEP194	PAZy	KEPT	
+PAZy|480 KaPETase	PAZy	KEPT	
+PAZy|481 Sis	PAZy	KEPT	
+PAZy|483 DIEGO	PAZy	KEPT	
+PAZy|524 HaloPETase1	PAZy	dropped	1.00 identical to a kept sequence
+PAZy|525 HaloPETase2	PAZy	KEPT	
+PAZy|526 HaloPETase3	PAZy	KEPT	
+PAZy|527 HaloPETase4	PAZy	KEPT	
+PAZy|528 HaloPETase5	PAZy	KEPT	
+PAZy|529 HaloPETase6	PAZy	KEPT	
+PAZy|538 R75estA	PAZy	KEPT	
+PlasticDB|00056|Lipase|Burkholderia_cepacia|PBSA|NA	PlasticDB	KEPT	
+PlasticDB|00058|Cutinase|Thermobifida_cellulosilytica|PET|ADV92527.1	PlasticDB	dropped	0.93 identical to a kept sequence
+PlasticDB|00059|Cutinase|Thermobifida_cellulosilytica|PET|ADV92526.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00119|Lipase|Halopseudomonas_pelagia|PET|ANP21910.1	PlasticDB	KEPT	
+PlasticDB|00132|Cutinase|Thermobifida_cellulosilytica|PET_PLA|ADV92526.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00136|Hydrolase|Uncultured_bacterium|PET|7CUV_A	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00137|Polyester_hydrolase|Uncultured_bacterium|PET_PCL|7NEI_B	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00177|PHA_depolymerase|Pseudomonas_putida|PHA|AAN70570.1	PlasticDB	KEPT	
+PlasticDB|00187|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00188|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00189|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00193|PETase|Uncultured_bacterium|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00194|PETase|Ketobacter_sp.|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00195|PETase|Actinomycetota_bacterium|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00197|PETase|Ketobacter_sp.|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00198|PETase|Ketobacter_alkanivorans|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00199|PETase|Nocardioidaceae_bacterium|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00200|PETase|Caldimonas_taiwanensis|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00201|PETase|Marinactinospora_thermotolerans|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00202|PETase|Saccharopolyspora_flava|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00203|PETase|Thermobifida_fusca|PET|NA	PlasticDB	dropped	0.97 identical to a kept sequence
+PlasticDB|00204|PETase|Thermobifida_fusca|PET|NA	PlasticDB	dropped	0.99 identical to a kept sequence
+PlasticDB|00205|PETase|Thermobifida_alba|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00206|PETase|Thermobifida_cellulosilytica|PET|NA	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00208|PETase|Thermobifida_cellulosilytica|PET|NA	PlasticDB	dropped	0.94 identical to a kept sequence
+PlasticDB|00216|Cutinase|Marinactinospora_thermotolerans|PET|SJZ42839	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00231|PETase|Rhizobacter_sp._|PET|MBX3624429.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00233|PETase|Pseudomonas_fluvialis|PET|WP_184682765.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00234|PETase|Rhizobacter_sp.|PET|MBX3621832.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00235|PETase|Pseudomonas_subflava|PET|WP_252275389.1	PlasticDB	dropped	0.91 identical to a kept sequence
+PlasticDB|00236|PETase|Rhizobacter_sp.|PET|MBT9528079.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00237|PETase|Halopseudomonas_yangmingensis|PET|WP_093473685.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00238|PETase|Jonesia_denitrificans|PET|ACV09511	PlasticDB	dropped	0.98 identical to a kept sequence
+PlasticDB|00239|PETase|Actinokineospora_alba|PET|TDP67440.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00240|PETase|Actinokineospora_spheciospongiae|PET|WP_035284691	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00241|PETase|Herbihabitans_rhizosphaerae|PET|WP_130342639	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00242|PETase|Actinomadura_physcomitrii|PET|WP_151597653.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00243|PETase|Actinokineospora_xionganensis|PET|WP_187224800.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00245|PETase|Actinokineospora_spheciospongiae|PET|WP_233427406.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00247|PETase|Actinomadura_rayongensis|PET|WP_161104454.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00248|PETase|Actinomycetes_bacterium|PET|MGYP001489421514	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00249|PETase|Acidimicrobiales_bacterium|PET|MBN2622270.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00253|PETase|Thermoleophilaceae_bacterium|PET|MBJ7347705.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00255|PETase|Paractinoplanes_durhamensis|PET|WP_203733135.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00256|PETase|Hamadaea_sp.|PET|NUT34383.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00257|PETase|Promicromonospora_panici|PET|WP_129786244.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00258|PETase|Streptomyces_sp.|PET|WP_233872418.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00270|PETase|Acidimicrobiales_bacterium|PET|GIU85367.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00283|PETase|Dactylosporangium_vinaceum|PET|UAC02078.1	PlasticDB	dropped	0.91 identical to a kept sequence
+PlasticDB|00285|PETase|Dactylosporangium_sucinum|PET|WP_229836555.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00286|PETase|Dactylosporangium_siamense|PET|WP_239135698.1	PlasticDB	dropped	0.92 identical to a kept sequence
+PlasticDB|00294|PETase|Amycolatopsis_sp.|PET|WP_247056560.1	PlasticDB	dropped	0.92 identical to a kept sequence
+PlasticDB|00295|PETase|Catellatospora_bangladeshensis|PET|WP_239125827.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00296|PETase|Paractinoplanes_tereljensis|PET|WP_203812622.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00300|PETase|Amycolatopsis_tolypomycina|PET|WP_091317053.1	PlasticDB	dropped	0.94 identical to a kept sequence
+PlasticDB|00302|PETase|Catellatospora_methionotrophica|PET|WP_239086781.1	PlasticDB	dropped	0.91 identical to a kept sequence
+PlasticDB|00309|PETase|Microbispora_rosea|PET|GGO06455.1	PlasticDB	dropped	0.90 identical to a kept sequence
+PlasticDB|00310|PETase|Actinomadura_sp.|PET|WP_149259982.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00311|PETase|Micromonosporaceae_bacterium|PET|MBN1171866.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00312|PETase|Cellulomonas_iranensis|PET|MBO9569276.1	PlasticDB	dropped	0.99 identical to a kept sequence
+PlasticDB|00315|PETase|Actinomadura_atramentaria|PET|WP_019633337.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00317|PETase|Kutzneria_sp.|PET|WP_211769896.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00318|PETase|Saccharopolyspora_hirsuta|PET|WP_150070118.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00326|PETase|Hamadaea_flava|PET|WP_253762837.1	PlasticDB	dropped	1.00 identical to a kept sequence
+PlasticDB|00329|PETase|Sphaerisporangium_fuscum|PET|WP_250563816.1	PlasticDB	dropped	1.00 identical to a kept sequence
