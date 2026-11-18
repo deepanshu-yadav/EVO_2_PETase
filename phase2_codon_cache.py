@@ -2,7 +2,7 @@
 """Phase 2 -- codon-optimise the PETase pool for E. coli and write the notebook's cache.
 
 Reads  data/petase_pool.fasta           (from phase 1)
-Writes data/petase_codons.json          same schema as the notebook's bla_codons.json:
+Writes data/petase_codons.json          same schema as the notebook's petase_codons.json:
          {family, fasta, organism, model, n_forced_start_met, proteins[], dna[]}
        - proteins[i] is exactly the FASTA sequence i (the notebook asserts this)
        - dna[i] = codons for proteins[i] + TGA stop  (translation is verified)

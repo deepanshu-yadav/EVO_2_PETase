@@ -14,7 +14,7 @@ Logic
   3. Trim    = project the seed's boundaries onto the candidate -> removes signal peptide.
   4. Filter  = 240-305 aa, 20 standard amino acids only.
   5. Cluster = greedy, <= MAX_ID identity to anything already kept; PANDA goes first.
-  6. Prepend M (the notebook's bla cache does this too: n_forced_start_met).
+  6. Prepend M (the notebook's petase cache does this too: n_forced_start_met).
 
 Usage:  python3 phase1_build_pool.py --panda X.xlsx --pazy pazy.fasta --plasticdb db.fasta --out data
 Needs : biopython, openpyxl
