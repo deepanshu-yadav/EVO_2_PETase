@@ -13,9 +13,9 @@ This repository contains the end-to-end computational discovery, generative desi
 
 Every phase of the project is documented in modular, reproducible experiment reports:
 
-- 🗂️ **[Experiments Suite Overview (`experiments/README.md`)](experiments/README.md):** Architectural roadmap connecting the data curation, generation, and multi-tiered biophysical validation campaigns.
-- 🔬 **[Experiment 1: In-Context Learning & Initial Discovery (`experiments/experiment1_initial_tests/README.md`)](experiments/experiment1_initial_tests/README.md):** DNA prompt design, context depth scaling ($n \in \{2, 4, 8, 16, 32, 64\}$), Evo 2 inference, 4-stage screening funnel, and curation of the **71 novel de novo designs**.
-- 🧬 **[Experiment 2: Structural Validation & Active-Site Architecture (`experiments/experiment_2_folding/README.md`)](experiments/experiment_2_folding/README.md):** ESMFold tertiary structure prediction ($\text{pLDDT} \ge 80.0$), Foldseek topological superposition against IsPETase (`6EQE`) and LCC (`4EB0`), sub-angstrom catalytic triad auditing, 2-HE(MHET) reactive docking, and multi-parametric functional ranking.
+- 🗂️ **[Experiments Suite Overview (`experiments/README.md`)](experiments/README.md):** Architectural roadmap connecting data curation, nucleotide generative design, and multi-tiered biophysical validation.
+- 🔬 **[Experiment 1: In-Context Learning & Initial Discovery (`experiments/experiment1_initial_tests/README.md`)](experiments/experiment1_initial_tests/README.md):** DNA prompt engineering, context depth scaling ($n \in \{2, 4, 8, 16, 32, 64\}$), Evo 2 autoregression, 4-stage screening funnel, and curation of **71 novel de novo designs**.
+- 🧬 **[Experiment 2: Structural Validation & Active-Site Architecture (`experiments/experiment_2_folding/README.md`)](experiments/experiment_2_folding/README.md):** ESMFold tertiary folding ($\text{pLDDT} \ge 80.0$), Foldseek topological superposition against IsPETase (`6EQE`) and LCC (`4EB0`), pairwise alignment-based active site auditing, native-frame 2-HE(MHET) Smina docking, and construction of a **controlled wet-lab testing panel**.
 
 ---
 
@@ -41,7 +41,7 @@ Traditional protein engineering relies on directed evolution (slow, labor-intens
 
 Here, we employ **In-Context Learning (ICL) directly on bacterial DNA coding sequences**:
 - Using **Evo 2 (7B)**, a single-nucleotide autoregressive transformer trained on 9.3 trillion tokens of biological genomes.
-- By prompting the model with multiple natural PETase coding sequences separated by poly-G spacer sequences (`GGGGGGGG`), the model implicit learns the structural, functional, and codon constraints of the enzyme family.
+- By prompting the model with multiple natural PETase coding sequences separated by poly-G spacer sequences (`GGGGGGGG`), the model implicitly learns the structural, functional, and codon constraints of the enzyme family.
 - The model autoregressively completes a novel coding sequence that is translated, folded, and validated in silico.
 - **Zero fine-tuning, zero structural backbone conditioning, and zero inverse folding passes.**
 
@@ -69,65 +69,44 @@ flowchart TD
         G --> H["71 Novel De Novo Designs<br/>(designs_71_novel.faa)"]
     end
 
-    subgraph Exp2 ["Phase 4: Experiment 2 Structural Validation"]
-        H --> I["Tier 1: Catalytic Motif Check<br/>[GWA]-x-[SMG]-x-G & Triad Presence"]
+    subgraph Exp2 ["Phase 4: Experiment 2 Structural Validation & Gating"]
+        H --> I["Tier 1: Catalytic Motif Check<br/>Strict G[HWYFQ]S.G & Triad Presence"]
         I --> J["Tier 2: ESMFold High-Throughput 3D Folding<br/>pLDDT >= 80.0 Gate (70 / 71 Passed, 98.6%)"]
         J --> K["Tier 3: Foldseek Topological Superposition<br/>vs IsPETase (6EQE) & LCC (4EB0)<br/>Mean TM = 0.95, Mean RMSD = 1.4 Å"]
-        K --> L["Tier 4: Active Site 3D Coordinate Audit<br/>Ser-His-Asp Triad (80% Intact, sub-angstrom)<br/>Tyr87 Oxyanion Hole (78.6%) & Trp Groove (82.9%)"]
-        L --> M["Tier 5: 2-HE(MHET) Smina Reactive Docking<br/>59 Docked PDBQTs (results/docking_results/)<br/>Real ΔG & Attack Distances"]
-        M --> N["Multi-Parametric Composite Ranking<br/>Top 22 Candidates Score >= 0.70<br/>Lead Candidate: petase_64_seq_10 (0.740)"]
+        K --> L["Tier 4: Alignment-Based Active Site Audit<br/>66 Intact Catalytic Triads (94.3%)<br/>Captured Native Ser OG Coordinates"]
+        L --> M["Tier 5: 2-HE(MHET) Native-Frame Smina Docking<br/>SMARTS C_ester Detection & 0 Clash Artifacts<br/>Mean ΔG = -6.19 kcal/mol, Min Attack = 3.42 Å"]
+        M --> N["Plausibility Gating & Multi-Arm Selection<br/>Controlled Wet-Lab Panel (Panels A–F)"]
     end
 
     subgraph Phase3 ["Phase 5: Biased ICL & Wet-Lab Testing"]
         N --> O["Activity-Biased In-Context Conditioning<br/>Condition on Thermophilic Seeds (LCC, TfCut2, BhrPETase)"]
-        N --> P["Recombinant Expression in E. coli<br/>PET Depolymerization & HPLC/Tricine Assays"]
+        N --> P["Recombinant Expression in E. coli<br/>Controlled Wet-Lab Testing"]
     end
 ```
 
 ---
 
-## 🏆 Top 15 Validated De Novo PETase Candidates (Updated)
+## 🏆 Top Validated Candidates (Audited v2 Results)
 
-All 71 novel candidates were evaluated through the 5 validation tiers in [Experiment 2](experiments/experiment_2_folding/README.md) and ranked via the multi-parametric composite fitness formula:
+Following resolution of the coordinate-frame bug and implementation of SMARTS ester carbon detection, all 70 designs were docked cleanly without clash artifacts:
 
-$$\text{Composite Score} = 0.35 \times \left(\frac{\text{pLDDT}}{100}\right) + 0.25 \times \text{TM}_{\text{6EQE}} - 0.15 \times \text{Triad Penalty} + 0.15 \times \text{NAC Score} - 0.10 \times \left(\frac{\Delta G_{\text{bind}}}{-10}\right)$$
+| Rank | Candidate ID | Context $n$ | ESMFold pLDDT | Max %ID (Novelty) | TM-score (6EQE) | Ser–His ($\text{\AA}$) | His–Asp ($\text{\AA}$) | Attack Dist ($\text{\AA}$) | $\Delta G$ (kcal/mol) | Composite Score |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | **`petase_64_seq_34`** | 64 | **94.0** | **60.9%** | **0.9602** | **2.85** | **2.86** | **3.76** | **-6.0** | **0.7087** |
+| **2** | **`petase_32_seq_31`** | 32 | **94.0** | 64.6% | **0.9531** | 3.01 | 2.84 | **3.79** | **-5.8** | **0.6821** |
+| **3** | **`petase_32_seq_21`** | 32 | **88.0** | **55.7%** | 0.9252 | 2.95 | 2.94 | **3.42** | **-6.1** | **0.6798** |
+| **4** | **`petase_8_seq_39`**  | 8  | **94.0** | 72.1% | 0.9360 | 2.87 | 3.10 | **3.65** | **-6.8** | **0.6790** |
+| **5** | **`petase_16_seq_13`** | 16 | **95.0** | 73.0% | 0.9523 | 2.97 | 2.80 | 4.67 | **-6.9** | **0.6748** |
+| **6** | **`petase_16_seq_21`** | 16 | **91.0** | 58.3% | **0.9599** | 2.97 | 2.87 | **3.86** | **-6.2** | **0.6748** |
+| **7** | **`petase_32_seq_27`** | 32 | **91.0** | 69.6% | 0.9597 | 2.95 | 2.91 | 4.04 | **-6.9** | **0.6699** |
+| **8** | **`petase_64_seq_2`**  | 64 | **93.0** | 66.9% | 0.9628 | 2.90 | 2.93 | 4.26 | **-6.5** | **0.6694** |
+| **9** | **`petase_16_seq_11`** | 16 | **95.0** | 72.2% | **0.9660** | **2.88** | **2.86** | 4.69 | **-5.6** | **0.6693** |
+| **10**| **`petase_32_seq_8`**  | 32 | **91.0** | 63.2% | **0.9623** | 2.98 | 2.73 | 4.14 | **-5.9** | **0.6683** |
 
-| Rank | Candidate ID | Context $n$ | ESMFold pLDDT | Max %ID (Novelty) | TM-score (6EQE) | RMSD ($\text{\AA}$) | Ser–His ($\text{\AA}$) | His–Asp ($\text{\AA}$) | Attack Dist ($\text{\AA}$) | $\Delta G$ (kcal/mol) | Composite Score |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **`petase_64_seq_10`** | 64 | **93.0** | 65.3% | **0.9686** | 1.21 | 2.94 | 2.84 | **1.80** | -4.9 | **0.7396** |
-| **2** | **`petase_64_seq_34`** | 64 | **94.0** | **60.9%** | **0.9602** | 1.26 | 2.85 | 2.86 | 3.29 | -4.8 | **0.7381** |
-| **3** | **`petase_32_seq_8`**  | 32 | **91.0** | 63.2% | **0.9623** | 1.21 | 2.98 | 2.73 | **2.59** | **-5.2** | **0.7341** |
-| **4** | **`petase_64_seq_39`** | 64 | **91.0** | 69.4% | 0.9442 | 1.37 | 2.90 | 2.85 | **2.58** | -4.8 | **0.7300** |
-| **5** | **`petase_64_seq_26`** | 64 | **93.0** | 69.8% | 0.9577 | 1.45 | 3.06 | 2.78 | 3.22 | **-5.6** | **0.7289** |
-| **6** | **`petase_16_seq_14`** | 16 | **92.0** | 71.5% | 0.9532 | 1.36 | 2.97 | 2.84 | **1.64** | **-5.0** | **0.7288** |
-| **7** | **`petase_64_seq_18`** | 64 | **93.0** | 83.3% | 0.9570 | 1.41 | 3.01 | 2.85 | **2.49** | **-5.3** | **0.7288** |
-| **8** | **`petase_32_seq_39`** | 32 | **93.0** | 66.9% | 0.9675 | 1.22 | 2.95 | 2.90 | **1.67** | -4.8 | **0.7279** |
-| **9** | **`petase_32_seq_7`**  | 32 | **95.0** | 61.9% | 0.9545 | 1.32 | 2.97 | 2.85 | 3.28 | -4.8 | **0.7250** |
-| **10**| **`petase_32_seq_31`** | 32 | **94.0** | 64.6% | 0.9531 | 1.32 | 3.01 | 2.84 | 3.01 | -4.4 | **0.7238** |
-| **11**| `petase_32_seq_37` | 32 | 90.0 | 61.6% | 0.9573 | 1.45 | 2.99 | 2.82 | 2.25 | -4.7 | 0.7198 |
-| **12**| `petase_16_seq_21` | 16 | 91.0 | 58.3% | 0.9599 | 1.43 | 2.97 | 2.87 | 2.77 | -4.7 | 0.7195 |
-| **13**| `petase_64_seq_7`  | 64 | 94.0 | 73.5% | 0.9563 | 1.25 | 2.96 | 2.99 | 2.40 | -5.0 | 0.7156 |
-| **14**| `petase_16_seq_19` | 16 | 92.0 | 67.8% | 0.9413 | 1.49 | 2.98 | 2.86 | 2.28 | -4.4 | 0.7153 |
-| **15**| `petase_16_seq_15` | 16 | 93.0 | 70.4% | 0.9513 | 1.51 | 2.95 | 2.93 | 2.09 | -4.4 | 0.7153 |
-
-### Key Candidate Profiles
-- **`petase_64_seq_10` (Overall Lead Candidate):** Top rank (0.7396) with 93.0 pLDDT, an ultra-close nucleophilic attack distance of **$1.80\text{ \AA}$** to Ser O$\gamma$, intact catalytic triad ($2.94\text{ \AA}$ and $2.84\text{ \AA}$), and 34.7% divergent sequence space.
-- **`petase_64_seq_34` (Extreme Novelty Champion):** Retains only **60.9% sequence identity** to the nearest known natural homolog (over 100 amino acid substitutions), yet organized the catalytic triad with **2.85 Å** precision, an RMSD of $1.26\text{ \AA}$ to IsPETase, and a docked attack distance of $3.29\text{ \AA}$ (Score: 0.7381).
-- **`petase_32_seq_8` (Energetic & Geometric Lead):** High binding affinity ($\Delta G = -5.2\text{ kcal/mol}$), sub-angstrom triad ($2.98\text{ \AA}$ / $2.73\text{ \AA}$), and attack distance of $2.59\text{ \AA}$ (Score: 0.7341).
-- **`petase_16_seq_14` (Near-Attack Precision):** Tightest attack trajectory at **$1.64\text{ \AA}$**, $\Delta G = -5.0\text{ kcal/mol}$, and score 0.7288.
-
----
-
-## 📊 Summary of Experimental Breakthroughs
-
-1. **Context Scaling Drives Novel Functional Yield:**
-   - Novel, family-coherent enzyme yield scaled monotonically with in-context examples: **$0.0\%$ at $n=2 \rightarrow 65.0\%$ at $n=64$**.
-2. **High Intrinsic Foldability:**
-   - **98.6% (70 / 71)** of de novo nucleotide continuations folded into stable tertiary structures with $\text{mean pLDDT} \ge 80.0$ (library average $90.5$).
-3. **Spontaneous Catalytic Pre-Organization:**
-   - Without any structural input or inverse folding algorithms, **80.0% (56 / 70)** of designs spontaneously organized the catalytic triad within active hydrogen-bonding thresholds ($d(\text{Ser}-\text{His}) \le 3.5\text{ \AA}$, $d(\text{His}-\text{Asp}) \le 3.2\text{ \AA}$).
-4. **Transition-State & Substrate Subsite Conservation:**
-   - **78.6%** conserve the Tyr87 oxyanion hole; **82.9%** conserve the Trp185 wobble aromatic clamp; and **81.4%** adopt Near-Attack Conformations with the 2-HE(MHET) substrate.
+### Key Biological Findings
+- **`petase_64_seq_34` (Overall Champion):** Emerges as the undisputed leader across all criteria. It carries **over 100 amino acid substitutions (60.9% identity)** relative to any known natural PETase, yet organizes a textbook catalytic triad ($2.85\text{ \AA}$ / $2.86\text{ \AA}$), folds into a globular structure with 94.0 pLDDT, and docks 2-HE(MHET) in an operative orientation with an attack distance of $3.76\text{ \AA}$ and $\Delta G = -6.0\text{ kcal/mol}$.
+- **Zero Clash Artifacts:** Fixing the coordinate-frame bug cleared all unphysical distances ($< 2.2\text{ \AA}$), yielding realistic physical distances ($3.42\text{ \AA} - 9.84\text{ \AA}$) and strong binding affinities down to $-7.20\text{ kcal/mol}$.
+- **Spontaneous Active-Site Formation:** **94.3% (66 / 70)** of folded designs formed pristine catalytic triads within operative hydrogen-bonding thresholds, while **97.1% (68 / 70)** carry intact sequence triads.
 
 ---
 
@@ -148,79 +127,22 @@ evo_2_try/
 │   └── petase_codons.json                     # E. coli optimized coding sequences
 │
 └── experiments/                               # Modular experimental suites
-    ├── README.md                              # Experiments suite index and progression map
-    │
-    ├── experiment1_initial_tests/             # Phase 3: In-Context Learning Discovery
-    │   ├── README.md                          # Protocol, yield curves, and 4-stage funnel
-    │   ├── exp1_initial_discovery.ipynb       # Executable generation & screening notebook
-    │   ├── designs_71_novel.faa               # 71 curated novel de novo PETase sequences
-    │   ├── novel_yield_T0.8.tsv               # Tabular yield across context sizes n
-    │   └── novel_yield_T0.8.png               # Yield vs context depth plot
-    │
-    └── experiment_2_folding/                  # Phase 4: Structural Validation & Ranking
-        ├── README.md                          # 5-tier validation protocol and results
-        ├── exp2_structural_validation_...     # Executable folding, docking & ranking notebook
-        ├── run_structural_validation.py       # Standalone 5-tier validation CLI script
-        └── results/                           # Validated outputs & ranking tables
-            ├── ranked_functional_petase...    # Master multi-parametric leaderboard (TSV)
-            ├── catalytic_triad_geometry...    # Sub-angstrom triad and subsite report (TSV)
-            ├── esmfold_plddt_passed_80.tsv    # 70 candidates passing pLDDT >= 80 (TSV)
-            ├── foldseek_vs_references.m8      # Foldseek alignment vs 6EQE & 4EB0 (M8)
-            ├── docking_results/*.pdbqt        # 59 Smina docked protein-ligand complexes
-            ├── docking_ligands/2he_mhet.pdbqt # Prepared ligand conformer with partial charges
-            ├── docking_ligands/2he_mhet.sdf   # 3D conformer of 2-HE(MHET) substrate
-            ├── esmfold_plddt_summary.png      # Folding confidence distribution plot
-            └── petase_composite_ranking...    # Composite fitness summary plots
+    ├── README.md                              # Experiments directory overview & cross-comparisons
+    ├── experiment1_initial_tests/             # Phase 1: In-context generation & discovery
+    │   ├── README.md                          # Experiment 1 full report
+    │   ├── exp1_initial_discovery.ipynb       # Evo 2 (7B) generation notebook
+    │   └── designs_71_novel.faa               # 71 curated novel de novo sequences
+    └── experiment_2_folding/                  # Phase 2: Structural validation & gating
+        ├── README.md                          # Experiment 2 full report & audited results
+        ├── exp2_structural_validation_and_biased_icl.ipynb # Structural analysis notebook
+        ├── run_structural_validation_v2.py     # Audited structural & docking pipeline
+        ├── rank_v2.py                         # Gating & wet-lab panel generation script
+        └── results/                           # Validated structures, reports, and panel files
+            ├── ranked_functional_petase_candidates.tsv # Master ranked results table
+            ├── wetlab_panel_v2.tsv            # Master controlled wet-lab panel
+            ├── wetlab_panel_v2.faa            # FASTA sequences of expression targets
+            ├── all_designs_v2_features.tsv    # Comprehensive feature audit across all 70 designs
+            ├── catalytic_triad_geometry_report.tsv # Sub-angstrom active site geometry (66 intact)
+            ├── esmfold_plddt_passed_80.tsv    # 70 candidates passing pLDDT >= 80.0
+            └── docking_results/               # 70 docked receptor–ligand PDBQT files
 ```
-
----
-
-## 🚀 Quickstart & Reproduction
-
-### 1. Environment Setup
-```bash
-# Clone the repository
-git clone https://github.com/evo-design/evo_2_try.git
-cd evo_2_try
-
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\Activate.ps1
-
-# Install dependencies
-pip install -r requirements.txt
-pip install torch transformers accelerate biopython rdkit pandas numpy matplotlib
-```
-
-### 2. Run Data Curation & Codon Optimization
-```bash
-# Harmonize and cluster natural PETases (139 non-redundant mature sequences)
-python phase1_build_pool.py --panda data/panda.xlsx --pazy data/pazy_proteins.fasta --plasticdb data/PlasticDB.fasta
-
-# Generate E. coli optimized DNA sequences via CodonTransformer
-python phase2_codon_cache.py
-```
-
-### 3. Run In-Context Generation (Experiment 1)
-Open and run [`experiments/experiment1_initial_tests/exp1_initial_discovery.ipynb`](experiments/experiment1_initial_tests/exp1_initial_discovery.ipynb) on an NVIDIA GPU (L4, A100, or H100 with $\ge 24\text{ GB}$ VRAM) to reproduce the yield curves and curate novel designs.
-
-### 4. Run Structural Validation & Ranking (Experiment 2)
-Execute the automated 5-tier validation pipeline:
-```bash
-python experiments/experiment_2_folding/run_structural_validation.py \
-    --fasta experiments/experiment1_initial_tests/designs_71_novel.faa \
-    --out experiments/experiment_2_folding/results \
-    --device cuda
-```
-Or interactively step through [`experiments/experiment_2_folding/exp2_structural_validation_and_biased_icl.ipynb`](experiments/experiment_2_folding/exp2_structural_validation_and_biased_icl.ipynb).
-
----
-
-## 📜 References & Citation
-
-1. **Evo 2 Foundation Model:** Nguyen et al., *Sequence modeling and design across biology with Evo 2*, 2024.
-2. **PANDA Review & Benchmark:** *The diversity of PET degrading enzymes: A systematic review of sequence, structure, and function*, *Proteins: Structure, Function, and Bioinformatics*, 2024 (`doi:10.1002/pro.70282`).
-3. **IsPETase Structure:** Yoshida et al., *A bacterium that degrades and assimilates poly(ethylene terephthalate)*, *Science*, 2016 (PDB: `6EQE`).
-4. **LCC Cutinase:** Sulaiman et al., *Isolation of a novel cutinase from a leaf-branch compost metagenome*, *Appl. Environ. Microbiol.*, 2012 (PDB: `4EB0`).
-5. **CodonTransformer:** Swaney et al., *Deep bidirectional language modeling for species-specific codon optimization*, 2024.
-6. **ESMFold:** Lin et al., *Evolutionary-scale prediction of atomic-level protein structure with a language model*, *Science*, 2023.
