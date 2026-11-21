@@ -150,7 +150,9 @@ def run_esmfold_batch(records, out_pdb_dir, device="cuda"):
                     bfactors.append(float(line[60:66].strip()))
                 except:
                     pass
-        mean_plddt = sum(bfactors) / max(len(bfactors), 1)
+        raw_plddt = sum(bfactors) / max(len(bfactors), 1)
+        # Auto-scale: if B-factors are on 0-1 scale, scale to 0-100
+        mean_plddt = raw_plddt * 100.0 if raw_plddt <= 1.5 else raw_plddt
 
         results.append({
             "id": qid,
@@ -391,7 +393,10 @@ def main():
                            "active_site_complete": False, "ser_og_coord": None})
         triad_rows.append(t_data)
 
-    df_triads = pd.DataFrame(triad_rows)
+    TRIAD_COLS = ["id", "length", "mean_plddt", "pdb_path", "ser_id", "his_id", "asp_id",
+                  "d_ser_his", "d_his_asp", "triad_intact", "has_oxyanion_tyr", "has_groove_w159",
+                  "has_groove_w185", "active_site_complete", "ser_og_coord"]
+    df_triads = pd.DataFrame(triad_rows) if triad_rows else pd.DataFrame(columns=TRIAD_COLS)
 
     # 5. Tier 4 Reactive Docking (2-HE(MHET) & NAC)
     print("\nTier 4: Evaluating 2-HE(MHET) reactive docking & near-attack conformation...")
