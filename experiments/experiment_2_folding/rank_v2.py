@@ -137,10 +137,10 @@ for i in range(len(ids)):
 rng = np.random.default_rng(7)
 taken = []
 
-# Panel A: structure-confidence arm (top-8 by no-dock composite among structurally intact)
-A = P[P.struct_triad].sort_values("score_v1_nodock", ascending=False).head(8).id.tolist()
+# Panel A: functional top arm (top-8 by audited composite score among structurally intact)
+A = P[P.struct_triad].sort_values("score_v1_5_smina", ascending=False).head(8).id.tolist()
 taken += A
-print("Panel A overlap with v1.5 Smina top-10:", len(set(A) & set(top10_smina)), "of 8 ->", sorted(set(A) & set(top10_smina)))
+print("Panel A (audited composite score top 8):", A)
 
 # Panel B: diversity arm, farthest-point sampling on identity, decorrelated from pLDDT
 rest = [i for i in ids if i not in taken]
