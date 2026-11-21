@@ -4,6 +4,13 @@ This document outlines the end-to-end experimental protocol for **Experiment 1 (
 
 ---
 
+## Navigation & Project Hierarchy
+- **[Parent Suite: Experiments Overview (`../README.md`)](../README.md)**
+- **[Next Phase: Experiment 2 Structural Validation (`../experiment_2_folding/README.md`)](../experiment_2_folding/README.md)**
+- **[Master Repository: Root README (`../../README.md`)](../../README.md)**
+
+---
+
 ## 1. Experimental Overview & Objectives
 
 In-context learning (ICL) with nucleotide autoregressive foundation models allows de novo protein design without fine-tuning, structural backbones, or explicit optimization passes. By presenting the model with multiple natural coding sequences from a target family separated by synthetic spacers, the continuation completes a novel coding sequence.
@@ -148,7 +155,9 @@ All artifacts from this experiment are organized as follows:
 
 ## 7. Next Phase: Downstream Validation
 
-The 71 candidate enzymes curated here represent sequence-coherent candidates. Downstream biophysical verification is conducted in **Experiment 2**:
+The 71 candidate enzymes curated here represent sequence-coherent candidates. Downstream biophysical verification is conducted in **[Experiment 2: Structural Validation & Active-Site Architecture](../experiment_2_folding/README.md)** (detailed in the [Experiments Suite Overview](../README.md)):
 1. **Tertiary Foldability:** High-throughput folding using **ESMFold** with confidence filtering ($\text{mean pLDDT} \ge 80.0$).
 2. **Fold Topology:** Structural alignment against wild-type **IsPETase** (`6EQE`) and **LCC** (`4EB0`) via **Foldseek**.
 3. **Catalytic Geometry:** 3D sub-angstrom distance validation of the catalytic triad (**Ser160–His237–Asp206**).
+4. **Reactive Substrate Docking:** Near-Attack Conformation (NAC) scoring against mono-(2-hydroxyethyl) terephthalate (**2-HE(MHET)**).
+5. **Multi-Parametric Composite Ranking:** Identification of the top functional candidates ready for gene synthesis and wet-lab expression.
