@@ -68,12 +68,13 @@ Following structural superimposition onto `6EQE`:
   - Adjacent **Trp159** equivalent: Present in **8 / 70 (11.4%)**.
 - **Complete Active Site:** Triad + Oxyanion + Groove conserved in **52 / 70 (74.3%)** designs.
 
-### Tier 5: 2-HE(MHET) Reactive Docking & Near-Attack Conformation (NAC)
-- **Substrate:** Mono-(2-hydroxyethyl) terephthalate (MHET / 2-HE(MHET), SMILES: `O=C(O)c1ccc(C(=O)OCCO)cc1`).
-- **Reactive Criteria:**
-  - Nucleophilic attack distance ($d(\text{Ser}_{\text{OG}} \rightarrow C=\text{O}) \le 3.5\text{ \AA}$).
-  - Favorable binding affinity ($\Delta G_{\text{bind}} \le -5.0\text{ kcal/mol}$).
-- **Result:** **57 candidates** achieved Near-Attack Conformation ($\text{NAC score} = 1.0$, attack distances $2.8 - 3.2\text{ \AA}$, $\Delta G = -6.33 \text{ to } -6.5\text{ kcal/mol}$).
+### Tier 5: 2-HE(MHET) Smina Reactive Docking & Near-Attack Conformation (NAC)
+- **Substrate:** Mono-(2-hydroxyethyl) terephthalate (MHET / 2-HE(MHET), SMILES: `O=C(O)c1ccc(C(=O)OCCO)cc1`, PDBQT Conformer).
+- **Docking Protocol:** Executed with static Smina in an $18 \times 18 \times 18\text{ \AA}$ box centered on Ser O$\gamma$.
+- **Result:** **59 complex structures** were successfully docked and saved to `results/docking_results/*.pdbqt`.
+  - Calculated binding affinities ranged from **$-5.80\text{ kcal/mol}$ to $-4.10\text{ kcal/mol}$** (mean: **$-4.78\text{ kcal/mol}$**).
+  - Nucleophilic attack distances ranged from **$0.71\text{ \AA}$ to $8.10\text{ \AA}$** (mean: **$3.67\text{ \AA}$**).
+  - **10 designs** achieved strict catalytic reactive poses ($\Delta G \le -5.0\text{ kcal/mol}$ and $\text{attack\_dist} \le 3.5\text{ \AA}$).
 
 ---
 
@@ -86,24 +87,29 @@ $$\text{Composite Score} = 0.35 \times \left(\frac{\text{pLDDT}}{100}\right) + 0
 where:
 $$\text{Triad Penalty} = \max(0, d(\text{Ser}-\text{His}) - 2.8) + \max(0, d(\text{His}-\text{Asp}) - 2.8)$$
 
-### Top 10 Functional De Novo Candidates
+### Top 15 Functional De Novo Candidates (Updated)
 
-| Rank | Candidate ID | Context $n$ | pLDDT | Max %ID | TM (6EQE) | RMSD ($\text{\AA}$) | Ser–His ($\text{\AA}$) | His–Asp ($\text{\AA}$) | Attack ($\text{\AA}$) | $\Delta G$ (kcal/mol) | Score |
+| Rank | Candidate ID | Context $n$ | pLDDT | Max %ID (Novelty) | TM (6EQE) | RMSD ($\text{\AA}$) | Ser–His ($\text{\AA}$) | His–Asp ($\text{\AA}$) | Attack ($\text{\AA}$) | $\Delta G$ (kcal/mol) | Score |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | `petase_16_seq_11` | 16 | **95.0** | 72.2% | 0.966 | 1.38 | 2.88 | 2.86 | 2.8 | -6.5 | **0.7680** |
-| **2** | `petase_64_seq_34` | 64 | **94.0** | **60.9%** | 0.960 | 1.26 | 2.85 | 2.86 | 2.9 | -6.5 | **0.7676** |
-| **3** | `petase_8_seq_17`  | 8  | **94.0** | 68.2% | **0.978** | **1.09** | 2.89 | 2.88 | 2.8 | -6.5 | **0.7630** |
-| **4** | `petase_16_seq_13` | 16 | **95.0** | 73.0% | 0.952 | 1.48 | 2.97 | 2.80 | 2.8 | -6.5 | **0.7601** |
-| **5** | `petase_64_seq_10` | 64 | **93.0** | 65.3% | 0.969 | 1.21 | 2.94 | 2.84 | 2.8 | -6.5 | **0.7556** |
-| **6** | `petase_32_seq_7`  | 32 | **95.0** | 61.9% | 0.955 | 1.32 | 2.97 | 2.85 | 2.8 | -6.5 | **0.7531** |
-| **7** | `petase_32_seq_8`  | 32 | **91.0** | 63.2% | 0.962 | 1.21 | 2.98 | 2.73 | 2.8 | -6.5 | **0.7471** |
-| **8** | `petase_64_seq_39` | 64 | **91.0** | 69.4% | 0.944 | 1.37 | 2.90 | 2.85 | 2.8 | -6.5 | **0.7470** |
-| **9** | `petase_64_seq_2`  | 64 | **93.0** | 66.9% | 0.963 | 1.17 | 2.90 | 2.93 | 2.8 | -6.5 | **0.7467** |
-| **10**| `petase_32_seq_39` | 32 | **93.0** | 66.9% | 0.968 | 1.22 | 2.95 | 2.90 | 2.8 | -6.5 | **0.7449** |
+| **1** | **`petase_64_seq_10`** | 64 | **93.0** | 65.3% | **0.9686** | 1.21 | 2.94 | 2.84 | **1.80** | -4.9 | **0.7396** |
+| **2** | **`petase_64_seq_34`** | 64 | **94.0** | **60.9%** | **0.9602** | 1.26 | 2.85 | 2.86 | 3.29 | -4.8 | **0.7381** |
+| **3** | **`petase_32_seq_8`**  | 32 | **91.0** | 63.2% | **0.9623** | 1.21 | 2.98 | 2.73 | **2.59** | **-5.2** | **0.7341** |
+| **4** | **`petase_64_seq_39`** | 64 | **91.0** | 69.4% | 0.9442 | 1.37 | 2.90 | 2.85 | **2.58** | -4.8 | **0.7300** |
+| **5** | **`petase_64_seq_26`** | 64 | **93.0** | 69.8% | 0.9577 | 1.45 | 3.06 | 2.78 | 3.22 | **-5.6** | **0.7289** |
+| **6** | **`petase_16_seq_14`** | 16 | **92.0** | 71.5% | 0.9532 | 1.36 | 2.97 | 2.84 | **1.64** | **-5.0** | **0.7288** |
+| **7** | **`petase_64_seq_18`** | 64 | **93.0** | 83.3% | 0.9570 | 1.41 | 3.01 | 2.85 | **2.49** | **-5.3** | **0.7288** |
+| **8** | **`petase_32_seq_39`** | 32 | **93.0** | 66.9% | 0.9675 | 1.22 | 2.95 | 2.90 | **1.67** | -4.8 | **0.7279** |
+| **9** | **`petase_32_seq_7`**  | 32 | **95.0** | 61.9% | 0.9545 | 1.32 | 2.97 | 2.85 | 3.28 | -4.8 | **0.7250** |
+| **10**| **`petase_32_seq_31`** | 32 | **94.0** | 64.6% | 0.9531 | 1.32 | 3.01 | 2.84 | 3.01 | -4.4 | **0.7238** |
+| **11**| `petase_32_seq_37` | 32 | 90.0 | 61.6% | 0.9573 | 1.45 | 2.99 | 2.82 | 2.25 | -4.7 | 0.7198 |
+| **12**| `petase_16_seq_21` | 16 | 91.0 | 58.3% | 0.9599 | 1.43 | 2.97 | 2.87 | 2.77 | -4.7 | 0.7195 |
+| **13**| `petase_64_seq_7`  | 64 | 94.0 | 73.5% | 0.9563 | 1.25 | 2.96 | 2.99 | 2.40 | -5.0 | 0.7156 |
+| **14**| `petase_16_seq_19` | 16 | 92.0 | 67.8% | 0.9413 | 1.49 | 2.98 | 2.86 | 2.28 | -4.4 | 0.7153 |
+| **15**| `petase_16_seq_15` | 16 | 93.0 | 70.4% | 0.9513 | 1.51 | 2.95 | 2.93 | 2.09 | -4.4 | 0.7153 |
 
-- **48 candidates** surpassed the composite functional fitness threshold $\ge 0.70$.
-- **`petase_16_seq_11`** represents the overall highest-confidence candidate.
-- **`petase_64_seq_34`** represents the standout high-novelty candidate, displaying $> 39\%$ mutation distance (60.9% identity) while maintaining near-perfect active-site geometry.
+- **22 candidates** surpassed the high-performance threshold $\text{Score} \ge 0.70$.
+- **`petase_64_seq_10`** emerges as the overall leader (Score: 0.7396, TM: 0.9686, attack distance: 1.80 Å).
+- **`petase_64_seq_34`** continues as the high-novelty champion, retaining #2 with **only 60.9% identity** (over 100 substitutions) while docking near the active triad (3.29 Å).
 
 ---
 
@@ -143,6 +149,8 @@ To drive generative sampling towards elevated thermal stability and catalytic ra
 | **[`results/esmfold_plddt_passed_80.tsv`](results/esmfold_plddt_passed_80.tsv)** | The 70 candidates passing the $\text{mean pLDDT} \ge 80.0$ threshold. |
 | **[`results/designs_passed_plddt80.faa`](results/designs_passed_plddt80.faa)** | Protein sequences of the 70 structurally validated candidates. |
 | **[`results/foldseek_vs_references.m8`](results/foldseek_vs_references.m8)** | Foldseek structural alignment table against IsPETase (`6EQE`) and LCC (`4EB0`). |
+| **[`results/docking_results/*.pdbqt`](results/docking_results/)** | 59 Smina docked protein-ligand complex files with atomistic 3D coordinates. |
+| **[`results/docking_ligands/2he_mhet.pdbqt`](results/docking_ligands/2he_mhet.pdbqt)** | Prepared PDBQT ligand file with Gasteiger partial charges and rotatable bonds. |
 | **[`results/docking_ligands/2he_mhet.sdf`](results/docking_ligands/2he_mhet.sdf)** | 3D conformer of the mono-(2-hydroxyethyl) terephthalate (2-HE(MHET)) docking substrate. |
 | **[`results/esmfold_plddt_summary.png`](results/esmfold_plddt_summary.png)** | Distribution plot of folding confidence across context sizes ($n$). |
 | **[`results/petase_composite_ranking_summary.png`](results/petase_composite_ranking_summary.png)** | Scatter and histogram plots of composite fitness scores vs TM-scores and pLDDT. |

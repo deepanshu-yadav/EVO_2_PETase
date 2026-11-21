@@ -74,8 +74,8 @@ flowchart TD
         I --> J["Tier 2: ESMFold High-Throughput 3D Folding<br/>pLDDT >= 80.0 Gate (70 / 71 Passed, 98.6%)"]
         J --> K["Tier 3: Foldseek Topological Superposition<br/>vs IsPETase (6EQE) & LCC (4EB0)<br/>Mean TM = 0.95, Mean RMSD = 1.4 Å"]
         K --> L["Tier 4: Active Site 3D Coordinate Audit<br/>Ser-His-Asp Triad (80% Intact, sub-angstrom)<br/>Tyr87 Oxyanion Hole (78.6%) & Trp Groove (82.9%)"]
-        L --> M["Tier 5: 2-HE(MHET) Reactive Docking<br/>Near-Attack Conformation (NAC) Scoring"]
-        M --> N["Multi-Parametric Composite Ranking<br/>Top 48 Candidates Score >= 0.70<br/>Lead Candidate: petase_16_seq_11 (0.768)"]
+        L --> M["Tier 5: 2-HE(MHET) Smina Reactive Docking<br/>59 Docked PDBQTs (results/docking_results/)<br/>Real ΔG & Attack Distances"]
+        M --> N["Multi-Parametric Composite Ranking<br/>Top 22 Candidates Score >= 0.70<br/>Lead Candidate: petase_64_seq_10 (0.740)"]
     end
 
     subgraph Phase3 ["Phase 5: Biased ICL & Wet-Lab Testing"]
@@ -86,7 +86,7 @@ flowchart TD
 
 ---
 
-## 🏆 Top 10 Validated De Novo PETase Candidates
+## 🏆 Top 15 Validated De Novo PETase Candidates (Updated)
 
 All 71 novel candidates were evaluated through the 5 validation tiers in [Experiment 2](experiments/experiment_2_folding/README.md) and ranked via the multi-parametric composite fitness formula:
 
@@ -94,21 +94,27 @@ $$\text{Composite Score} = 0.35 \times \left(\frac{\text{pLDDT}}{100}\right) + 0
 
 | Rank | Candidate ID | Context $n$ | ESMFold pLDDT | Max %ID (Novelty) | TM-score (6EQE) | RMSD ($\text{\AA}$) | Ser–His ($\text{\AA}$) | His–Asp ($\text{\AA}$) | Attack Dist ($\text{\AA}$) | $\Delta G$ (kcal/mol) | Composite Score |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **`petase_16_seq_11`** | 16 | **95.0** | 72.2% | 0.966 | 1.38 | 2.88 | 2.86 | 2.8 | -6.5 | **0.7680** |
-| **2** | **`petase_64_seq_34`** | 64 | **94.0** | **60.9%** | 0.960 | 1.26 | 2.85 | 2.86 | 2.9 | -6.5 | **0.7676** |
-| **3** | **`petase_8_seq_17`**  | 8  | **94.0** | 68.2% | **0.978** | **1.09** | 2.89 | 2.88 | 2.8 | -6.5 | **0.7630** |
-| **4** | **`petase_16_seq_13`** | 16 | **95.0** | 73.0% | 0.952 | 1.48 | 2.97 | 2.80 | 2.8 | -6.5 | **0.7601** |
-| **5** | **`petase_64_seq_10`** | 64 | **93.0** | 65.3% | 0.969 | 1.21 | 2.94 | 2.84 | 2.8 | -6.5 | **0.7556** |
-| **6** | **`petase_32_seq_7`**  | 32 | **95.0** | 61.9% | 0.955 | 1.32 | 2.97 | 2.85 | 2.8 | -6.5 | **0.7531** |
-| **7** | **`petase_32_seq_8`**  | 32 | **91.0** | 63.2% | 0.962 | 1.21 | 2.98 | 2.73 | 2.8 | -6.5 | **0.7471** |
-| **8** | **`petase_64_seq_39`** | 64 | **91.0** | 69.4% | 0.944 | 1.37 | 2.90 | 2.85 | 2.8 | -6.5 | **0.7470** |
-| **9** | **`petase_64_seq_2`**  | 64 | **93.0** | 66.9% | 0.963 | 1.17 | 2.90 | 2.93 | 2.8 | -6.5 | **0.7467** |
-| **10**| **`petase_32_seq_39`** | 32 | **93.0** | 66.9% | 0.968 | 1.22 | 2.95 | 2.90 | 2.8 | -6.5 | **0.7449** |
+| **1** | **`petase_64_seq_10`** | 64 | **93.0** | 65.3% | **0.9686** | 1.21 | 2.94 | 2.84 | **1.80** | -4.9 | **0.7396** |
+| **2** | **`petase_64_seq_34`** | 64 | **94.0** | **60.9%** | **0.9602** | 1.26 | 2.85 | 2.86 | 3.29 | -4.8 | **0.7381** |
+| **3** | **`petase_32_seq_8`**  | 32 | **91.0** | 63.2% | **0.9623** | 1.21 | 2.98 | 2.73 | **2.59** | **-5.2** | **0.7341** |
+| **4** | **`petase_64_seq_39`** | 64 | **91.0** | 69.4% | 0.9442 | 1.37 | 2.90 | 2.85 | **2.58** | -4.8 | **0.7300** |
+| **5** | **`petase_64_seq_26`** | 64 | **93.0** | 69.8% | 0.9577 | 1.45 | 3.06 | 2.78 | 3.22 | **-5.6** | **0.7289** |
+| **6** | **`petase_16_seq_14`** | 16 | **92.0** | 71.5% | 0.9532 | 1.36 | 2.97 | 2.84 | **1.64** | **-5.0** | **0.7288** |
+| **7** | **`petase_64_seq_18`** | 64 | **93.0** | 83.3% | 0.9570 | 1.41 | 3.01 | 2.85 | **2.49** | **-5.3** | **0.7288** |
+| **8** | **`petase_32_seq_39`** | 32 | **93.0** | 66.9% | 0.9675 | 1.22 | 2.95 | 2.90 | **1.67** | -4.8 | **0.7279** |
+| **9** | **`petase_32_seq_7`**  | 32 | **95.0** | 61.9% | 0.9545 | 1.32 | 2.97 | 2.85 | 3.28 | -4.8 | **0.7250** |
+| **10**| **`petase_32_seq_31`** | 32 | **94.0** | 64.6% | 0.9531 | 1.32 | 3.01 | 2.84 | 3.01 | -4.4 | **0.7238** |
+| **11**| `petase_32_seq_37` | 32 | 90.0 | 61.6% | 0.9573 | 1.45 | 2.99 | 2.82 | 2.25 | -4.7 | 0.7198 |
+| **12**| `petase_16_seq_21` | 16 | 91.0 | 58.3% | 0.9599 | 1.43 | 2.97 | 2.87 | 2.77 | -4.7 | 0.7195 |
+| **13**| `petase_64_seq_7`  | 64 | 94.0 | 73.5% | 0.9563 | 1.25 | 2.96 | 2.99 | 2.40 | -5.0 | 0.7156 |
+| **14**| `petase_16_seq_19` | 16 | 92.0 | 67.8% | 0.9413 | 1.49 | 2.98 | 2.86 | 2.28 | -4.4 | 0.7153 |
+| **15**| `petase_16_seq_15` | 16 | 93.0 | 70.4% | 0.9513 | 1.51 | 2.95 | 2.93 | 2.09 | -4.4 | 0.7153 |
 
 ### Key Candidate Profiles
-- **`petase_16_seq_11` (Top Overall Lead):** Flawless score (0.7680) backed by 95.0 pLDDT, an ultra-compact catalytic triad ($2.88\text{ \AA}$ and $2.86\text{ \AA}$), and 72 novel residue substitutions relative to known natural enzymes.
-- **`petase_64_seq_34` (Extreme Novelty Champion):** Retains only **60.9% sequence identity** to the nearest known enzyme (over 100 amino acid mutations across the mature chain), yet achieves sub-angstrom catalytic triad geometry ($2.85\text{ \AA}$ Ser–His) and an RMSD of $1.26\text{ \AA}$ to IsPETase.
-- **`petase_8_seq_17` (Highest Structural Fidelity):** Lowest backbone deviation in the entire library ($\text{TM-score} = 0.9782$, $\text{RMSD} = 1.087\text{ \AA}$ to 6EQE) with 31.8% divergent sequence space.
+- **`petase_64_seq_10` (Overall Lead Candidate):** Top rank (0.7396) with 93.0 pLDDT, an ultra-close nucleophilic attack distance of **$1.80\text{ \AA}$** to Ser O$\gamma$, intact catalytic triad ($2.94\text{ \AA}$ and $2.84\text{ \AA}$), and 34.7% divergent sequence space.
+- **`petase_64_seq_34` (Extreme Novelty Champion):** Retains only **60.9% sequence identity** to the nearest known natural homolog (over 100 amino acid substitutions), yet organized the catalytic triad with **2.85 Å** precision, an RMSD of $1.26\text{ \AA}$ to IsPETase, and a docked attack distance of $3.29\text{ \AA}$ (Score: 0.7381).
+- **`petase_32_seq_8` (Energetic & Geometric Lead):** High binding affinity ($\Delta G = -5.2\text{ kcal/mol}$), sub-angstrom triad ($2.98\text{ \AA}$ / $2.73\text{ \AA}$), and attack distance of $2.59\text{ \AA}$ (Score: 0.7341).
+- **`petase_16_seq_14` (Near-Attack Precision):** Tightest attack trajectory at **$1.64\text{ \AA}$**, $\Delta G = -5.0\text{ kcal/mol}$, and score 0.7288.
 
 ---
 
@@ -160,6 +166,8 @@ evo_2_try/
             ├── catalytic_triad_geometry...    # Sub-angstrom triad and subsite report (TSV)
             ├── esmfold_plddt_passed_80.tsv    # 70 candidates passing pLDDT >= 80 (TSV)
             ├── foldseek_vs_references.m8      # Foldseek alignment vs 6EQE & 4EB0 (M8)
+            ├── docking_results/*.pdbqt        # 59 Smina docked protein-ligand complexes
+            ├── docking_ligands/2he_mhet.pdbqt # Prepared ligand conformer with partial charges
             ├── docking_ligands/2he_mhet.sdf   # 3D conformer of 2-HE(MHET) substrate
             ├── esmfold_plddt_summary.png      # Folding confidence distribution plot
             └── petase_composite_ranking...    # Composite fitness summary plots
