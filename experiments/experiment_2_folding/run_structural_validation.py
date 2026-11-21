@@ -287,7 +287,9 @@ def evaluate_reactive_docking(pdb_path, ser_og_coord, ligand_pdbqt_path=None):
     attack_dist = 3.3
 
     if smina_exe and ligand_pdbqt_path and pathlib.Path(ligand_pdbqt_path).exists():
-        out_dock = pathlib.Path(pdb_path).parent / f"{pathlib.Path(pdb_path).stem}_docked.pdbqt"
+        dock_dir = pathlib.Path(pdb_path).parent.parent / "docking_results"
+        dock_dir.mkdir(parents=True, exist_ok=True)
+        out_dock = dock_dir / f"{pathlib.Path(pdb_path).stem}_docked.pdbqt"
         cmd = [
             str(smina_exe), "-r", str(pdb_path), "-l", str(ligand_pdbqt_path),
             "--center_x", f"{ser_og_coord[0]:.2f}",
@@ -304,6 +306,26 @@ def evaluate_reactive_docking(pdb_path, ser_og_coord, ligand_pdbqt_path=None):
                 if len(parts) >= 4 and parts[0] == "1":
                     affinity = float(parts[1])
                     break
+            
+            # Calculate true attack distance from docked heavy atoms if file was written
+            if out_dock.exists() and out_dock.stat().st_size > 0:
+                ser_og = np.array(ser_og_coord)
+                min_d = 99.0
+                for line in out_dock.read_text().splitlines():
+                    if line.startswith("ATOM") or line.startswith("HETATM"):
+                        try:
+                            lx = float(line[30:38].strip())
+                            ly = float(line[38:46].strip())
+                            lz = float(line[46:54].strip())
+                            d = np.linalg.norm(np.array([lx, ly, lz]) - ser_og)
+                            if d < min_d:
+                                min_d = d
+                        except:
+                            pass
+                    if line.startswith("ENDMDL"):
+                        break
+                if min_d < 90.0:
+                    attack_dist = round(min_d, 2)
         except Exception:
             pass
     else:
@@ -400,9 +422,22 @@ def main():
 
     # 5. Tier 4 Reactive Docking (2-HE(MHET) & NAC)
     print("\nTier 4: Evaluating 2-HE(MHET) reactive docking & near-attack conformation...")
+    smina_exe = shutil.which("smina") or ("/usr/local/bin/smina" if pathlib.Path("/usr/local/bin/smina").exists() else None)
+    ligand_pdbqt = out_dir / "docking_ligands" / "2he_mhet.pdbqt"
+    if not ligand_pdbqt.exists() and (pathlib.Path("experiments/experiment_2_folding/results/docking_ligands/2he_mhet.pdbqt")).exists():
+        ligand_pdbqt = pathlib.Path("experiments/experiment_2_folding/results/docking_ligands/2he_mhet.pdbqt")
+
+    dock_dir = out_dir / "docking_results"
+    dock_dir.mkdir(parents=True, exist_ok=True)
+
+    if smina_exe and ligand_pdbqt.exists():
+        print(f"  ✓ Smina docking engine active ({smina_exe}). Results will be saved to: {dock_dir}")
+    else:
+        print("  ℹ Smina binary or ligand PDBQT not detected. Running high-throughput geometric cleft screening fallback.")
+
     dock_rows = []
     for _, row in df_triads.iterrows():
-        dock = evaluate_reactive_docking(row["pdb_path"], row["ser_og_coord"])
+        dock = evaluate_reactive_docking(row["pdb_path"], row["ser_og_coord"], ligand_pdbqt if ligand_pdbqt.exists() else None)
         dock["id"] = row["id"]
         dock_rows.append(dock)
 

@@ -3,3 +3,5 @@ evo2_flash/*
 proto-tools/*
 venv/*
 experiments/__pycache__/*
+experiments/experiment_2_folding/results/esmfold_pdbs/*
+experiments/experiment_2_folding/results/docking_results/*
