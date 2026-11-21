@@ -2,3 +2,4 @@ data/*
 evo2_flash/*
 proto-tools/*
 venv/*
+experiments/__pycache__/*
