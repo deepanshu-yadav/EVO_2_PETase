@@ -4,16 +4,18 @@
 Executes:
 1. Min-p (0.05) & Temperature sweeps (T in {0.6, 0.8, 1.0, 1.1}) with top_p=0.92.
 2. Context depth scaling across n in {8, 16, 32, 64}.
-3. CDS extraction, frame validation, and mature protein translation.
-4. Homology search vs pool to detect memorization cliff (mean max PID > 80% & novel yield drop > 25%).
-5. Contrastive log-likelihood reranking:
+3. Live verbose logging and per-batch JSON checkpointing with instant resume.
+4. CDS extraction, frame validation, and mature protein translation.
+5. Homology search vs pool to detect memorization cliff (mean max PID > 80% & novel yield drop > 25%).
+6. Contrastive log-likelihood reranking:
      Delta-LL = log P(x | Prompt_thermo) - log P(x | Prompt_general)
-6. Exports generated_continuations_grid.tsv and screened candidate FASTA.
+7. Exports generated_continuations_grid.tsv and screened candidate FASTA.
 
 Unified sequence input & prompt formatting aligned with exp1_initial_discovery.ipynb.
 """
 import argparse
 import csv
+import datetime
 import json
 import os
 import pathlib
@@ -89,6 +91,17 @@ def run_sweeps(
 ) -> Dict[str, Any]:
     """Execute the Module 2 generation and analysis grid."""
     out_dir.mkdir(parents=True, exist_ok=True)
+    ckpt_dir = out_dir / "checkpoints"
+    ckpt_dir.mkdir(parents=True, exist_ok=True)
+    log_file = out_dir / "generation.log"
+
+    def log_msg(msg: str):
+        ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        line = f"[{ts}] {msg}"
+        print(line, flush=True)
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
+
     print("=" * 78)
     print("EXPERIMENT 3 — MODULE 2: DECODING SWEEPS & CONTEXT SCALING")
     print("=" * 78)
@@ -158,21 +171,25 @@ def run_sweeps(
             print(f"  Failed to load GPU engine ({e}). Running in --dry_run simulation mode.")
             dry_run = True
 
-    # 4. Execute generation grid across depths and temperatures
-    print(f"\n[3/5] Executing decoding sweep:")
+    # 4. Execute generation grid across depths and temperatures with checkpoints
+    total_batches = len(cells) * len(temperatures)
+    print(f"\n[3/5] Executing decoding sweep ({total_batches} batches total):")
     print(f"  Temperatures: {temperatures} | min_p: {min_p} | top_p: {top_p} | top_k: {top_k}")
     print(f"  Samples per prompt: {samples_per_prompt} | Execution mode: {'SIMULATED (dry-run)' if dry_run else 'LIVE GPU'}")
 
     all_generated_rows: List[Dict[str, Any]] = []
     results_by_depth: Dict[int, List[Dict[str, Any]]] = {}
+    timing_records: List[Dict[str, Any]] = []
 
     seq_counter = 0
+    batch_counter = 0
     t0 = time.time()
 
     for c_idx, cell in enumerate(cells, 1):
         n_ex = cell["n_examples"]
         gen_len = cell["gen_length"]
         draws = cell["draws"]
+        cell_base = cell.get("cell_name", f"n{n_ex:03d}")
 
         # Flatten prompts
         prompt_list = [d["prompt"] for d in draws for _ in range(samples_per_prompt)]
@@ -180,10 +197,35 @@ def run_sweeps(
         uniq_tok = sum(len(d["prompt"]) for d in draws)
 
         for temp in temperatures:
-            print(f"  Processing cell [{c_idx}/{len(cells)}] n={n_ex:<3} | T={temp:.1f} | {len(prompt_list)} generations...", flush=True)
+            batch_counter += 1
+            cell_id = f"{cell_base}_T{temp:.1f}"
+            ckpt_path = ckpt_dir / f"gen_{cell_id}.json"
+
+            # Checkpoint resume check
+            if ckpt_path.exists():
+                try:
+                    saved = json.loads(ckpt_path.read_text(encoding="utf-8"))
+                    cached_rows = saved.get("rows", [])
+                    if cached_rows:
+                        log_msg(f"[{batch_counter:02d}/{total_batches:02d}] RESUMED {cell_id} from checkpoint ({len(cached_rows)} seqs)")
+                        all_generated_rows.extend(cached_rows)
+                        results_by_depth.setdefault(n_ex, []).extend(cached_rows)
+                        timing_records.append(saved.get("timing", {
+                            "cell_id": cell_id, "n_examples": n_ex, "temperature": temp,
+                            "elapsed_s": 0.0, "status": "resumed_from_cache"
+                        }))
+                        continue
+                except Exception:
+                    pass
+
+            max_p_len = max(len(p) for p in prompt_list)
+            prefill_nt = sum(len(p) for p in prompt_list)
+            log_msg(f"[{batch_counter:02d}/{total_batches:02d}] STARTING {cell_id} | n={n_ex} | T={temp:.1f} | {len(prompt_list)} seqs | Max ctx: {max_p_len:,} nt")
+
+            t_batch_start = time.time()
 
             if dry_run:
-                # Dry run simulation: take authentic mature sequences with realistic point mutations and spacer framing
+                # Dry run simulation: realistic mutated sequences
                 continuations = []
                 rng = random.Random(seed + n_ex + int(temp * 100))
                 for p_idx, prompt in enumerate(prompt_list):
@@ -199,6 +241,9 @@ def run_sweeps(
                         dna_list[pos] = rng.choice("ACGT")
                     mut_dna = "".join(dna_list) + "TGA" + SPACER + "ATGCATGC"
                     continuations.append(mut_dna[:gen_len])
+                hit = 85.0
+                ideal = 90.0
+                throughput = sum(len(s) for s in continuations) / max(time.time() - t_batch_start, 0.001)
             else:
                 longest = max(len(p) + gen_len for p in prompt_list)
                 if model.max_model_len < longest:
@@ -219,23 +264,23 @@ def run_sweeps(
                 tok = sum(len(p) for p in prompt_list)
                 hit = 100 * sum(out.num_cached_tokens) / max(tok, 1)
                 ideal = 100 * (1 - uniq_tok / max(tok, 1))
-                print(f"    Prefix cache hit: {hit:4.1f}% (ideal: {ideal:4.1f}%)")
+                throughput = sum(len(s) for s in continuations) / max(time.time() - t_batch_start, 0.001)
 
-            # Process continuations
+            elapsed_batch = time.time() - t_batch_start
+
+            # Process and validate continuations
+            cell_rows = []
             for p_idx, (cont, draw_idx) in enumerate(zip(continuations, prompt_draw_indices), 1):
                 seq_counter += 1
                 design_id = f"EXP3_n{n_ex:03d}_T{temp:.1f}_s{seq_counter:04d}"
 
-                # 1. Extract CDS
                 cds_nt = extract_cds(cont, spacer=SPACER)
                 parsed_ok = (cds_nt is not None)
 
-                # 2. Frame & translation audit
                 val_res = validate_and_translate_cds(cds_nt if cds_nt else "")
                 mature_aa = val_res["mature_aa"]
                 valid_cds = val_res["valid"]
 
-                # 3. Max PID vs reference pool
                 max_pid = 0.0
                 best_hit = ""
                 is_novel = False
@@ -245,6 +290,7 @@ def run_sweeps(
 
                 row = {
                     "design_id": design_id,
+                    "cell_id": cell_id,
                     "n_examples": n_ex,
                     "temperature": temp,
                     "min_p": min_p,
@@ -261,10 +307,39 @@ def run_sweeps(
                     "sequence_aa": mature_aa,
                     "cds_nt": cds_nt or "",
                 }
+                cell_rows.append(row)
                 all_generated_rows.append(row)
                 results_by_depth.setdefault(n_ex, []).append(row)
 
-    print(f"  Generated and parsed {len(all_generated_rows)} total continuations in {time.time() - t0:.1f}s")
+            timing_info = {
+                "cell_id": cell_id,
+                "n_examples": n_ex,
+                "temperature": temp,
+                "seqs_generated": len(continuations),
+                "elapsed_s": round(elapsed_batch, 2),
+                "throughput_nt_s": round(throughput, 1),
+                "prefix_cache_hit_pct": round(hit, 1),
+                "ideal_cache_hit_pct": round(ideal, 1),
+                "status": "completed",
+            }
+            timing_records.append(timing_info)
+
+            # Save atomic checkpoint JSON
+            ckpt_payload = {
+                "cell_id": cell_id,
+                "timing": timing_info,
+                "sequences": continuations,
+                "rows": cell_rows,
+            }
+            ckpt_path.write_text(json.dumps(ckpt_payload, indent=2), encoding="utf-8")
+            log_msg(f"[{batch_counter:02d}/{total_batches:02d}] DONE {cell_id} in {elapsed_batch:5.1f}s | Speed: {throughput:5.1f} nt/s | Cache Hit: {hit:4.1f}% | Ckpt: {ckpt_path.name}")
+
+    total_time = time.time() - t0
+    (out_dir / "generation_timings.json").write_text(json.dumps(timing_records, indent=2), encoding="utf-8")
+    print(f"\nGenerated and audited {len(all_generated_rows)} total continuations in {total_time:.1f}s")
+    print("\n--- Cell Bottleneck Profile (sorted by elapsed time) ---")
+    for rec in sorted(timing_records, key=lambda x: x.get("elapsed_s", 0), reverse=True):
+        print(f"  - {rec['cell_id']:<26} : {rec.get('elapsed_s', 0):6.1f}s | {rec.get('throughput_nt_s', 0):5.1f} nt/s | Cache: {rec.get('prefix_cache_hit_pct', 0)}%")
 
     # 5. Contrastive Evaluation (Delta-LL) if contrastive suite provided
     contrastive_rows = []
@@ -318,7 +393,7 @@ def run_sweeps(
     grid_tsv = out_dir / "generated_continuations_grid.tsv"
     with open(grid_tsv, "w", newline="", encoding="utf-8") as f:
         fields = [
-            "design_id", "n_examples", "temperature", "min_p", "top_p", "draw_idx",
+            "design_id", "cell_id", "n_examples", "temperature", "min_p", "top_p", "draw_idx",
             "parsed_ok", "valid_cds", "rejection_reason", "length_nt", "length_aa",
             "max_pid", "best_pool_hit", "is_novel", "sequence_aa", "cds_nt"
         ]
@@ -352,6 +427,7 @@ def run_sweeps(
         "cliff_analysis": cliff_analysis,
         "grid_tsv": str(grid_tsv),
         "screened_fasta": str(fasta_out),
+        "timings": timing_records,
     }
     (out_dir / "module_2_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print("=" * 78)
