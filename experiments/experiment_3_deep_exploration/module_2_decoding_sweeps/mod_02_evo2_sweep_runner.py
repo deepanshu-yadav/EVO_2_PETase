@@ -10,19 +10,14 @@ Executes:
      Delta-LL = log P(x | Prompt_thermo) - log P(x | Prompt_general)
 6. Exports generated_continuations_grid.tsv and screened candidate FASTA.
 
-Usage:
-  python mod_02_evo2_sweep_runner.py \
-      --prompts ../outputs/prompts_thermo_curriculum.json \
-      --contrastive ../outputs/prompts_contrastive.json \
-      --pool ../../../data/petase_pool.fasta \
-      --out ../outputs \
-      --dry_run
+Unified sequence input & prompt formatting aligned with exp1_initial_discovery.ipynb.
 """
 import argparse
 import csv
 import json
 import os
 import pathlib
+import random
 import sys
 import time
 from typing import Dict, List, Any, Optional
@@ -45,10 +40,41 @@ from decoding_utils import (
 )
 
 
+def load_pool(path: pathlib.Path) -> List[str]:
+    """Protein sequences in FASTA order, cleaned as the reference pipeline does.
+
+    Handles 60-column wrapped FASTA files properly so line fragmentation does not occur.
+    """
+    seqs, cur = [], None
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            if line.startswith(">"):
+                if cur:
+                    seqs.append(cur)
+                cur = ""
+            elif cur is not None:
+                cur += line.strip()
+    if cur:
+        seqs.append(cur)
+    return [s for s in (x.upper().replace("*", "") for x in seqs) if s]
+
+
+def compose_prompt(dna_seqs: List[str], spacer: str = SPACER) -> str:
+    """left layout: a spacer before every example, plus a trailing one."""
+    return "".join(spacer + s for s in dna_seqs) + spacer
+
+
+def select_examples(pool: List[str], n: int, seed: int) -> List[str]:
+    """Uniform random exemplar selection from the reference pool."""
+    rng = random.Random(seed)
+    return rng.sample(pool, min(n, len(pool)))
+
+
 def run_sweeps(
-    prompts_path: pathlib.Path,
+    prompts_path: Optional[pathlib.Path],
     contrastive_path: Optional[pathlib.Path],
     pool_fasta_path: pathlib.Path,
+    codons_path: Optional[pathlib.Path],
     out_dir: pathlib.Path,
     temperatures: List[float] = [0.6, 0.8, 1.0, 1.1],
     min_p: float = 0.05,
@@ -59,6 +85,7 @@ def run_sweeps(
     gpu_mem: float = 0.85,
     dry_run: bool = False,
     max_cells: Optional[int] = None,
+    seed: int = 1337,
 ) -> Dict[str, Any]:
     """Execute the Module 2 generation and analysis grid."""
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -66,18 +93,53 @@ def run_sweeps(
     print("EXPERIMENT 3 — MODULE 2: DECODING SWEEPS & CONTEXT SCALING")
     print("=" * 78)
 
-    # 1. Load pool references
+    # 1. Load pool references using reference load_pool
     print(f"\n[1/5] Loading reference pool from {pool_fasta_path.name}...")
-    pool_records = [(r.id, str(r.seq)) for r in SeqIO.parse(pool_fasta_path, "fasta")]
+    pool_proteins = load_pool(pool_fasta_path)
+    pool_records = [(f"pool_{i:03d}", seq) for i, seq in enumerate(pool_proteins, 1)]
     print(f"  Loaded {len(pool_records)} pool references for max PID / novelty auditing.")
 
-    # 2. Load prompt suite
-    print(f"\n[2/5] Loading prompt suite from {prompts_path.name}...")
-    suite = json.loads(prompts_path.read_text(encoding="utf-8"))
-    cells = suite.get("cells", [])
-    if max_cells:
-        cells = cells[:max_cells]
-    print(f"  Suite: {suite.get('suite_name', 'custom')} | {len(cells)} cells loaded")
+    # 2. Build or load prompt cells
+    cells = []
+    if prompts_path and prompts_path.exists():
+        print(f"\n[2/5] Loading prompt suite from {prompts_path.name}...")
+        suite = json.loads(prompts_path.read_text(encoding="utf-8"))
+        cells = suite.get("cells", [])
+        if max_cells:
+            cells = cells[:max_cells]
+        print(f"  Suite: {suite.get('suite_name', 'custom')} | {len(cells)} cells loaded")
+    elif codons_path and codons_path.exists():
+        print(f"\n[2/5] Composing prompt cells directly from codon cache {codons_path.name}...")
+        cache = json.loads(codons_path.read_text(encoding="utf-8"))
+        assert cache["proteins"] == pool_proteins, "Codon cache proteins do not match pool FASTA!"
+        proteins, dna = cache["proteins"], cache["dna"]
+        dna_of = dict(zip(proteins, dna))
+
+        n_grid = [8, 16, 32, 64]
+        if max_cells:
+            n_grid = n_grid[:max_cells]
+
+        for n in n_grid:
+            draws = []
+            for p in range(10):
+                sel = select_examples(proteins, n, seed + p)
+                prompt = compose_prompt([dna_of[a] for a in sel])
+                assert prompt.count(SPACER) == n + 1
+                assert prompt.startswith(SPACER) and prompt.endswith(SPACER)
+                draws.append({
+                    "draw_idx": p,
+                    "prompt": prompt,
+                    "gen_length": max(map(len, sel)) * 3 + 30,
+                })
+            cells.append({
+                "cell_name": f"petase_n{n:03d}",
+                "n_examples": n,
+                "draws": draws,
+                "gen_length": max(d["gen_length"] for d in draws),
+            })
+        print(f"  Built {len(cells)} cells across context depths {n_grid} via compose_prompt()")
+    else:
+        raise FileNotFoundError("Neither a valid --prompts JSON nor --codons JSON was provided!")
 
     # 3. Model setup or Dry-Run Engine
     model = None
@@ -115,26 +177,21 @@ def run_sweeps(
         # Flatten prompts
         prompt_list = [d["prompt"] for d in draws for _ in range(samples_per_prompt)]
         prompt_draw_indices = [d["draw_idx"] for d in draws for _ in range(samples_per_prompt)]
+        uniq_tok = sum(len(d["prompt"]) for d in draws)
 
         for temp in temperatures:
-            print(f"  Processing cell [{c_idx}/{len(cells)}] n={n_ex:<3} | T={temp} | {len(prompt_list)} generations...", flush=True)
+            print(f"  Processing cell [{c_idx}/{len(cells)}] n={n_ex:<3} | T={temp:.1f} | {len(prompt_list)} generations...", flush=True)
 
             if dry_run:
                 # Dry run simulation: take authentic mature sequences with realistic point mutations and spacer framing
                 continuations = []
-                import random
-                rng = random.Random(1337 + n_ex + int(temp * 100))
-                # Base pool sequences to draw plausible mock continuations from
-                sample_pool = [SeqIO.parse(pool_fasta_path, "fasta")]
+                rng = random.Random(seed + n_ex + int(temp * 100))
                 for p_idx, prompt in enumerate(prompt_list):
-                    # Pick a reference and mutate a few codons
                     ref_id, ref_seq = rng.choice(pool_records)
-                    # Convert to DNA with simple codons
                     ref_dna = "".join({"A": "GCG", "C": "TGC", "D": "GAT", "E": "GAA", "F": "TTT",
                                        "G": "GGC", "H": "CAT", "I": "ATT", "K": "AAA", "L": "CTG",
                                        "M": "ATG", "N": "AAC", "P": "CCG", "Q": "CAG", "R": "CGT",
                                        "S": "AGC", "T": "ACC", "V": "GTG", "W": "TGG", "Y": "TAT"}[a] for a in ref_seq)
-                    # Add point mutations proportional to temperature
                     dna_list = list(ref_dna)
                     num_mut = int(len(dna_list) * (0.05 + 0.15 * (temp - 0.5)))
                     for _ in range(num_mut):
@@ -143,16 +200,26 @@ def run_sweeps(
                     mut_dna = "".join(dna_list) + "TGA" + SPACER + "ATGCATGC"
                     continuations.append(mut_dna[:gen_len])
             else:
+                longest = max(len(p) + gen_len for p in prompt_list)
+                if model.max_model_len < longest:
+                    raise SystemExit(
+                        f"Cell requires {longest:,} context tokens, but model.max_model_len is "
+                        f"{model.max_model_len:,}."
+                    )
                 out = model.generate(
                     prompt_list,
                     n_tokens=gen_len,
                     temperature=temp,
                     top_k=top_k,
                     top_p=top_p,
-                    seed=1337 + c_idx * 1000 + int(temp * 10),
+                    seed=seed + 1000 * c_idx + int(temp * 10),
                     verbose=0,
                 )
                 continuations = out.sequences
+                tok = sum(len(p) for p in prompt_list)
+                hit = 100 * sum(out.num_cached_tokens) / max(tok, 1)
+                ideal = 100 * (1 - uniq_tok / max(tok, 1))
+                print(f"    Prefix cache hit: {hit:4.1f}% (ideal: {ideal:4.1f}%)")
 
             # Process continuations
             for p_idx, (cont, draw_idx) in enumerate(zip(continuations, prompt_draw_indices), 1):
@@ -207,22 +274,17 @@ def run_sweeps(
         pairs = cont_suite.get("pairs", [])
         print(f"  Loaded {len(pairs)} paired thermo vs general background contexts.")
 
-        # Score top valid designs under thermo vs general prompts
         valid_designs = [r for r in all_generated_rows if r["valid_cds"] and r["cds_nt"]]
         scored_subset = valid_designs[: min(len(valid_designs), 50)]
 
         for des in scored_subset:
-            # Under live GPU Evo2: compute log P(cds | thermo_prompt) - log P(cds | general_prompt)
-            # In dry-run: compute heuristic proxy based on GC% and thermophilic motif frequencies
             if not dry_run and model is not None:
-                # Use first pair as reference contrastive probe
                 t_ctx = pairs[0]["thermo_prompt"] + des["cds_nt"]
                 g_ctx = pairs[0]["general_prompt"] + des["cds_nt"]
                 score_t = model.score_sequences([t_ctx], reduce_method="sum")[0]
                 score_g = model.score_sequences([g_ctx], reduce_method="sum")[0]
                 delta_ll = compute_contrastive_delta_ll(score_t, score_g)
             else:
-                # Deterministic dry-run proxy reflecting thermophilic amino acid enrichment (IVYWREL)
                 seq = des["sequence_aa"]
                 thermo_weight = sum(seq.count(a) for a in "IVYWREL") / max(len(seq), 1)
                 delta_ll = round(float((thermo_weight - 0.42) * 50.0 + (des["temperature"] * 2.0)), 3)
@@ -236,7 +298,6 @@ def run_sweeps(
                 "sequence_aa": des["sequence_aa"],
             })
 
-        # Sort by Delta-LL descending
         contrastive_rows.sort(key=lambda x: x["delta_ll"], reverse=True)
         print(f"  Scored {len(contrastive_rows)} designs for thermophilic statistical enrichment.")
 
@@ -275,7 +336,6 @@ def run_sweeps(
             w.writerows(contrastive_rows)
         print(f"Saved contrastive reranking to {cont_tsv} ({len(contrastive_rows)} rows)")
 
-    # Screened novel FASTA
     novel_passers = [r for r in all_generated_rows if r["valid_cds"] and r["is_novel"]]
     fasta_out = out_dir / "designs_exp3_screened_novel.faa"
     with open(fasta_out, "w", encoding="utf-8") as f:
@@ -303,6 +363,7 @@ def main():
     parser.add_argument("--prompts", default="experiments/experiment_3_deep_exploration/outputs/prompts_thermo_curriculum.json")
     parser.add_argument("--contrastive", default="experiments/experiment_3_deep_exploration/outputs/prompts_contrastive.json")
     parser.add_argument("--pool", default="data/petase_pool.fasta")
+    parser.add_argument("--codons", default="data/petase_codons.json")
     parser.add_argument("--out", default="experiments/experiment_3_deep_exploration/outputs")
     parser.add_argument("--temperatures", nargs="+", type=float, default=[0.6, 0.8, 1.0, 1.1])
     parser.add_argument("--min_p", type=float, default=0.05)
@@ -313,10 +374,15 @@ def main():
     parser.add_argument("--max_cells", type=int, default=None)
     args = parser.parse_args()
 
+    prompts_path = pathlib.Path(args.prompts).resolve() if args.prompts and pathlib.Path(args.prompts).exists() else None
+    contrastive_path = pathlib.Path(args.contrastive).resolve() if args.contrastive and pathlib.Path(args.contrastive).exists() else None
+    codons_path = pathlib.Path(args.codons).resolve() if args.codons and pathlib.Path(args.codons).exists() else None
+
     run_sweeps(
-        prompts_path=pathlib.Path(args.prompts).resolve(),
-        contrastive_path=pathlib.Path(args.contrastive).resolve() if args.contrastive else None,
+        prompts_path=prompts_path,
+        contrastive_path=contrastive_path,
         pool_fasta_path=pathlib.Path(args.pool).resolve(),
+        codons_path=codons_path,
         out_dir=pathlib.Path(args.out).resolve(),
         temperatures=args.temperatures,
         min_p=args.min_p,
