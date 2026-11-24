@@ -6,9 +6,9 @@ Executes:
 2. Tier 2: ESMFold v1 3D structure prediction & mean pLDDT evaluation (filter >= 80.0).
 3. Tier 3: OpenMM AMBER14SB constrained local energy minimization (heavy backbone restraint k=10 kcal/mol/A^2).
 4. Tier 4: Foldseek structural alignment vs 6EQE (IsPETase) & 4EB0 (LCC).
-5. Tier 5: 3D active-site and groove architecture audit.
-6. Tier 6: Flexible-receptor Smina docking with 2-HE(MHET) & 3PET fragment.
-7. Tier 7: Strict Near-Attack Conformation (NAC) and Bürgi-Dunitz angle evaluation.
+5. Tier 5: 3D active-site and groove architecture audit (mapping Ser, His, Asp, Trp for --flexres).
+6. Tier 6: Flexible-receptor Smina docking (--flexres) with 2-HE(MHET) & 3PET fragment.
+7. Tier 7: Multi-mode Near-Attack Conformation (NAC) and Bürgi-Dunitz angle evaluation across all 5 modes.
 8. Tier 8: Disulfide bond topology and cleft biophysical proxy audit.
 9. Exports structured summary tables and PDB archives.
 """
@@ -130,7 +130,7 @@ def prepare_ligands(ligand_dir: pathlib.Path) -> Dict[str, Dict[str, Any]]:
             Chem.MolToMolFile(mol, str(info["sdf"]))
             print(f"Generated 3D conformer: {info['sdf']}")
 
-        # Map ester carbonyl indices
+        # Map ester carbonyl indices (paired: m[0] = C, m[1] = O)
         ester_c_indices = []
         carbonyl_o_indices = []
         if has_rdkit and info["sdf"].exists():
@@ -173,6 +173,7 @@ def main():
     parser.add_argument("--refs_dir", type=pathlib.Path, default=CURRENT_DIR / "references")
     parser.add_argument("--out_dir", type=pathlib.Path, default=CURRENT_DIR / "outputs")
     parser.add_argument("--plddt_cutoff", type=float, default=80.0)
+    parser.add_argument("--exhaustiveness", type=int, default=16, help="Smina docking exhaustiveness")
     parser.add_argument("--skip_folding", action="store_true", help="Skip ESMFold and use existing PDBs")
     parser.add_argument("--skip_relaxation", action="store_true", help="Skip OpenMM local relaxation")
     parser.add_argument("--skip_docking", action="store_true", help="Skip Smina docking")
@@ -303,6 +304,7 @@ def main():
         for _, row in df_active.iterrows():
             qid = row["id"]
             ser_coord = row.get("ser_og_coord")
+            flexres_str = row.get("flexres_str")
             if ser_coord is None:
                 continue
 
@@ -321,6 +323,8 @@ def main():
                     center_xyz=ser_coord,
                     ester_c_indices=lig_info.get("ester_c_indices", [0]),
                     carbonyl_o_indices=lig_info.get("carbonyl_o_indices", [1]),
+                    flexres_str=flexres_str,
+                    exhaustiveness=args.exhaustiveness,
                 )
                 for k, v in dock_res.items():
                     entry[f"{lig_name}_{k}"] = v

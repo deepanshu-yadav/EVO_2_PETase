@@ -4,8 +4,8 @@
 Provides core functions for:
 1. OpenMM AMBER14SB constrained local energy minimization (resolving rotamer clashes).
 2. Alignment-guided active-site superposition onto 6EQE (IsPETase) and 4EB0 (LCC).
-3. Flexible side-chain Smina docking with 2-HE(MHET) and 3PET ligands.
-4. Near-Attack Conformation (NAC) evaluation including Bürgi-Dunitz angle calculation.
+3. Flexible side-chain Smina docking with --flexres on catalytic residues (Ser, His, Asp, Trp).
+4. Multi-mode Near-Attack Conformation (NAC) evaluation including Bürgi-Dunitz trajectory angle.
 5. Disulfide bond topology audit and interfacial cleft biophysical proxies.
 """
 import math
@@ -59,7 +59,7 @@ def relax_structure_openmm(
     """
     try:
         from openmm.app import PDBFile, ForceField, Simulation
-        from openmm import CustomExternalForce, LangevinIntegrator, Vec3
+        from openmm import CustomExternalForce, LangevinIntegrator
         from openmm.unit import nanometer, kelvin, picosecond, kilocalories_per_mole, angstrom
     except ImportError:
         return False, 0.0, "OpenMM not installed in environment."
@@ -109,12 +109,10 @@ def relax_structure_openmm(
 
         # Compute backbone RMSD to verify fold preservation
         final_bb_coords = []
-        bb_idx = 0
         for atom in pdb.topology.atoms():
             if atom.name in backbone_names:
                 pos = final_positions[atom.index]
                 final_bb_coords.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
-                bb_idx += 1
 
         if initial_bb_coords and final_bb_coords:
             init_arr = np.array(initial_bb_coords) * 10.0  # nm to A
@@ -161,7 +159,8 @@ def audit_active_site_architecture(
     """Superpose query PDB structure onto 6EQE (IsPETase Chain A) and verify 3D active site.
     
     Extracts:
-    - Native Ser O-gamma coordinate in the unsuperposed disk frame (for docking).
+    - Native Ser O-gamma coordinate in unsuperposed disk frame (for docking box center).
+    - Mapped residue numbers for flexible docking (--flexres A:<ser>,A:<his>,A:<asp>,A:<trp>).
     - Sequence triad alignment: Ser, Asp, His.
     - 3D spatial distances: Ser O-gamma to His N-epsilon-2 (<= 3.5 A), His N-delta-1 to Asp O-delta (<= 3.2 A).
     - Oxyanion hole donor: Tyr87 equivalent (within 3.5 A).
@@ -222,6 +221,8 @@ def audit_active_site_architecture(
     qry_ser = resnum_to_qry.get(160)
     qry_asp = resnum_to_qry.get(206)
     qry_his = resnum_to_qry.get(237)
+    qry_w159_equiv = resnum_to_qry.get(159)
+    qry_w185_equiv = resnum_to_qry.get(185)
 
     native_ser_og = None
     if qry_ser is not None and qry_ser.get_resname() == "SER" and "OG" in qry_ser:
@@ -232,6 +233,20 @@ def audit_active_site_architecture(
         qry_asp is not None and qry_asp.get_resname() == "ASP" and
         qry_his is not None and qry_his.get_resname() == "HIS"
     )
+
+    # Build --flexres string for Smina
+    flex_res_ids = []
+    if qry_ser is not None:
+        flex_res_ids.append(f"{qry_chain.id}:{qry_ser.id[1]}")
+    if qry_his is not None:
+        flex_res_ids.append(f"{qry_chain.id}:{qry_his.id[1]}")
+    if qry_asp is not None:
+        flex_res_ids.append(f"{qry_chain.id}:{qry_asp.id[1]}")
+    if qry_w159_equiv is not None and qry_w159_equiv.get_resname() in ["TRP", "TYR", "PHE"]:
+        flex_res_ids.append(f"{qry_chain.id}:{qry_w159_equiv.id[1]}")
+    elif qry_w185_equiv is not None and qry_w185_equiv.get_resname() in ["TRP", "TYR", "PHE"]:
+        flex_res_ids.append(f"{qry_chain.id}:{qry_w185_equiv.id[1]}")
+    flexres_str = ",".join(flex_res_ids) if flex_res_ids else None
 
     # 2. Superimpose onto 6EQE
     try:
@@ -254,6 +269,7 @@ def audit_active_site_architecture(
             "active_site_complete": False,
             "superposition_rmsd": superposition_rmsd,
             "ser_og_coord": native_ser_og,
+            "flexres_str": flexres_str,
         }
 
     ser_og = qry_ser["OG"].get_coord()
@@ -308,6 +324,7 @@ def audit_active_site_architecture(
         "active_site_complete": triad_intact and has_oxyanion_tyr and (has_w159 or has_w185),
         "superposition_rmsd": superposition_rmsd,
         "ser_og_coord": native_ser_og,
+        "flexres_str": flexres_str,
     }
 
 
@@ -344,7 +361,6 @@ def audit_disulfide_bonds(pdb_path: pathlib.Path, max_s_s_dist: float = 3.0) -> 
             dist = float(np.linalg.norm(coord1 - coord2))
             if dist <= max_s_s_dist:
                 pairs.append((r1, r2, round(dist, 2)))
-                # C-terminal disulfide detection (both residues in the last 40 amino acids)
                 if abs(r1 - r2) >= 10:
                     has_cterm = True
 
@@ -355,6 +371,146 @@ def audit_disulfide_bonds(pdb_path: pathlib.Path, max_s_s_dist: float = 3.0) -> 
     }
 
 
+def parse_all_smina_modes(
+    out_pdbqt_path: pathlib.Path,
+    ser_og: np.ndarray,
+    ester_c_indices: List[int],
+    carbonyl_o_indices: List[int],
+    max_energy_diff: float = 1.5,
+) -> Dict[str, Any]:
+    """Parse all docking modes from a Smina output PDBQT.
+    
+    Evaluates attack distance and Bürgi-Dunitz angle across all modes within
+    max_energy_diff (default 1.5 kcal/mol) of the top affinity mode.
+    Selects the best Near-Attack Conformation (NAC) mode.
+    """
+    if not out_pdbqt_path.exists():
+        return {
+            "docking_affinity": 0.0,
+            "attack_dist": 99.0,
+            "burgi_dunitz_angle": 0.0,
+            "nac_score": 0.0,
+            "is_nac": False,
+            "clash_artifact": False,
+            "best_mode": 1,
+        }
+
+    modes = []
+    current_mode_idx = 1
+    current_coords = []
+    current_aff = None
+
+    with open(out_pdbqt_path, "r", encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("MODEL"):
+                current_coords = []
+                current_aff = None
+                try:
+                    current_mode_idx = int(line.split()[1])
+                except Exception:
+                    current_mode_idx = len(modes) + 1
+            elif "REMARK VINA RESULT:" in line:
+                try:
+                    parts = line.split()
+                    current_aff = float(parts[3])
+                except Exception:
+                    pass
+            elif line.startswith(("ATOM", "HETATM")):
+                try:
+                    x = float(line[30:38].strip())
+                    y = float(line[38:46].strip())
+                    z = float(line[46:54].strip())
+                    current_coords.append(np.array([x, y, z]))
+                except ValueError:
+                    continue
+            elif line.startswith("ENDMDL"):
+                if current_coords:
+                    modes.append({
+                        "mode": current_mode_idx,
+                        "affinity": current_aff if current_aff is not None else 0.0,
+                        "coords": current_coords,
+                    })
+                current_coords = []
+
+    if not modes:
+        return {
+            "docking_affinity": 0.0,
+            "attack_dist": 99.0,
+            "burgi_dunitz_angle": 0.0,
+            "nac_score": 0.0,
+            "is_nac": False,
+            "clash_artifact": False,
+            "best_mode": 1,
+        }
+
+    top_affinity = modes[0]["affinity"]
+    evaluated_modes = []
+
+    for m in modes:
+        aff = m["affinity"]
+        coords = m["coords"]
+        min_d = 99.0
+        best_angle = 0.0
+
+        # Fix Bug 4: Correctly pair each ester carbon with its bonded carbonyl oxygen
+        for c_idx, o_idx in zip(ester_c_indices, carbonyl_o_indices):
+            if c_idx < len(coords) and o_idx < len(coords):
+                c_pos = coords[c_idx]
+                d = float(np.linalg.norm(c_pos - ser_og))
+                if d < min_d:
+                    min_d = d
+                    best_angle = compute_burgi_dunitz_angle(ser_og, c_pos, coords[o_idx])
+
+        attack_dist = round(min_d, 2)
+        clash = attack_dist < 2.2
+        if attack_dist < 2.5:
+            nac_score = round(1.0 / (1.0 + (2.5 - attack_dist) * 2.0), 3)
+        else:
+            nac_score = round(1.0 / (1.0 + max(0.0, attack_dist - 3.2)), 3)
+
+        is_nac = (
+            (2.5 <= attack_dist <= 3.5) and
+            (95.0 <= best_angle <= 115.0) and
+            (aff <= -5.0)
+        )
+
+        within_window = (aff <= top_affinity + max_energy_diff)
+
+        evaluated_modes.append({
+            "mode": m["mode"],
+            "affinity": aff,
+            "attack_dist": attack_dist,
+            "burgi_dunitz_angle": best_angle,
+            "nac_score": nac_score,
+            "is_nac": is_nac,
+            "clash_artifact": clash,
+            "within_window": within_window,
+        })
+
+    # Pick the best pose: prefer NAC-compliant within energy window, else mode 1
+    nac_modes = [em for em in evaluated_modes if em["is_nac"] and em["within_window"]]
+    if nac_modes:
+        best_entry = sorted(nac_modes, key=lambda x: (x["attack_dist"], -x["nac_score"]))[0]
+    else:
+        # If no mode forms strict NAC, pick lowest attack distance within window
+        window_modes = [em for em in evaluated_modes if em["within_window"]]
+        if window_modes:
+            best_entry = sorted(window_modes, key=lambda x: x["attack_dist"])[0]
+        else:
+            best_entry = evaluated_modes[0]
+
+    return {
+        "docking_affinity": best_entry["affinity"],
+        "attack_dist": best_entry["attack_dist"],
+        "burgi_dunitz_angle": best_entry["burgi_dunitz_angle"],
+        "nac_score": best_entry["nac_score"],
+        "is_nac": best_entry["is_nac"],
+        "clash_artifact": best_entry["clash_artifact"],
+        "best_mode": best_entry["mode"],
+        "top_mode_affinity": top_affinity,
+    }
+
+
 def run_smina_flexible_docking(
     receptor_pdb: pathlib.Path,
     ligand_pdbqt: pathlib.Path,
@@ -362,17 +518,18 @@ def run_smina_flexible_docking(
     center_xyz: List[float],
     ester_c_indices: List[int],
     carbonyl_o_indices: List[int],
+    flexres_str: Optional[str] = None,
     smina_exe: str = "smina",
     box_size: float = 20.0,
-    exhaustiveness: int = 8,
+    exhaustiveness: int = 16,
 ) -> Dict[str, Any]:
     """Execute Smina flexible docking and evaluate Near-Attack Conformation (NAC).
     
-    Measures:
-    - Binding affinity Delta-G (kcal/mol).
-    - Minimum attack distance d_attack from Ser O-gamma to electrophilic ester carbon.
-    - Bürgi-Dunitz angle theta = angle(Ser O-gamma ... C_ester = O_carbonyl).
-    - NAC compliance: 2.5 A <= d_attack <= 3.5 A and 95° <= theta <= 115° and affinity <= -5.0 kcal/mol.
+    Fixes:
+    - Pass --flexres flag for flexible side chains on catalytic residues.
+    - Default exhaustiveness bumped to 16 (or 32) for flexible conformational search.
+    - Multi-mode parsing: Evaluates all 5 modes within 1.5 kcal/mol of top affinity.
+    - Correctly pairs ester carbons with their bonded carbonyl oxygens for Bürgi-Dunitz trajectory.
     """
     if not receptor_pdb.exists() or not ligand_pdbqt.exists():
         return {
@@ -382,6 +539,7 @@ def run_smina_flexible_docking(
             "nac_score": 0.0,
             "is_nac": False,
             "clash_artifact": False,
+            "best_mode": 1,
         }
 
     smina_path = shutil.which(smina_exe) or (
@@ -395,6 +553,7 @@ def run_smina_flexible_docking(
             "nac_score": 0.5,
             "is_nac": False,
             "clash_artifact": False,
+            "best_mode": 1,
             "note": "Smina binary not found; simulated baseline output.",
         }
 
@@ -413,72 +572,20 @@ def run_smina_flexible_docking(
         "-o", str(out_pdbqt),
     ]
 
-    affinity = 0.0
+    # Add --flexres if flexible residue string is provided
+    if flexres_str:
+        cmd.extend(["--flexres", flexres_str])
+
     try:
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-        for line in res.stdout.splitlines():
-            parts = line.split()
-            if len(parts) >= 4 and parts[0] == "1":
-                try:
-                    affinity = float(parts[1])
-                except ValueError:
-                    pass
+        subprocess.run(cmd, capture_output=True, text=True, timeout=240)
     except Exception:
         pass
 
-    # Extract docked ligand pose atom coordinates from output PDBQT
     ser_og = np.array(center_xyz)
-    min_dist = 99.0
-    best_bd_angle = 0.0
-
-    if out_pdbqt.exists():
-        atom_coords = []
-        with open(out_pdbqt, "r", encoding="utf-8") as f:
-            for line in f:
-                if line.startswith(("ATOM", "HETATM")):
-                    try:
-                        x = float(line[30:38].strip())
-                        y = float(line[38:46].strip())
-                        z = float(line[46:54].strip())
-                        atom_coords.append(np.array([x, y, z]))
-                    except ValueError:
-                        continue
-                elif line.startswith("ENDMDL"):
-                    break  # Parse top mode 1 only
-
-        # Find closest ester carbon and measure Bürgi-Dunitz angle
-        for c_idx in ester_c_indices:
-            if c_idx < len(atom_coords):
-                c_pos = atom_coords[c_idx]
-                d = float(np.linalg.norm(c_pos - ser_og))
-                if d < min_dist:
-                    min_dist = d
-                    # Look up corresponding carbonyl oxygen (adjacent in index list)
-                    matching_o_idx = carbonyl_o_indices[0] if carbonyl_o_indices else None
-                    if matching_o_idx is not None and matching_o_idx < len(atom_coords):
-                        o_pos = atom_coords[matching_o_idx]
-                        best_bd_angle = compute_burgi_dunitz_angle(ser_og, c_pos, o_pos)
-
-    attack_dist = round(min_dist, 2)
-    clash_flag = attack_dist < 2.2
-
-    # Continuous NAC Score with clash penalty
-    if attack_dist < 2.5:
-        nac_score = round(1.0 / (1.0 + (2.5 - attack_dist) * 2.0), 3)
-    else:
-        nac_score = round(1.0 / (1.0 + max(0.0, attack_dist - 3.2)), 3)
-
-    is_nac = (
-        (2.5 <= attack_dist <= 3.5) and
-        (95.0 <= best_bd_angle <= 115.0) and
-        (affinity <= -5.0)
+    return parse_all_smina_modes(
+        out_pdbqt_path=out_pdbqt,
+        ser_og=ser_og,
+        ester_c_indices=ester_c_indices,
+        carbonyl_o_indices=carbonyl_o_indices,
+        max_energy_diff=1.5,
     )
-
-    return {
-        "docking_affinity": affinity,
-        "attack_dist": attack_dist,
-        "burgi_dunitz_angle": best_bd_angle,
-        "nac_score": nac_score,
-        "is_nac": is_nac,
-        "clash_artifact": clash_flag,
-    }
