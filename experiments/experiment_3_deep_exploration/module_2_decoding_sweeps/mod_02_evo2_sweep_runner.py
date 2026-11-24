@@ -187,8 +187,8 @@ def run_sweeps(
 
     for c_idx, cell in enumerate(cells, 1):
         n_ex = cell["n_examples"]
-        gen_len = cell["gen_length"]
-        draws = cell["draws"]
+        draws = cell.get("draws", [])
+        gen_len = cell.get("gen_length") or (max(d.get("gen_length", 948) for d in draws) if draws else 948)
         cell_base = cell.get("cell_name", f"n{n_ex:03d}")
 
         # Flatten prompts

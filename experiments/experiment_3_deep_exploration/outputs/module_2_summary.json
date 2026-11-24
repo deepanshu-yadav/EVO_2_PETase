@@ -30,5 +30,95 @@
     ]
   },
   "grid_tsv": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\generated_continuations_grid.tsv",
-  "screened_fasta": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\designs_exp3_screened_novel.faa"
+  "screened_fasta": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\designs_exp3_screened_novel.faa",
+  "timings": [
+    {
+      "cell_id": "curriculum_n008_T0.6",
+      "n_examples": 8,
+      "temperature": 0.6,
+      "seqs_generated": 100,
+      "elapsed_s": 0.02,
+      "throughput_nt_s": 4334278.8,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n008_T0.8",
+      "n_examples": 8,
+      "temperature": 0.8,
+      "seqs_generated": 100,
+      "elapsed_s": 0.02,
+      "throughput_nt_s": 3672831.4,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n008_T1.0",
+      "n_examples": 8,
+      "temperature": 1.0,
+      "seqs_generated": 100,
+      "elapsed_s": 0.02,
+      "throughput_nt_s": 3687730.5,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n008_T1.1",
+      "n_examples": 8,
+      "temperature": 1.1,
+      "seqs_generated": 100,
+      "elapsed_s": 0.03,
+      "throughput_nt_s": 3222528.4,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n016_T0.6",
+      "n_examples": 16,
+      "temperature": 0.6,
+      "seqs_generated": 100,
+      "elapsed_s": 0.03,
+      "throughput_nt_s": 2723468.7,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n016_T0.8",
+      "n_examples": 16,
+      "temperature": 0.8,
+      "seqs_generated": 100,
+      "elapsed_s": 0.02,
+      "throughput_nt_s": 3438695.9,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n016_T1.0",
+      "n_examples": 16,
+      "temperature": 1.0,
+      "seqs_generated": 100,
+      "elapsed_s": 0.02,
+      "throughput_nt_s": 3556216.9,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    },
+    {
+      "cell_id": "curriculum_n016_T1.1",
+      "n_examples": 16,
+      "temperature": 1.1,
+      "seqs_generated": 100,
+      "elapsed_s": 0.03,
+      "throughput_nt_s": 3204767.6,
+      "prefix_cache_hit_pct": 85.0,
+      "ideal_cache_hit_pct": 90.0,
+      "status": "completed"
+    }
+  ]
 }
