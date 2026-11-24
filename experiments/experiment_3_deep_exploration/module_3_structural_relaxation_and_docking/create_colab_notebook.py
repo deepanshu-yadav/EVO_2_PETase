@@ -365,7 +365,7 @@ for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
 
 df_relax = pd.DataFrame(relaxation_records)
 df_relax.to_csv(WORKSPACE / "relaxation_results.tsv", sep="\t", index=False)
-print(f"\nRelaxation Complete. Successfully minimized models: {df_relax['relaxation_success'].sum()} / {len(df_relax)}")
+print(f"\\nRelaxation Complete. Successfully minimized models: {df_relax['relaxation_success'].sum()} / {len(df_relax)}")
 if not df_relax[df_relax['backbone_rmsd'] > 0].empty:
     print(f"Mean backbone RMSD: {df_relax[df_relax['backbone_rmsd'] > 0]['backbone_rmsd'].mean():.3f} A (Verifies fold preservation)")""")
 
@@ -765,7 +765,7 @@ for idx, (_, row) in enumerate(df_triads.iterrows()):
 
 df_docking = pd.DataFrame(docking_results)
 df_docking.to_csv(WORKSPACE / "smina_flexible_docking_results.tsv", sep="\t", index=False)
-print(f"\nFlexible Docking Complete. Near-Attack Conformation (NAC) Yield:")
+print("\\nFlexible Docking Complete. Near-Attack Conformation (NAC) Yield:")
 print(f"  2-HE(MHET) Passing Strict NAC: {df_docking['2he_mhet_is_nac'].sum()} / {len(df_docking)}")
 print(f"  3PET Trimer Passing Strict NAC: {df_docking['3pet_is_nac'].sum()} / {len(df_docking)}")""")
 
