@@ -58,7 +58,7 @@ def relax_structure_openmm(
         (success, backbone_rmsd, message)
     """
     try:
-        from openmm.app import PDBFile, ForceField, Simulation
+        from openmm.app import PDBFile, ForceField, Simulation, Modeller, NoCutoff
         from openmm import CustomExternalForce, LangevinIntegrator
         from openmm.unit import nanometer, kelvin, picosecond, kilocalories_per_mole, angstrom
     except ImportError:
@@ -68,9 +68,11 @@ def relax_structure_openmm(
         pdb = PDBFile(str(input_pdb))
         # Use AMBER14SB with implicit solvent OBC2
         forcefield = ForceField("amber14/protein.ff14SB.xml", "implicit/obc2.xml")
+        modeller = Modeller(pdb.topology, pdb.positions)
+        modeller.addHydrogens(forcefield)
         system = forcefield.createSystem(
-            pdb.topology,
-            nonbondedMethod=None,
+            modeller.topology,
+            nonbondedMethod=NoCutoff,
             constraints=None,
         )
 
@@ -84,9 +86,9 @@ def relax_structure_openmm(
 
         backbone_names = {"N", "CA", "C", "O"}
         initial_bb_coords = []
-        for atom in pdb.topology.atoms():
+        for atom in modeller.topology.atoms():
             if atom.name in backbone_names:
-                pos = pdb.positions[atom.index]
+                pos = modeller.positions[atom.index]
                 restraint.addParticle(atom.index, [pos[0], pos[1], pos[2]])
                 initial_bb_coords.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
 
@@ -94,7 +96,7 @@ def relax_structure_openmm(
 
         integrator = LangevinIntegrator(300 * kelvin, 1.0 / picosecond, 0.002 * picosecond)
         simulation = Simulation(pdb.topology, system, integrator)
-        simulation.context.setPositions(pdb.positions)
+        simulation.context.setPositions(modeller.positions)
 
         # Minimize
         simulation.minimizeEnergy(maxIterations=max_iterations)
@@ -105,11 +107,11 @@ def relax_structure_openmm(
         
         output_pdb.parent.mkdir(parents=True, exist_ok=True)
         with open(output_pdb, "w", encoding="utf-8") as f:
-            PDBFile.writeFile(pdb.topology, final_positions, f)
+            PDBFile.writeFile(modeller.topology, final_positions, f)
 
         # Compute backbone RMSD to verify fold preservation
         final_bb_coords = []
-        for atom in pdb.topology.atoms():
+        for atom in modeller.topology.atoms():
             if atom.name in backbone_names:
                 pos = final_positions[atom.index]
                 final_bb_coords.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
@@ -234,10 +236,8 @@ def audit_active_site_architecture(
         qry_his is not None and qry_his.get_resname() == "HIS"
     )
 
-    # Build --flexres string for Smina
+    # Build --flexres string for Smina (keep catalytic Ser rigid so ser_og_coord remains exact)
     flex_res_ids = []
-    if qry_ser is not None:
-        flex_res_ids.append(f"{qry_chain.id}:{qry_ser.id[1]}")
     if qry_his is not None:
         flex_res_ids.append(f"{qry_chain.id}:{qry_his.id[1]}")
     if qry_asp is not None:
@@ -589,3 +589,94 @@ def run_smina_flexible_docking(
         carbonyl_o_indices=carbonyl_o_indices,
         max_energy_diff=1.5,
     )
+
+def parse_all_docking_modes_sdf(
+    out_sdf_path: pathlib.Path,
+    ser_og: np.ndarray,
+    ester_smarts: str,
+    max_energy_diff: float = 1.5,
+) -> Dict[str, Any]:
+    """Parse all docking poses from an SDF output, matching ester carbons & carbonyl oxygens via RDKit SMARTS."""
+    default_res = {
+        "affinity": 0.0, "attack_dist": 99.0, "burgi_dunitz_angle": 0.0,
+        "nac_score": 0.0, "is_nac": False, "clash": False, "best_mode": 1
+    }
+    if not out_sdf_path.exists():
+        return default_res
+
+    try:
+        from rdkit import Chem
+    except ImportError:
+        return default_res
+
+    patt = Chem.MolFromSmarts(ester_smarts)
+    suppl = Chem.SDMolSupplier(str(out_sdf_path), removeHs=False)
+    mols = [m for m in suppl if m is not None]
+    if not mols:
+        return default_res
+
+    def get_aff(mol):
+        for prop in ("minimizedAffinity", "score", "vina_affinity"):
+            if mol.HasProp(prop):
+                try:
+                    return float(mol.GetProp(prop))
+                except ValueError:
+                    pass
+        return 0.0
+
+    top_aff = get_aff(mols[0])
+    evaluated = []
+
+    for mode_idx, mol in enumerate(mols, start=1):
+        aff = get_aff(mol)
+        conf = mol.GetConformer()
+        matches = mol.GetSubstructMatches(patt)
+
+        min_d = 99.0
+        best_ang = 0.0
+        for m in matches:
+            c_idx, o_idx = m[0], m[1]
+            c_pos = np.array(conf.GetAtomPosition(c_idx))
+            o_pos = np.array(conf.GetAtomPosition(o_idx))
+            d = float(np.linalg.norm(c_pos - ser_og))
+            if d < min_d:
+                min_d = d
+                best_ang = compute_burgi_dunitz_angle(ser_og, c_pos, o_pos)
+
+        attack_dist = round(min_d, 2)
+        clash = attack_dist < 2.2
+        if attack_dist < 2.5:
+            nac_score = round(1.0 / (1.0 + (2.5 - attack_dist) * 2.0), 3)
+        else:
+            nac_score = round(1.0 / (1.0 + max(0.0, attack_dist - 3.2)), 3)
+
+        is_nac = (2.5 <= attack_dist <= 3.5) and (95.0 <= best_ang <= 115.0) and (aff <= -5.0)
+        within_window = (aff <= top_aff + max_energy_diff)
+
+        evaluated.append({
+            "mode": mode_idx,
+            "affinity": aff,
+            "attack_dist": attack_dist,
+            "burgi_dunitz_angle": best_ang,
+            "nac_score": nac_score,
+            "is_nac": is_nac,
+            "clash": clash,
+            "within_window": within_window
+        })
+
+    nac_modes = [em for em in evaluated if em["is_nac"] and em["within_window"]]
+    if nac_modes:
+        best = sorted(nac_modes, key=lambda x: (x["attack_dist"], -x["nac_score"]))[0]
+    else:
+        window_modes = [em for em in evaluated if em["within_window"]]
+        best = sorted(window_modes, key=lambda x: x["attack_dist"])[0] if window_modes else evaluated[0]
+
+    return {
+        "affinity": best["affinity"],
+        "attack_dist": best["attack_dist"],
+        "burgi_dunitz_angle": best["burgi_dunitz_angle"],
+        "nac_score": best["nac_score"],
+        "is_nac": best["is_nac"],
+        "clash": best["clash"],
+        "best_mode": best["mode"]
+    }

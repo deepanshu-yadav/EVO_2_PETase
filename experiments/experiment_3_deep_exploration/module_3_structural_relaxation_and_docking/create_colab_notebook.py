@@ -282,14 +282,17 @@ add_md("""## 6. Tier 3: OpenMM Constrained Local Energy Relaxation
 ESMFold static rotamers often position side chains in unrelaxed positions that block the catalytic Ser $O\\gamma$.
 We apply AMBER14SB energy minimization with **harmonic position restraints** on all heavy backbone atoms ($N, C\\alpha, C, O$) with $k = 10\\text{ kcal/mol}\\cdot\\text{\\AA}^2$.
 This allows side-chain rotamers (especially the Ser $O\\gamma$, His $N\\epsilon2$, Asp $O\\delta$, and aromatic clamp) to resolve steric strain into physical minima while strictly preserving the global fold ($< 0.5\\text{ \\AA}$ backbone RMSD).""")
-add_code("""from openmm.app import PDBFile, ForceField, Simulation
+add_code("""from openmm.app import PDBFile, ForceField, Simulation, Modeller, NoCutoff
 from openmm import CustomExternalForce, LangevinIntegrator
-from openmm.unit import nanometer, kelvin, picosecond, kilocalories_per_mole, angstrom
+from openmm.unit import kelvin, picosecond, kilocalories_per_mole, angstrom
 import numpy as np
 
 print(f"Initiating OpenMM backbone-constrained relaxation on {len(passed_plddt_df)} high-pLDDT designs...")
 relaxation_records = []
 t_relax_start = time.time()
+
+forcefield = ForceField("amber14/protein.ff14SB.xml", "implicit/obc2.xml")
+backbone_names = {"N", "CA", "C", "O"}
 
 for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
     qid = row["id"]
@@ -302,8 +305,10 @@ for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
 
     try:
         pdb = PDBFile(str(in_pdb_path))
-        forcefield = ForceField("amber14/protein.ff14SB.xml", "implicit/obc2.xml")
-        system = forcefield.createSystem(pdb.topology, nonbondedMethod=None, constraints=None)
+        modeller = Modeller(pdb.topology, pdb.positions)
+        modeller.addHydrogens(forcefield)
+
+        system = forcefield.createSystem(modeller.topology, nonbondedMethod=NoCutoff, constraints=None)
 
         # Harmonic restraint on backbone heavy atoms: k = 10 kcal/(mol * A^2)
         k_restraint = 10.0 * kilocalories_per_mole / (angstrom ** 2)
@@ -313,33 +318,29 @@ for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
         restraint.addPerParticleParameter("y0")
         restraint.addPerParticleParameter("z0")
 
-        backbone_names = {"N", "CA", "C", "O"}
         initial_bb = []
-        for atom in pdb.topology.atoms():
+        for atom in modeller.topology.atoms():
             if atom.name in backbone_names:
-                pos = pdb.positions[atom.index]
+                pos = modeller.positions[atom.index]
                 restraint.addParticle(atom.index, [pos[0], pos[1], pos[2]])
                 initial_bb.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
 
         system.addForce(restraint)
 
         integrator = LangevinIntegrator(300 * kelvin, 1.0 / picosecond, 0.002 * picosecond)
-        sim = Simulation(pdb.topology, system, integrator)
-        sim.context.setPositions(pdb.positions)
+        sim = Simulation(modeller.topology, system, integrator)
+        sim.context.setPositions(modeller.positions)
 
-        # Minimize energy
         sim.minimizeEnergy(maxIterations=500)
 
-        # Retrieve relaxed coordinates
         state = sim.context.getState(getPositions=True)
         final_positions = state.getPositions()
 
         with open(out_pdb_path, "w", encoding="utf-8") as f:
-            PDBFile.writeFile(pdb.topology, final_positions, f)
+            PDBFile.writeFile(modeller.topology, final_positions, f)
 
-        # Compute backbone RMSD
         final_bb = []
-        for atom in pdb.topology.atoms():
+        for atom in modeller.topology.atoms():
             if atom.name in backbone_names:
                 pos = final_positions[atom.index]
                 final_bb.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
@@ -364,7 +365,7 @@ for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
 
 df_relax = pd.DataFrame(relaxation_records)
 df_relax.to_csv(WORKSPACE / "relaxation_results.tsv", sep="\t", index=False)
-print(f"\\nRelaxation Complete. Successfully minimized models: {df_relax['relaxation_success'].sum()} / {len(df_relax)}")
+print(f"\nRelaxation Complete. Successfully minimized models: {df_relax['relaxation_success'].sum()} / {len(df_relax)}")
 if not df_relax[df_relax['backbone_rmsd'] > 0].empty:
     print(f"Mean backbone RMSD: {df_relax[df_relax['backbone_rmsd'] > 0]['backbone_rmsd'].mean():.3f} A (Verifies fold preservation)")""")
 
@@ -471,10 +472,8 @@ def audit_active_site(pdb_path):
         qry_his is not None and qry_his.get_resname() == "HIS"
     )
 
-    # Build --flexres string for Smina
+    # Build --flexres string for Smina (keep catalytic Ser rigid so ser_og_coord remains exact)
     flex_res_ids = []
-    if qry_ser is not None:
-        flex_res_ids.append(f"{qry_chain.id}:{qry_ser.id[1]}")
     if qry_his is not None:
         flex_res_ids.append(f"{qry_chain.id}:{qry_his.id[1]}")
     if qry_asp is not None:
@@ -619,6 +618,7 @@ Docks 2-HE(MHET) and 3PET into each relaxed design centered on catalytic Ser $O\
 - Accurately evaluates Bürgi-Dunitz angle trajectory by pairing each ester carbon $C_k$ with its bonded carbonyl oxygen $O_k$:
 $$d_{\\text{attack}} \\le 3.5\\text{ \\AA} \\quad \\text{and} \\quad \\theta_{\\text{Bürgi-Dunitz}} = \\angle(O\\gamma \\cdots C_{\\text{ester}} = O_{\\text{carbonyl}}) \\in [95^\\circ, 115^\\circ] \\quad \\text{and} \\quad \\Delta G_{\\text{bind}} \\le -5.0\\text{ kcal/mol}$$""")
 add_code("""import math
+from rdkit import Chem
 
 def calc_bd_angle(ser_og, ester_c, carbonyl_o):
     v_c_to_ser = ser_og - ester_c
@@ -630,59 +630,47 @@ def calc_bd_angle(ser_og, ester_c, carbonyl_o):
     cos_th = np.clip(np.dot(v_c_to_ser, v_c_to_o) / (n_ser * n_o), -1.0, 1.0)
     return round(math.degrees(math.acos(cos_th)), 2)
 
-def parse_all_docking_modes(out_pdbqt_path, ser_og, c_indices, o_indices, max_energy_diff=1.5):
-    if not out_pdbqt_path.exists():
-        return {"affinity": 0.0, "attack_dist": 99.0, "burgi_dunitz_angle": 0.0, "nac_score": 0.0, "is_nac": False, "clash": False, "best_mode": 1}
+def parse_all_docking_modes_sdf(out_sdf_path, ser_og, ester_smarts, max_energy_diff=1.5):
+    default_res = {
+        "affinity": 0.0, "attack_dist": 99.0, "burgi_dunitz_angle": 0.0,
+        "nac_score": 0.0, "is_nac": False, "clash": False, "best_mode": 1
+    }
+    if not out_sdf_path.exists():
+        return default_res
 
-    modes = []
-    current_coords = []
-    current_aff = None
-    current_mode_num = 1
+    patt = Chem.MolFromSmarts(ester_smarts)
+    suppl = Chem.SDMolSupplier(str(out_sdf_path), removeHs=False)
+    mols = [m for m in suppl if m is not None]
+    if not mols:
+        return default_res
 
-    with open(out_pdbqt_path, "r", encoding="utf-8") as f:
-        for line in f:
-            if line.startswith("MODEL"):
-                current_coords = []
-                current_aff = None
+    def get_aff(mol):
+        for prop in ("minimizedAffinity", "score", "vina_affinity"):
+            if mol.HasProp(prop):
                 try:
-                    current_mode_num = int(line.split()[1])
-                except Exception:
-                    current_mode_num = len(modes) + 1
-            elif "REMARK VINA RESULT:" in line:
-                try:
-                    current_aff = float(line.split()[3])
-                except Exception:
-                    pass
-            elif line.startswith(("ATOM", "HETATM")):
-                try:
-                    current_coords.append(np.array([float(line[30:38]), float(line[38:46]), float(line[46:54])]))
+                    return float(mol.GetProp(prop))
                 except ValueError:
                     pass
-            elif line.startswith("ENDMDL"):
-                if current_coords:
-                    modes.append({"mode": current_mode_num, "affinity": current_aff if current_aff is not None else 0.0, "coords": current_coords})
-                current_coords = []
+        return 0.0
 
-    if not modes:
-        return {"affinity": 0.0, "attack_dist": 99.0, "burgi_dunitz_angle": 0.0, "nac_score": 0.0, "is_nac": False, "clash": False, "best_mode": 1}
-
-    top_aff = modes[0]["affinity"]
+    top_aff = get_aff(mols[0])
     evaluated = []
 
-    for m in modes:
-        aff = m["affinity"]
-        coords = m["coords"]
+    for mode_idx, mol in enumerate(mols, start=1):
+        aff = get_aff(mol)
+        conf = mol.GetConformer()
+        matches = mol.GetSubstructMatches(patt)
+
         min_d = 99.0
         best_ang = 0.0
-
-        # Review Fix 4: Pair each ester carbon with its bonded carbonyl oxygen
-        for c_idx, o_idx in zip(c_indices, o_indices):
-            if c_idx < len(coords) and o_idx < len(coords):
-                c_pos = coords[c_idx]
-                d = float(np.linalg.norm(c_pos - ser_og))
-                if d < min_d:
-                    min_d = d
-                    best_ang = calc_bd_angle(ser_og, c_pos, coords[o_idx])
+        for m in matches:
+            c_idx, o_idx = m[0], m[1]
+            c_pos = np.array(conf.GetAtomPosition(c_idx))
+            o_pos = np.array(conf.GetAtomPosition(o_idx))
+            d = float(np.linalg.norm(c_pos - ser_og))
+            if d < min_d:
+                min_d = d
+                best_ang = calc_bd_angle(ser_og, c_pos, o_pos)
 
         attack_dist = round(min_d, 2)
         clash = attack_dist < 2.2
@@ -695,7 +683,7 @@ def parse_all_docking_modes(out_pdbqt_path, ser_og, c_indices, o_indices, max_en
         within_window = (aff <= top_aff + max_energy_diff)
 
         evaluated.append({
-            "mode": m["mode"],
+            "mode": mode_idx,
             "affinity": aff,
             "attack_dist": attack_dist,
             "burgi_dunitz_angle": best_ang,
@@ -705,7 +693,6 @@ def parse_all_docking_modes(out_pdbqt_path, ser_og, c_indices, o_indices, max_en
             "within_window": within_window
         })
 
-    # Select best mode within energy window
     nac_modes = [em for em in evaluated if em["is_nac"] and em["within_window"]]
     if nac_modes:
         best = sorted(nac_modes, key=lambda x: (x["attack_dist"], -x["nac_score"]))[0]
@@ -723,7 +710,7 @@ def parse_all_docking_modes(out_pdbqt_path, ser_og, c_indices, o_indices, max_en
         "best_mode": best["mode"]
     }
 
-def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_pdbqt):
+def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_sdf):
     ser_og = np.array(ser_coord)
     cmd = [
         "/usr/local/bin/smina",
@@ -733,12 +720,11 @@ def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_pdbqt):
         "--center_y", f"{ser_coord[1]:.2f}",
         "--center_z", f"{ser_coord[2]:.2f}",
         "--size_x", "20.0", "--size_y", "20.0", "--size_z", "20.0",
-        "--exhaustiveness", "16",  # Bounded exhaustiveness for flexible search
+        "--exhaustiveness", "16",
         "--num_modes", "5",
-        "-o", str(out_pdbqt)
+        "-o", str(out_sdf)
     ]
 
-    # Review Fix 3: Enable --flexres
     if flexres_str:
         cmd.extend(["--flexres", flexres_str])
 
@@ -747,10 +733,8 @@ def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_pdbqt):
     except Exception:
         pass
 
-    return parse_all_docking_modes(
-        out_pdbqt, ser_og,
-        lig_conf["ester_c_indices"], lig_conf["carbonyl_o_indices"],
-        max_energy_diff=1.5
+    return parse_all_docking_modes_sdf(
+        out_sdf, ser_og, lig_conf["ester_smarts"], max_energy_diff=1.5
     )
 
 print(f"Executing flexible-receptor reactive docking across {len(df_triads)} designs...")
@@ -770,7 +754,7 @@ for idx, (_, row) in enumerate(df_triads.iterrows()):
 
     entry = {"id": qid}
     for lig_name, lig_conf in ligands_config.items():
-        out_dock = DOCK_DIR / f"{qid}_{lig_name}_docked.pdbqt"
+        out_dock = DOCK_DIR / f"{qid}_{lig_name}_docked.sdf"
         d_res = run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_dock)
         for k, v in d_res.items():
             entry[f"{lig_name}_{k}"] = v
@@ -781,7 +765,7 @@ for idx, (_, row) in enumerate(df_triads.iterrows()):
 
 df_docking = pd.DataFrame(docking_results)
 df_docking.to_csv(WORKSPACE / "smina_flexible_docking_results.tsv", sep="\t", index=False)
-print(f"\\nFlexible Docking Complete. Near-Attack Conformation (NAC) Yield:")
+print(f"\nFlexible Docking Complete. Near-Attack Conformation (NAC) Yield:")
 print(f"  2-HE(MHET) Passing Strict NAC: {df_docking['2he_mhet_is_nac'].sum()} / {len(df_docking)}")
 print(f"  3PET Trimer Passing Strict NAC: {df_docking['3pet_is_nac'].sum()} / {len(df_docking)}")""")
 
