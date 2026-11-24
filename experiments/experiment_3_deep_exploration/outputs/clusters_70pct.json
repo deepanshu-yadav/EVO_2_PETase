@@ -1,0 +1,855 @@
+{
+  "method": "python_greedy",
+  "min_seq_id": 0.7,
+  "min_cov": 0.8,
+  "num_clusters": 81,
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "representative": "019_406",
+      "size": 1,
+      "members": [
+        "019_406"
+      ]
+    },
+    {
+      "cluster_id": 1,
+      "representative": "011_PET6",
+      "size": 2,
+      "members": [
+        "011_PET6",
+        "048_PAZy_3_PET6"
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "representative": "028_Ple629",
+      "size": 8,
+      "members": [
+        "028_Ple629",
+        "029_Ple628",
+        "138_PlasticDB_00119_Lipase_Halopseudomonas_pelagia_PET_ANP21910.",
+        "134_PAZy_528_HaloPETase5",
+        "053_PAZy_200_Hfor_PE-H",
+        "117_PAZy_452_ESM186",
+        "035_PsCut",
+        "135_PAZy_529_HaloPETase6"
+      ]
+    },
+    {
+      "cluster_id": 3,
+      "representative": "032_MORS1",
+      "size": 1,
+      "members": [
+        "032_MORS1"
+      ]
+    },
+    {
+      "cluster_id": 4,
+      "representative": "120_PAZy_461_TEP083",
+      "size": 1,
+      "members": [
+        "120_PAZy_461_TEP083"
+      ]
+    },
+    {
+      "cluster_id": 5,
+      "representative": "013_PET5_OaCut",
+      "size": 1,
+      "members": [
+        "013_PET5_OaCut"
+      ]
+    },
+    {
+      "cluster_id": 6,
+      "representative": "137_PlasticDB_00056_Lipase_Burkholderia_cepacia_PBSA_NA",
+      "size": 1,
+      "members": [
+        "137_PlasticDB_00056_Lipase_Burkholderia_cepacia_PBSA_NA"
+      ]
+    },
+    {
+      "cluster_id": 7,
+      "representative": "089_PAZy_335_1340",
+      "size": 2,
+      "members": [
+        "089_PAZy_335_1340",
+        "122_PAZy_465_TEP101"
+      ]
+    },
+    {
+      "cluster_id": 8,
+      "representative": "017_403",
+      "size": 1,
+      "members": [
+        "017_403"
+      ]
+    },
+    {
+      "cluster_id": 9,
+      "representative": "021_412",
+      "size": 2,
+      "members": [
+        "021_412",
+        "020_409"
+      ]
+    },
+    {
+      "cluster_id": 10,
+      "representative": "081_PAZy_325_1718",
+      "size": 1,
+      "members": [
+        "081_PAZy_325_1718"
+      ]
+    },
+    {
+      "cluster_id": 11,
+      "representative": "042_DmPETase",
+      "size": 1,
+      "members": [
+        "042_DmPETase"
+      ]
+    },
+    {
+      "cluster_id": 12,
+      "representative": "010_401_PET2",
+      "size": 1,
+      "members": [
+        "010_401_PET2"
+      ]
+    },
+    {
+      "cluster_id": 13,
+      "representative": "038_MG8",
+      "size": 2,
+      "members": [
+        "038_MG8",
+        "009_PE-H"
+      ]
+    },
+    {
+      "cluster_id": 14,
+      "representative": "086_PAZy_330_1475",
+      "size": 1,
+      "members": [
+        "086_PAZy_330_1475"
+      ]
+    },
+    {
+      "cluster_id": 15,
+      "representative": "018_405",
+      "size": 1,
+      "members": [
+        "018_405"
+      ]
+    },
+    {
+      "cluster_id": 16,
+      "representative": "036_PaCut",
+      "size": 3,
+      "members": [
+        "036_PaCut",
+        "045_jmPE13",
+        "105_PAZy_398_DP078"
+      ]
+    },
+    {
+      "cluster_id": 17,
+      "representative": "083_PAZy_327_1392",
+      "size": 1,
+      "members": [
+        "083_PAZy_327_1392"
+      ]
+    },
+    {
+      "cluster_id": 18,
+      "representative": "088_PAZy_333_1228",
+      "size": 1,
+      "members": [
+        "088_PAZy_333_1228"
+      ]
+    },
+    {
+      "cluster_id": 19,
+      "representative": "097_PAZy_385_DP016",
+      "size": 2,
+      "members": [
+        "097_PAZy_385_DP016",
+        "119_PAZy_460_TEP067"
+      ]
+    },
+    {
+      "cluster_id": 20,
+      "representative": "139_PlasticDB_00177_PHA_depolymerase_Pseudomonas_putida_PHA_AAN7",
+      "size": 1,
+      "members": [
+        "139_PlasticDB_00177_PHA_depolymerase_Pseudomonas_putida_PHA_AAN7"
+      ]
+    },
+    {
+      "cluster_id": 21,
+      "representative": "064_PAZy_268_APET-29",
+      "size": 1,
+      "members": [
+        "064_PAZy_268_APET-29"
+      ]
+    },
+    {
+      "cluster_id": 22,
+      "representative": "012_PET12_PbPL",
+      "size": 1,
+      "members": [
+        "012_PET12_PbPL"
+      ]
+    },
+    {
+      "cluster_id": 23,
+      "representative": "101_PAZy_390_DP040",
+      "size": 1,
+      "members": [
+        "101_PAZy_390_DP040"
+      ]
+    },
+    {
+      "cluster_id": 24,
+      "representative": "023_504_CtPL",
+      "size": 2,
+      "members": [
+        "023_504_CtPL",
+        "100_PAZy_389_DP039"
+      ]
+    },
+    {
+      "cluster_id": 25,
+      "representative": "033_RgPETase",
+      "size": 3,
+      "members": [
+        "033_RgPETase",
+        "001_IsPETase",
+        "037_AdCut"
+      ]
+    },
+    {
+      "cluster_id": 26,
+      "representative": "085_PAZy_329_1424",
+      "size": 1,
+      "members": [
+        "085_PAZy_329_1424"
+      ]
+    },
+    {
+      "cluster_id": 27,
+      "representative": "070_PAZy_288_1821",
+      "size": 1,
+      "members": [
+        "070_PAZy_288_1821"
+      ]
+    },
+    {
+      "cluster_id": 28,
+      "representative": "099_PAZy_388_DP038",
+      "size": 2,
+      "members": [
+        "099_PAZy_388_DP038",
+        "116_PAZy_449_ESM169"
+      ]
+    },
+    {
+      "cluster_id": 29,
+      "representative": "015_211",
+      "size": 1,
+      "members": [
+        "015_211"
+      ]
+    },
+    {
+      "cluster_id": 30,
+      "representative": "008_602_Tcur0390",
+      "size": 7,
+      "members": [
+        "008_602_Tcur0390",
+        "007_601_Tcur1278",
+        "091_PAZy_337_PC3",
+        "071_PAZy_293_385",
+        "082_PAZy_326_401",
+        "084_PAZy_328_486",
+        "072_PAZy_295_917"
+      ]
+    },
+    {
+      "cluster_id": 31,
+      "representative": "024_606",
+      "size": 4,
+      "members": [
+        "024_606",
+        "051_PAZy_171_PHL-2",
+        "104_PAZy_394_DP057",
+        "121_PAZy_462_TEP091"
+      ]
+    },
+    {
+      "cluster_id": 32,
+      "representative": "076_PAZy_313_247",
+      "size": 1,
+      "members": [
+        "076_PAZy_313_247"
+      ]
+    },
+    {
+      "cluster_id": 33,
+      "representative": "092_PAZy_339_PC5",
+      "size": 7,
+      "members": [
+        "092_PAZy_339_PC5",
+        "031_PC4",
+        "047_ScPETase",
+        "050_PAZy_150_607-Nsp",
+        "090_PAZy_336_191",
+        "128_PAZy_480_KaPETase",
+        "078_PAZy_316_414"
+      ]
+    },
+    {
+      "cluster_id": 34,
+      "representative": "094_PAZy_382_DP006",
+      "size": 1,
+      "members": [
+        "094_PAZy_382_DP006"
+      ]
+    },
+    {
+      "cluster_id": 35,
+      "representative": "103_PAZy_393_DP056",
+      "size": 1,
+      "members": [
+        "103_PAZy_393_DP056"
+      ]
+    },
+    {
+      "cluster_id": 36,
+      "representative": "129_PAZy_481_Sis",
+      "size": 1,
+      "members": [
+        "129_PAZy_481_Sis"
+      ]
+    },
+    {
+      "cluster_id": 37,
+      "representative": "006_Thh_Est",
+      "size": 6,
+      "members": [
+        "006_Thh_Est",
+        "026_708",
+        "093_PAZy_340_PC6",
+        "002_TfCut2",
+        "027_711",
+        "087_PAZy_331_282"
+      ]
+    },
+    {
+      "cluster_id": 38,
+      "representative": "043_PET46",
+      "size": 1,
+      "members": [
+        "043_PET46"
+      ]
+    },
+    {
+      "cluster_id": 39,
+      "representative": "115_PAZy_444_ESM156",
+      "size": 1,
+      "members": [
+        "115_PAZy_444_ESM156"
+      ]
+    },
+    {
+      "cluster_id": 40,
+      "representative": "025_611",
+      "size": 3,
+      "members": [
+        "025_611",
+        "124_PAZy_468_TEP105",
+        "118_PAZy_456_TEP037"
+      ]
+    },
+    {
+      "cluster_id": 41,
+      "representative": "102_PAZy_392_DP054",
+      "size": 1,
+      "members": [
+        "102_PAZy_392_DP054"
+      ]
+    },
+    {
+      "cluster_id": 42,
+      "representative": "039_GlacPETase",
+      "size": 1,
+      "members": [
+        "039_GlacPETase"
+      ]
+    },
+    {
+      "cluster_id": 43,
+      "representative": "044_bbPET0069",
+      "size": 2,
+      "members": [
+        "044_bbPET0069",
+        "041_SM14est"
+      ]
+    },
+    {
+      "cluster_id": 44,
+      "representative": "049_PAZy_18_Cut190",
+      "size": 1,
+      "members": [
+        "049_PAZy_18_Cut190"
+      ]
+    },
+    {
+      "cluster_id": 45,
+      "representative": "096_PAZy_384_DP008",
+      "size": 1,
+      "members": [
+        "096_PAZy_384_DP008"
+      ]
+    },
+    {
+      "cluster_id": 46,
+      "representative": "003_LCC",
+      "size": 2,
+      "members": [
+        "003_LCC",
+        "130_PAZy_483_DIEGO"
+      ]
+    },
+    {
+      "cluster_id": 47,
+      "representative": "004_PHL7",
+      "size": 1,
+      "members": [
+        "004_PHL7"
+      ]
+    },
+    {
+      "cluster_id": 48,
+      "representative": "022_503",
+      "size": 2,
+      "members": [
+        "022_503",
+        "077_PAZy_315_1309"
+      ]
+    },
+    {
+      "cluster_id": 49,
+      "representative": "054_PAZy_236_dsPETase01",
+      "size": 1,
+      "members": [
+        "054_PAZy_236_dsPETase01"
+      ]
+    },
+    {
+      "cluster_id": 50,
+      "representative": "058_PAZy_258_APET-15",
+      "size": 1,
+      "members": [
+        "058_PAZy_258_APET-15"
+      ]
+    },
+    {
+      "cluster_id": 51,
+      "representative": "060_PAZy_261_APET-20",
+      "size": 1,
+      "members": [
+        "060_PAZy_261_APET-20"
+      ]
+    },
+    {
+      "cluster_id": 52,
+      "representative": "106_PAZy_399_DP080",
+      "size": 1,
+      "members": [
+        "106_PAZy_399_DP080"
+      ]
+    },
+    {
+      "cluster_id": 53,
+      "representative": "107_PAZy_401_DP082",
+      "size": 1,
+      "members": [
+        "107_PAZy_401_DP082"
+      ]
+    },
+    {
+      "cluster_id": 54,
+      "representative": "005_PmC",
+      "size": 2,
+      "members": [
+        "005_PmC",
+        "136_PAZy_538_R75estA"
+      ]
+    },
+    {
+      "cluster_id": 55,
+      "representative": "030_CaPETase",
+      "size": 1,
+      "members": [
+        "030_CaPETase"
+      ]
+    },
+    {
+      "cluster_id": 56,
+      "representative": "056_PAZy_238_dsPETase06",
+      "size": 2,
+      "members": [
+        "056_PAZy_238_dsPETase06",
+        "065_PAZy_269_APET-32"
+      ]
+    },
+    {
+      "cluster_id": 57,
+      "representative": "075_PAZy_310_1240",
+      "size": 1,
+      "members": [
+        "075_PAZy_310_1240"
+      ]
+    },
+    {
+      "cluster_id": 58,
+      "representative": "095_PAZy_383_DP007",
+      "size": 1,
+      "members": [
+        "095_PAZy_383_DP007"
+      ]
+    },
+    {
+      "cluster_id": 59,
+      "representative": "110_PAZy_404_DP090",
+      "size": 1,
+      "members": [
+        "110_PAZy_404_DP090"
+      ]
+    },
+    {
+      "cluster_id": 60,
+      "representative": "131_PAZy_525_HaloPETase2",
+      "size": 4,
+      "members": [
+        "131_PAZy_525_HaloPETase2",
+        "132_PAZy_526_HaloPETase3",
+        "133_PAZy_527_HaloPETase4",
+        "055_PAZy_237_dsPETase05"
+      ]
+    },
+    {
+      "cluster_id": 61,
+      "representative": "040_SIBER_1",
+      "size": 2,
+      "members": [
+        "040_SIBER_1",
+        "127_PAZy_479_TEP194"
+      ]
+    },
+    {
+      "cluster_id": 62,
+      "representative": "052_PAZy_174_PHL-4",
+      "size": 1,
+      "members": [
+        "052_PAZy_174_PHL-4"
+      ]
+    },
+    {
+      "cluster_id": 63,
+      "representative": "098_PAZy_386_DP017",
+      "size": 1,
+      "members": [
+        "098_PAZy_386_DP017"
+      ]
+    },
+    {
+      "cluster_id": 64,
+      "representative": "108_PAZy_402_DP084",
+      "size": 2,
+      "members": [
+        "108_PAZy_402_DP084",
+        "125_PAZy_476_TEP178"
+      ]
+    },
+    {
+      "cluster_id": 65,
+      "representative": "109_PAZy_403_DP089",
+      "size": 1,
+      "members": [
+        "109_PAZy_403_DP089"
+      ]
+    },
+    {
+      "cluster_id": 66,
+      "representative": "111_PAZy_416_ESM045",
+      "size": 2,
+      "members": [
+        "111_PAZy_416_ESM045",
+        "034_RgCut-II"
+      ]
+    },
+    {
+      "cluster_id": 67,
+      "representative": "067_PAZy_275_1663",
+      "size": 4,
+      "members": [
+        "067_PAZy_275_1663",
+        "057_PAZy_257_KbPETase",
+        "068_PAZy_276_Kubu-P",
+        "123_PAZy_467_TEP103"
+      ]
+    },
+    {
+      "cluster_id": 68,
+      "representative": "069_PAZy_286_1507",
+      "size": 4,
+      "members": [
+        "069_PAZy_286_1507",
+        "074_PAZy_302_1463",
+        "113_PAZy_432_ESM090",
+        "114_PAZy_443_ESM144"
+      ]
+    },
+    {
+      "cluster_id": 69,
+      "representative": "073_PAZy_300_1169",
+      "size": 1,
+      "members": [
+        "073_PAZy_300_1169"
+      ]
+    },
+    {
+      "cluster_id": 70,
+      "representative": "059_PAZy_260_APET-19",
+      "size": 1,
+      "members": [
+        "059_PAZy_260_APET-19"
+      ]
+    },
+    {
+      "cluster_id": 71,
+      "representative": "066_PAZy_270_Mipa-P",
+      "size": 1,
+      "members": [
+        "066_PAZy_270_Mipa-P"
+      ]
+    },
+    {
+      "cluster_id": 72,
+      "representative": "080_PAZy_323_1638",
+      "size": 1,
+      "members": [
+        "080_PAZy_323_1638"
+      ]
+    },
+    {
+      "cluster_id": 73,
+      "representative": "079_PAZy_319_1395",
+      "size": 1,
+      "members": [
+        "079_PAZy_319_1395"
+      ]
+    },
+    {
+      "cluster_id": 74,
+      "representative": "046_F148",
+      "size": 1,
+      "members": [
+        "046_F148"
+      ]
+    },
+    {
+      "cluster_id": 75,
+      "representative": "062_PAZy_264_APET-25",
+      "size": 1,
+      "members": [
+        "062_PAZy_264_APET-25"
+      ]
+    },
+    {
+      "cluster_id": 76,
+      "representative": "112_PAZy_417_ESM050",
+      "size": 2,
+      "members": [
+        "112_PAZy_417_ESM050",
+        "126_PAZy_478_TEP189"
+      ]
+    },
+    {
+      "cluster_id": 77,
+      "representative": "014_204",
+      "size": 1,
+      "members": [
+        "014_204"
+      ]
+    },
+    {
+      "cluster_id": 78,
+      "representative": "063_PAZy_267_APET-28",
+      "size": 1,
+      "members": [
+        "063_PAZy_267_APET-28"
+      ]
+    },
+    {
+      "cluster_id": 79,
+      "representative": "016_214",
+      "size": 1,
+      "members": [
+        "016_214"
+      ]
+    },
+    {
+      "cluster_id": 80,
+      "representative": "061_PAZy_263_APET-24",
+      "size": 1,
+      "members": [
+        "061_PAZy_263_APET-24"
+      ]
+    }
+  ],
+  "id_to_cluster": {
+    "019_406": 0,
+    "011_PET6": 1,
+    "048_PAZy_3_PET6": 1,
+    "028_Ple629": 2,
+    "032_MORS1": 3,
+    "120_PAZy_461_TEP083": 4,
+    "013_PET5_OaCut": 5,
+    "137_PlasticDB_00056_Lipase_Burkholderia_cepacia_PBSA_NA": 6,
+    "089_PAZy_335_1340": 7,
+    "017_403": 8,
+    "021_412": 9,
+    "081_PAZy_325_1718": 10,
+    "042_DmPETase": 11,
+    "010_401_PET2": 12,
+    "029_Ple628": 2,
+    "038_MG8": 13,
+    "138_PlasticDB_00119_Lipase_Halopseudomonas_pelagia_PET_ANP21910.": 2,
+    "009_PE-H": 13,
+    "134_PAZy_528_HaloPETase5": 2,
+    "053_PAZy_200_Hfor_PE-H": 2,
+    "117_PAZy_452_ESM186": 2,
+    "086_PAZy_330_1475": 14,
+    "018_405": 15,
+    "035_PsCut": 2,
+    "036_PaCut": 16,
+    "083_PAZy_327_1392": 17,
+    "135_PAZy_529_HaloPETase6": 2,
+    "088_PAZy_333_1228": 18,
+    "097_PAZy_385_DP016": 19,
+    "139_PlasticDB_00177_PHA_depolymerase_Pseudomonas_putida_PHA_AAN7": 20,
+    "045_jmPE13": 16,
+    "064_PAZy_268_APET-29": 21,
+    "105_PAZy_398_DP078": 16,
+    "119_PAZy_460_TEP067": 19,
+    "122_PAZy_465_TEP101": 7,
+    "012_PET12_PbPL": 22,
+    "020_409": 9,
+    "101_PAZy_390_DP040": 23,
+    "023_504_CtPL": 24,
+    "033_RgPETase": 25,
+    "085_PAZy_329_1424": 26,
+    "100_PAZy_389_DP039": 24,
+    "070_PAZy_288_1821": 27,
+    "099_PAZy_388_DP038": 28,
+    "116_PAZy_449_ESM169": 28,
+    "015_211": 29,
+    "001_IsPETase": 25,
+    "008_602_Tcur0390": 30,
+    "024_606": 31,
+    "037_AdCut": 25,
+    "076_PAZy_313_247": 32,
+    "092_PAZy_339_PC5": 33,
+    "094_PAZy_382_DP006": 34,
+    "103_PAZy_393_DP056": 35,
+    "129_PAZy_481_Sis": 36,
+    "006_Thh_Est": 37,
+    "026_708": 37,
+    "031_PC4": 33,
+    "043_PET46": 38,
+    "047_ScPETase": 33,
+    "050_PAZy_150_607-Nsp": 33,
+    "090_PAZy_336_191": 33,
+    "093_PAZy_340_PC6": 37,
+    "115_PAZy_444_ESM156": 39,
+    "002_TfCut2": 37,
+    "007_601_Tcur1278": 30,
+    "025_611": 40,
+    "027_711": 37,
+    "087_PAZy_331_282": 37,
+    "091_PAZy_337_PC3": 30,
+    "102_PAZy_392_DP054": 41,
+    "128_PAZy_480_KaPETase": 33,
+    "039_GlacPETase": 42,
+    "044_bbPET0069": 43,
+    "049_PAZy_18_Cut190": 44,
+    "051_PAZy_171_PHL-2": 31,
+    "071_PAZy_293_385": 30,
+    "082_PAZy_326_401": 30,
+    "084_PAZy_328_486": 30,
+    "096_PAZy_384_DP008": 45,
+    "124_PAZy_468_TEP105": 40,
+    "003_LCC": 46,
+    "004_PHL7": 47,
+    "022_503": 48,
+    "041_SM14est": 43,
+    "054_PAZy_236_dsPETase01": 49,
+    "058_PAZy_258_APET-15": 50,
+    "060_PAZy_261_APET-20": 51,
+    "072_PAZy_295_917": 30,
+    "077_PAZy_315_1309": 48,
+    "078_PAZy_316_414": 33,
+    "104_PAZy_394_DP057": 31,
+    "106_PAZy_399_DP080": 52,
+    "107_PAZy_401_DP082": 53,
+    "118_PAZy_456_TEP037": 40,
+    "130_PAZy_483_DIEGO": 46,
+    "005_PmC": 54,
+    "030_CaPETase": 55,
+    "056_PAZy_238_dsPETase06": 56,
+    "065_PAZy_269_APET-32": 56,
+    "075_PAZy_310_1240": 57,
+    "095_PAZy_383_DP007": 58,
+    "110_PAZy_404_DP090": 59,
+    "131_PAZy_525_HaloPETase2": 60,
+    "132_PAZy_526_HaloPETase3": 60,
+    "133_PAZy_527_HaloPETase4": 60,
+    "136_PAZy_538_R75estA": 54,
+    "040_SIBER_1": 61,
+    "052_PAZy_174_PHL-4": 62,
+    "055_PAZy_237_dsPETase05": 60,
+    "098_PAZy_386_DP017": 63,
+    "108_PAZy_402_DP084": 64,
+    "109_PAZy_403_DP089": 65,
+    "125_PAZy_476_TEP178": 64,
+    "127_PAZy_479_TEP194": 61,
+    "111_PAZy_416_ESM045": 66,
+    "034_RgCut-II": 66,
+    "067_PAZy_275_1663": 67,
+    "069_PAZy_286_1507": 68,
+    "073_PAZy_300_1169": 69,
+    "074_PAZy_302_1463": 68,
+    "121_PAZy_462_TEP091": 31,
+    "057_PAZy_257_KbPETase": 67,
+    "059_PAZy_260_APET-19": 70,
+    "066_PAZy_270_Mipa-P": 71,
+    "068_PAZy_276_Kubu-P": 67,
+    "080_PAZy_323_1638": 72,
+    "079_PAZy_319_1395": 73,
+    "113_PAZy_432_ESM090": 68,
+    "114_PAZy_443_ESM144": 68,
+    "046_F148": 74,
+    "062_PAZy_264_APET-25": 75,
+    "123_PAZy_467_TEP103": 67,
+    "112_PAZy_417_ESM050": 76,
+    "014_204": 77,
+    "063_PAZy_267_APET-28": 78,
+    "126_PAZy_478_TEP189": 76,
+    "016_214": 79,
+    "061_PAZy_263_APET-24": 80
+  }
+}

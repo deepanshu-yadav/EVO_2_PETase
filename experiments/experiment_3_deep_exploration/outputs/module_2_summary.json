@@ -1,0 +1,34 @@
+{
+  "total_generated": 800,
+  "valid_cds_count": 214,
+  "novel_count": 94,
+  "cliff_analysis": {
+    "cliff_detected": false,
+    "cliff_depth": null,
+    "peak_novel_yield_pct": 46.02,
+    "metrics_per_depth": [
+      {
+        "n_examples": 8,
+        "total_samples": 400,
+        "valid_samples": 113,
+        "mean_max_pid": 84.91,
+        "novel_count": 52,
+        "novel_yield_pct": 46.02,
+        "drop_from_peak_pct": 0.0,
+        "is_cliff": false
+      },
+      {
+        "n_examples": 16,
+        "total_samples": 400,
+        "valid_samples": 101,
+        "mean_max_pid": 85.39,
+        "novel_count": 42,
+        "novel_yield_pct": 41.58,
+        "drop_from_peak_pct": 4.43,
+        "is_cliff": false
+      }
+    ]
+  },
+  "grid_tsv": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\generated_continuations_grid.tsv",
+  "screened_fasta": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\designs_exp3_screened_novel.faa"
+}

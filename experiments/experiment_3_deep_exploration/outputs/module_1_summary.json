@@ -1,0 +1,18 @@
+{
+  "pool_size": 139,
+  "thermal_counts": {
+    "thermo": 11,
+    "meso": 118,
+    "intermediate": 10
+  },
+  "num_clusters_70pct": 81,
+  "clustering_method": "python_greedy",
+  "k_draws": 50,
+  "base_seed": 1337,
+  "manifest": {
+    "prompts_thermo_curriculum": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\prompts_thermo_curriculum.json",
+    "prompts_thermo": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\prompts_thermo.json",
+    "prompts_meso": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\prompts_meso.json",
+    "prompts_contrastive": "C:\\Users\\DEEPANSHU\\Desktop\\workspace\\evo_2_try\\experiments\\experiment_3_deep_exploration\\outputs\\prompts_contrastive.json"
+  }
+}

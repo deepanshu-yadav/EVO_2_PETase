@@ -8,3 +8,6 @@ experiments/experiment_2_folding/results/esmfold_pdbs/*
 experiments/experiment_2_folding/results/docking_results/*
 scratch/*
 scratch/
+
+**/__pycache__/
+*.py[cod]
