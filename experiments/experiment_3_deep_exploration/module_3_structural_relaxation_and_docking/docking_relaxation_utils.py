@@ -49,29 +49,32 @@ def relax_structure_openmm(
 ) -> Tuple[bool, float, str]:
     """Perform OpenMM constrained local energy minimization on an ESMFold PDB model.
     
-    Heavy backbone atoms (N, CA, C, O) are restrained with a harmonic potential:
-        U = 0.5 * k * ((x-x0)^2 + (y-y0)^2 + (z-z0)^2)
-    with k = 10 kcal/(mol * A^2), allowing side-chain rotamers to relax into physical
-    energy minima without disrupting the backbone fold.
+    Uses PDBFixer to restore missing C-terminal OXT atoms and hydrogens (omitted by ESMFold),
+    resolving AMBER template matching failures. Applies harmonic position restraints on
+    backbone heavy atoms (N, CA, C, O) with k = 10 kcal/(mol * A^2) to allow side-chain
+    rotamers to resolve steric strain while strictly preserving global fold topology.
     
     Returns:
         (success, backbone_rmsd, message)
     """
     try:
-        from openmm.app import PDBFile, ForceField, Simulation, Modeller, NoCutoff
+        from pdbfixer import PDBFixer
+        from openmm.app import PDBFile, ForceField, Simulation, NoCutoff
         from openmm import CustomExternalForce, LangevinIntegrator
-        from openmm.unit import nanometer, kelvin, picosecond, kilocalories_per_mole, angstrom
+        from openmm.unit import kelvin, picosecond, kilocalories_per_mole, angstrom
     except ImportError:
-        return False, 0.0, "OpenMM not installed in environment."
+        return False, 0.0, "OpenMM or PDBFixer not installed in environment."
 
     try:
-        pdb = PDBFile(str(input_pdb))
-        # Use AMBER14SB with implicit solvent OBC2
+        fixer = PDBFixer(filename=str(input_pdb))
+        fixer.findMissingResidues()
+        fixer.findMissingAtoms()
+        fixer.addMissingAtoms()
+        fixer.addMissingHydrogens(7.0)
+
         forcefield = ForceField("amber14/protein.ff14SB.xml", "implicit/obc2.xml")
-        modeller = Modeller(pdb.topology, pdb.positions)
-        modeller.addHydrogens(forcefield)
         system = forcefield.createSystem(
-            modeller.topology,
+            fixer.topology,
             nonbondedMethod=NoCutoff,
             constraints=None,
         )
@@ -86,17 +89,17 @@ def relax_structure_openmm(
 
         backbone_names = {"N", "CA", "C", "O"}
         initial_bb_coords = []
-        for atom in modeller.topology.atoms():
+        for atom in fixer.topology.atoms():
             if atom.name in backbone_names:
-                pos = modeller.positions[atom.index]
+                pos = fixer.positions[atom.index]
                 restraint.addParticle(atom.index, [pos[0], pos[1], pos[2]])
                 initial_bb_coords.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
 
         system.addForce(restraint)
 
         integrator = LangevinIntegrator(300 * kelvin, 1.0 / picosecond, 0.002 * picosecond)
-        simulation = Simulation(pdb.topology, system, integrator)
-        simulation.context.setPositions(modeller.positions)
+        simulation = Simulation(fixer.topology, system, integrator)
+        simulation.context.setPositions(fixer.positions)
 
         # Minimize
         simulation.minimizeEnergy(maxIterations=max_iterations)
@@ -107,11 +110,11 @@ def relax_structure_openmm(
         
         output_pdb.parent.mkdir(parents=True, exist_ok=True)
         with open(output_pdb, "w", encoding="utf-8") as f:
-            PDBFile.writeFile(modeller.topology, final_positions, f)
+            PDBFile.writeFile(fixer.topology, final_positions, f)
 
         # Compute backbone RMSD to verify fold preservation
         final_bb_coords = []
-        for atom in modeller.topology.atoms():
+        for atom in fixer.topology.atoms():
             if atom.name in backbone_names:
                 pos = final_positions[atom.index]
                 final_bb_coords.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
@@ -124,8 +127,12 @@ def relax_structure_openmm(
             bb_rmsd = 0.0
 
         return True, round(bb_rmsd, 3), f"Relaxation complete (Backbone RMSD: {bb_rmsd:.3f} A)"
+
     except Exception as e:
-        return False, 0.0, f"OpenMM error: {str(e)}"
+        output_pdb.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(input_pdb, output_pdb)
+        return False, 0.0, f"Relaxation failed: {str(e)}"
+
 
 
 def compute_burgi_dunitz_angle(
@@ -601,7 +608,7 @@ def parse_all_docking_modes_sdf(
         "affinity": 0.0, "attack_dist": 99.0, "burgi_dunitz_angle": 0.0,
         "nac_score": 0.0, "is_nac": False, "clash": False, "best_mode": 1
     }
-    if not out_sdf_path.exists():
+    if not out_sdf_path.exists() or out_sdf_path.stat().st_size == 0:
         return default_res
 
     try:

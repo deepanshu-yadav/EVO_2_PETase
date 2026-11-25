@@ -147,15 +147,19 @@ def prepare_ligands(ligand_dir: pathlib.Path) -> Dict[str, Dict[str, Any]]:
         # Prepare PDBQT with Meeko or OpenBabel
         if not info["pdbqt"].exists() and info["sdf"].exists():
             try:
-                from meeko import MoleculePreparation, PDBQTWriterLegacy
+                import meeko
                 mol = Chem.MolFromMolFile(str(info["sdf"]), removeHs=False)
-                preparator = MoleculePreparation()
+                preparator = meeko.MoleculePreparation()
                 mol_setups = preparator.prepare(mol)
                 for setup in mol_setups:
-                    pdbqt_str, is_ok, err = PDBQTWriterLegacy.write_string(setup)
-                    if is_ok:
-                        info["pdbqt"].write_text(pdbqt_str)
+                    if hasattr(setup, "write_pdbqt_string"):
+                        info["pdbqt"].write_text(setup.write_pdbqt_string())
                         break
+                    elif hasattr(meeko, "PDBQTWriterLegacy"):
+                        pdbqt_str, is_ok, err = meeko.PDBQTWriterLegacy.write_string(setup)
+                        if is_ok:
+                            info["pdbqt"].write_text(pdbqt_str)
+                            break
             except Exception:
                 pass
 

@@ -84,10 +84,11 @@ print("Workspace initialized in:", WORKSPACE.resolve())""")
 # Cell 2: Dependencies Installation
 add_md("## 2. Install Dependencies & Structural Tools (OpenMM, Foldseek, Smina, Meeko, RDKit)")
 add_code("""!apt-get update -qq
-!apt-get install -y -qq libboost-all-dev swig curl wget
+!apt-get install -y -qq libboost-all-dev swig openbabel curl wget
 
-# Install core scientific and biophysical packages
-!pip install -q transformers torch biopython rdkit meeko scipy pandas openmm pdbfixer
+# Install core scientific and biophysical packages (matching Experiment 2 setup with meeko & openmm)
+!pip install -q vina
+!pip install -q transformers accelerate torch biopython matplotlib pandas numpy rdkit "meeko<=0.4.0" scipy openmm pdbfixer
 
 import urllib.request, tarfile, shutil
 
@@ -199,35 +200,85 @@ print(f"  Passed (Motif + Asp + His present): {len(tier1_passed)} / {len(df_tier
 add_md("""## 5. Tier 2: ESMFold Tertiary Structure Prediction & pLDDT Evaluation
 Predicts 3D structures using `facebook/esmfold_v1` on GPU (or ESM Atlas API as fallback).
 Caches coordinates to `esmfold_pdbs/{id}.pdb` to prevent recomputing folded structures upon re-runs.
+Automatically detects pre-existing or uploaded PDB directories/archives and skips folding when structures are already present.
 Filters designs with $\\text{mean pLDDT} \\ge 80.0$.""")
-add_code("""import torch, time, urllib.request
+add_code("""import torch, time, urllib.request, zipfile, shutil
 from transformers import AutoTokenizer, EsmForProteinFolding
 
-print("Preparing ESMFold v1 model...")
+# 1. Detect and extract uploaded PDB coordinate archives or local directories
+uploaded_zips = list(pathlib.Path(".").glob("*.zip")) + \
+                list(pathlib.Path("inputs").glob("*.zip")) + \
+                list(pathlib.Path("/content").glob("*.zip") if pathlib.Path("/content").exists() else [])
+for zpath in uploaded_zips:
+    if "pdb" in zpath.name.lower():
+        print(f"Found uploaded coordinate archive: {zpath}. Extracting to {PDB_DIR}...")
+        try:
+            with zipfile.ZipFile(zpath, 'r') as zip_ref:
+                for member in zip_ref.namelist():
+                    if member.endswith(".pdb"):
+                        fname = pathlib.Path(member).name
+                        target_file = PDB_DIR / fname
+                        if not target_file.exists():
+                            with zip_ref.open(member) as source, open(target_file, "wb") as target:
+                                shutil.copyfileobj(source, target)
+        except Exception as e:
+            print(f"Archive extraction notice: {e}")
+
+# Check alternate directories where PDBs may have been uploaded
+alt_dirs = [
+    pathlib.Path("esmfold_pdbs"),
+    pathlib.Path("inputs/esmfold_pdbs"),
+    pathlib.Path("pdbs"),
+    pathlib.Path("/content/esmfold_pdbs"),
+    pathlib.Path("/content/pdbs")
+]
+for adir in alt_dirs:
+    if adir.exists() and adir.resolve() != PDB_DIR.resolve():
+        for pfile in adir.glob("*.pdb"):
+            dest_file = PDB_DIR / pfile.name
+            if not dest_file.exists():
+                shutil.copy(pfile, dest_file)
+
+# 2. Check existing PDB models against Tier 1 passing candidates
+needed_ids = [r["id"] for r in tier1_passed]
+existing_ids = {p.stem for p in PDB_DIR.glob("*.pdb") if p.stat().st_size > 0}
+missing_ids = [qid for qid in needed_ids if qid not in existing_ids]
+
+print(f"Candidate PDB status in {PDB_DIR}: {len(needed_ids) - len(missing_ids)} / {len(needed_ids)} models ready.")
+
+use_hf = False
+tokenizer = None
+model = None
 device = "cuda" if torch.cuda.is_available() else "cpu"
-try:
-    tokenizer = AutoTokenizer.from_pretrained("facebook/esmfold_v1")
-    model = EsmForProteinFolding.from_pretrained("facebook/esmfold_v1", low_cpu_mem_usage=True)
-    model = model.to(device)
-    model.eval()
-    print(f"ESMFold loaded on {device}.")
-    use_hf = True
-except Exception as e:
-    print(f"HuggingFace ESMFold loading notice: {e}. Falling back to ESM Atlas API...")
-    use_hf = False
+
+if len(missing_ids) == 0:
+    print(f"All {len(needed_ids)} candidate PDB structures already exist in {PDB_DIR}!")
+    print("SKIPPING ESMFold model loading and folding entirely to save time and GPU memory.")
+else:
+    print(f"Missing {len(missing_ids)} structures. Preparing ESMFold v1 model on {device}...")
+    try:
+        tokenizer = AutoTokenizer.from_pretrained("facebook/esmfold_v1")
+        model = EsmForProteinFolding.from_pretrained("facebook/esmfold_v1", low_cpu_mem_usage=True)
+        model = model.to(device)
+        model.eval()
+        print(f"ESMFold loaded on {device}.")
+        use_hf = True
+    except Exception as e:
+        print(f"HuggingFace ESMFold loading notice: {e}. Falling back to ESM Atlas API...")
+        use_hf = False
 
 def fold_sequence(seq, qid):
     pdb_path = PDB_DIR / f"{qid}.pdb"
-    if pdb_path.exists():
-        return pdb_path.read_text()
+    if pdb_path.exists() and pdb_path.stat().st_size > 0:
+        return pdb_path.read_text(encoding="utf-8")
 
-    if use_hf:
+    if use_hf and model is not None:
         with torch.no_grad():
             inputs = tokenizer([seq], return_tensors="pt", add_special_tokens=False)
             inputs = {k: v.to(device) for k, v in inputs.items()}
             outputs = model(**inputs)
             pdb_str = model.output_to_pdb(outputs)[0]
-            pdb_path.write_text(pdb_str)
+            pdb_path.write_text(pdb_str, encoding="utf-8")
             return pdb_str
     else:
         req = urllib.request.Request(
@@ -237,10 +288,10 @@ def fold_sequence(seq, qid):
         )
         with urllib.request.urlopen(req, timeout=90) as resp:
             pdb_str = resp.read().decode("utf-8")
-            pdb_path.write_text(pdb_str)
+            pdb_path.write_text(pdb_str, encoding="utf-8")
             return pdb_str
 
-print(f"Folding {len(tier1_passed)} Tier 1 passing designs...")
+print(f"Processing 3D structures and extracting pLDDT for {len(tier1_passed)} candidates...")
 t0 = time.time()
 plddts = []
 
@@ -273,16 +324,17 @@ df_plddt = pd.DataFrame(tier1_passed)
 df_plddt.to_csv(WORKSPACE / "esmfold_plddt_summary.tsv", sep="\t", index=False)
 passed_plddt_df = df_plddt[df_plddt["passed_plddt80"]].copy()
 
-print(f"\\nFolding Complete in {time.time() - t0:.1f}s.")
+print(f"\\nStructure Evaluation Complete in {time.time() - t0:.1f}s.")
 print(f"High-Confidence Designs (mean pLDDT >= 80.0): {len(passed_plddt_df)} / {len(df_plddt)} ({100*len(passed_plddt_df)/max(len(df_plddt),1):.1f}%)")""")
 
 # Cell 6: OpenMM Backbone-Constrained Local Energy Relaxation
 add_md("""## 6. Tier 3: OpenMM Constrained Local Energy Relaxation
-**The Essential Fix for Rotamer Clashes & NAC False-Negatives:**
-ESMFold static rotamers often position side chains in unrelaxed positions that block the catalytic Ser $O\\gamma$.
-We apply AMBER14SB energy minimization with **harmonic position restraints** on all heavy backbone atoms ($N, C\\alpha, C, O$) with $k = 10\\text{ kcal/mol}\\cdot\\text{\\AA}^2$.
-This allows side-chain rotamers (especially the Ser $O\\gamma$, His $N\\epsilon2$, Asp $O\\delta$, and aromatic clamp) to resolve steric strain into physical minima while strictly preserving the global fold ($< 0.5\\text{ \\AA}$ backbone RMSD).""")
-add_code("""from openmm.app import PDBFile, ForceField, Simulation, Modeller, NoCutoff
+**The Essential Fix for Rotamer Clashes & Fold Preservation with PDBFixer:**
+ESMFold PDBs omit the C-terminal $OXT$ atom and hydrogens, causing standard AMBER template matchers to fail.
+We use **PDBFixer** to automatically reconstruct missing atoms, terminal oxygen, and protonation states before creating the AMBER14SB/OBC2 system.
+Harmonic position restraints are applied to all heavy backbone atoms ($N, C\\alpha, C, O$) with $k = 10\\text{ kcal/mol}\\cdot\\text{\\AA}^2$, allowing side-chain rotamers (catalytic Ser $O\\gamma$, His $N\\epsilon2$, Asp $O\\delta$, aromatic clamp) to resolve steric strain into physical minima while strictly preserving the global fold ($< 0.5\\text{ \\AA}$ backbone RMSD).""")
+add_code("""from pdbfixer import PDBFixer
+from openmm.app import PDBFile, ForceField, Simulation, NoCutoff
 from openmm import CustomExternalForce, LangevinIntegrator
 from openmm.unit import kelvin, picosecond, kilocalories_per_mole, angstrom
 import numpy as np
@@ -293,22 +345,26 @@ t_relax_start = time.time()
 
 forcefield = ForceField("amber14/protein.ff14SB.xml", "implicit/obc2.xml")
 backbone_names = {"N", "CA", "C", "O"}
+FORCE_RELAX = True  # Set True once to overwrite the unrelaxed copies from the previous run
 
 for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
     qid = row["id"]
     in_pdb_path = PDB_DIR / f"{qid}.pdb"
     out_pdb_path = RELAX_DIR / f"{qid}_relaxed.pdb"
 
-    if out_pdb_path.exists():
+    if out_pdb_path.exists() and not FORCE_RELAX:
         relaxation_records.append({"id": qid, "relaxation_success": True, "backbone_rmsd": 0.0, "status": "cached"})
         continue
 
     try:
-        pdb = PDBFile(str(in_pdb_path))
-        modeller = Modeller(pdb.topology, pdb.positions)
-        modeller.addHydrogens(forcefield)
+        # PDBFixer adds the missing C-terminal OXT atom and hydrogens that ESMFold omits
+        fixer = PDBFixer(filename=str(in_pdb_path))
+        fixer.findMissingResidues()
+        fixer.findMissingAtoms()
+        fixer.addMissingAtoms()
+        fixer.addMissingHydrogens(7.0)
 
-        system = forcefield.createSystem(modeller.topology, nonbondedMethod=NoCutoff, constraints=None)
+        system = forcefield.createSystem(fixer.topology, nonbondedMethod=NoCutoff, constraints=None)
 
         # Harmonic restraint on backbone heavy atoms: k = 10 kcal/(mol * A^2)
         k_restraint = 10.0 * kilocalories_per_mole / (angstrom ** 2)
@@ -319,17 +375,17 @@ for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
         restraint.addPerParticleParameter("z0")
 
         initial_bb = []
-        for atom in modeller.topology.atoms():
+        for atom in fixer.topology.atoms():
             if atom.name in backbone_names:
-                pos = modeller.positions[atom.index]
+                pos = fixer.positions[atom.index]
                 restraint.addParticle(atom.index, [pos[0], pos[1], pos[2]])
                 initial_bb.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
 
         system.addForce(restraint)
 
         integrator = LangevinIntegrator(300 * kelvin, 1.0 / picosecond, 0.002 * picosecond)
-        sim = Simulation(modeller.topology, system, integrator)
-        sim.context.setPositions(modeller.positions)
+        sim = Simulation(fixer.topology, system, integrator)
+        sim.context.setPositions(fixer.positions)
 
         sim.minimizeEnergy(maxIterations=500)
 
@@ -337,10 +393,10 @@ for idx, (_, row) in enumerate(passed_plddt_df.iterrows()):
         final_positions = state.getPositions()
 
         with open(out_pdb_path, "w", encoding="utf-8") as f:
-            PDBFile.writeFile(modeller.topology, final_positions, f)
+            PDBFile.writeFile(fixer.topology, final_positions, f)
 
         final_bb = []
-        for atom in modeller.topology.atoms():
+        for atom in fixer.topology.atoms():
             if atom.name in backbone_names:
                 pos = final_positions[atom.index]
                 final_bb.append(np.array([pos[0]._value, pos[1]._value, pos[2]._value]))
@@ -552,10 +608,11 @@ print(f"  Constructed flexible residue targets (--flexres):       {df_triads['fl
 
 # Cell 9: Dual Ligand Preparation
 add_md("""## 9. Prepare Docking Ligands: 2-HE(MHET) & 3PET Trimeric PET Fragment
-Generates 3D conformations and PDBQT coordinates for:
+Generates 3D conformations and coordinates for:
 1. **2-HE(MHET):** `O=C(O)c1ccc(C(=O)OCCO)cc1` (Monoradical PET degradation intermediate).
 2. **3PET Fragment:** `O=C(O)c1ccc(C(=O)OCCOc2ccc(C(=O)OCCOc3ccc(C(=O)OCCO)cc3)cc2)cc1` (Trimeric PET chain representing insoluble plastic surface).
-Maps 1-to-1 pairings between each ester carbonyl carbon and its directly bonded carbonyl oxygen.""")
+Maps 1-to-1 pairings between each ester carbonyl carbon and its directly bonded carbonyl oxygen.
+Outputs SDF format directly consumable by Smina (no Meeko/OpenBabel dependency required).""")
 add_code("""from rdkit import Chem
 from rdkit.Chem import AllChem
 
@@ -587,31 +644,40 @@ for name, conf in ligands_config.items():
     conf["ester_c_indices"] = [m[0] for m in matches]
     conf["carbonyl_o_indices"] = [m[1] for m in matches]
 
-    # Convert to PDBQT
+    # Convert to PDBQT as optional format (support both meeko versions & obabel)
     has_meeko = False
     try:
-        from meeko import MoleculePreparation, PDBQTWriterLegacy
+        import meeko
         mol_clean = Chem.MolFromMolFile(str(conf["sdf"]), removeHs=False)
-        prep = MoleculePreparation()
+        prep = meeko.MoleculePreparation()
         setups = prep.prepare(mol_clean)
         for s in setups:
-            pdbqt_str, is_ok, _ = PDBQTWriterLegacy.write_string(s)
-            if is_ok:
-                conf["pdbqt"].write_text(pdbqt_str)
+            if hasattr(s, "write_pdbqt_string"):
+                conf["pdbqt"].write_text(s.write_pdbqt_string())
                 has_meeko = True
                 break
-    except Exception:
+            elif hasattr(meeko, "PDBQTWriterLegacy"):
+                pdbqt_str, is_ok, _ = meeko.PDBQTWriterLegacy.write_string(s)
+                if is_ok:
+                    conf["pdbqt"].write_text(pdbqt_str)
+                    has_meeko = True
+                    break
+    except Exception as e:
         pass
 
     if not has_meeko and not conf["pdbqt"].exists():
-        !obabel {conf["sdf"]} -O {conf["pdbqt"]} -h
+        obabel_exe = shutil.which("obabel")
+        if obabel_exe:
+            subprocess.run([obabel_exe, str(conf["sdf"]), "-O", str(conf["pdbqt"]), "-h"], capture_output=True)
 
-    print(f"Ligand {name:<8} PDBQT ready: {conf['pdbqt'].exists()}")
+    print(f"Ligand {name:<8} SDF ready: {conf['sdf'].exists()} | PDBQT ready: {conf['pdbqt'].exists()}")
     print(f"  Paired Ester C & Carbonyl O indices: {list(zip(conf['ester_c_indices'], conf['carbonyl_o_indices']))}")""")
 
 # Cell 10: Flexible Smina Docking & Near-Attack Conformation (NAC)
 add_md("""## 10. Tier 6: Flexible-Receptor Smina Docking (--flexres) & Multi-Mode NAC
 Docks 2-HE(MHET) and 3PET into each relaxed design centered on catalytic Ser $O\\gamma$ ($20 \\times 20 \\times 20\\text{ \\AA}$ box):
+- Passes `-l lig_conf["sdf"]` directly to Smina (native SDF support, robust against PDBQT conversion failures).
+- Includes 0-byte guard on SDF outputs to prevent crashes on failed docking runs.
 - Passes `--flexres A:<ser>,A:<his>,A:<asp>,A:<trp>` for flexible active-site side chains.
 - Uses `--exhaustiveness 16` for expanded side-chain conformational space.
 - Parses **all 5 output modes** within $\\le 1.5\\text{ kcal/mol}$ of the top mode to capture true near-attack conformations without false-negative mode truncation.
@@ -635,7 +701,7 @@ def parse_all_docking_modes_sdf(out_sdf_path, ser_og, ester_smarts, max_energy_d
         "affinity": 0.0, "attack_dist": 99.0, "burgi_dunitz_angle": 0.0,
         "nac_score": 0.0, "is_nac": False, "clash": False, "best_mode": 1
     }
-    if not out_sdf_path.exists():
+    if not out_sdf_path.exists() or out_sdf_path.stat().st_size == 0:
         return default_res
 
     patt = Chem.MolFromSmarts(ester_smarts)
@@ -715,7 +781,7 @@ def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_sdf):
     cmd = [
         "/usr/local/bin/smina",
         "-r", str(pdb_path),
-        "-l", str(lig_conf["pdbqt"]),
+        "-l", str(lig_conf["sdf"]),  # Use RDKit SDF directly (no Meeko/obabel needed)
         "--center_x", f"{ser_coord[0]:.2f}",
         "--center_y", f"{ser_coord[1]:.2f}",
         "--center_z", f"{ser_coord[2]:.2f}",
@@ -729,9 +795,11 @@ def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_sdf):
         cmd.extend(["--flexres", flexres_str])
 
     try:
-        subprocess.run(cmd, capture_output=True, text=True, timeout=240)
-    except Exception:
-        pass
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=240)
+        if res.returncode != 0:
+            print(f"Smina warning ({out_sdf.name}): {res.stderr.strip()[:200]}")
+    except Exception as e:
+        print(f"Smina exception ({out_sdf.name}): {e}")
 
     return parse_all_docking_modes_sdf(
         out_sdf, ser_og, lig_conf["ester_smarts"], max_energy_diff=1.5
