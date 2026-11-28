@@ -243,12 +243,11 @@ def audit_active_site_architecture(
         qry_his is not None and qry_his.get_resname() == "HIS"
     )
 
-    # Build --flexres string for Smina (keep catalytic Ser rigid so ser_og_coord remains exact)
+    # Build --flexres string for Smina (keep catalytic Ser rigid so ser_og_coord remains exact;
+    # exclude buried Asp to prevent combinatorial search explosion and keep His-Asp H-bond intact)
     flex_res_ids = []
     if qry_his is not None:
         flex_res_ids.append(f"{qry_chain.id}:{qry_his.id[1]}")
-    if qry_asp is not None:
-        flex_res_ids.append(f"{qry_chain.id}:{qry_asp.id[1]}")
     if qry_w159_equiv is not None and qry_w159_equiv.get_resname() in ["TRP", "TYR", "PHE"]:
         flex_res_ids.append(f"{qry_chain.id}:{qry_w159_equiv.id[1]}")
     elif qry_w185_equiv is not None and qry_w185_equiv.get_resname() in ["TRP", "TYR", "PHE"]:
@@ -518,6 +517,23 @@ def parse_all_smina_modes(
     }
 
 
+def prepare_receptor_pdbqt(receptor_pdb: pathlib.Path, out_pdbqt: Optional[pathlib.Path] = None) -> pathlib.Path:
+    """Convert an all-atom PDB to a united-atom rigid PDBQT via obabel -xr (merging nonpolar H)."""
+    if out_pdbqt is None:
+        out_pdbqt = receptor_pdb.with_suffix(".pdbqt")
+    if out_pdbqt.exists() and out_pdbqt.stat().st_size > 0:
+        return out_pdbqt
+    obabel_exe = shutil.which("obabel")
+    if obabel_exe:
+        res = subprocess.run(
+            [obabel_exe, str(receptor_pdb), "-O", str(out_pdbqt), "-xr"],
+            capture_output=True, text=True
+        )
+        if res.returncode == 0 and out_pdbqt.exists() and out_pdbqt.stat().st_size > 0:
+            return out_pdbqt
+    return receptor_pdb
+
+
 def run_smina_flexible_docking(
     receptor_pdb: pathlib.Path,
     ligand_pdbqt: pathlib.Path,
@@ -527,16 +543,15 @@ def run_smina_flexible_docking(
     carbonyl_o_indices: List[int],
     flexres_str: Optional[str] = None,
     smina_exe: str = "smina",
-    box_size: float = 20.0,
-    exhaustiveness: int = 16,
+    box_size: float = 18.0,
+    exhaustiveness: int = 8,
+    timeout_s: int = 360,
 ) -> Dict[str, Any]:
     """Execute Smina flexible docking and evaluate Near-Attack Conformation (NAC).
-    
-    Fixes:
-    - Pass --flexres flag for flexible side chains on catalytic residues.
-    - Default exhaustiveness bumped to 16 (or 32) for flexible conformational search.
-    - Multi-mode parsing: Evaluates all 5 modes within 1.5 kcal/mol of top affinity.
-    - Correctly pairs ester carbons with their bonded carbonyl oxygens for Bürgi-Dunitz trajectory.
+
+    Converts all-atom relaxed PDBs to united-atom PDBQT via obabel -xr when available,
+    runs flexible docking with explicit --cpu/--seed, caches completed outputs, and
+    falls back to rigid OpenMM-relaxed docking if flexible docking times out.
     """
     if not receptor_pdb.exists() or not ligand_pdbqt.exists():
         return {
@@ -548,6 +563,16 @@ def run_smina_flexible_docking(
             "clash_artifact": False,
             "best_mode": 1,
         }
+
+    ser_og = np.array(center_xyz)
+    if out_pdbqt.exists() and out_pdbqt.stat().st_size > 0:
+        return parse_all_smina_modes(
+            out_pdbqt_path=out_pdbqt,
+            ser_og=ser_og,
+            ester_c_indices=ester_c_indices,
+            carbonyl_o_indices=carbonyl_o_indices,
+            max_energy_diff=1.5,
+        )
 
     smina_path = shutil.which(smina_exe) or (
         "/usr/local/bin/smina" if pathlib.Path("/usr/local/bin/smina").exists() else None
@@ -564,31 +589,43 @@ def run_smina_flexible_docking(
             "note": "Smina binary not found; simulated baseline output.",
         }
 
-    cmd = [
-        str(smina_path),
-        "-r", str(receptor_pdb),
-        "-l", str(ligand_pdbqt),
-        "--center_x", f"{center_xyz[0]:.2f}",
-        "--center_y", f"{center_xyz[1]:.2f}",
-        "--center_z", f"{center_xyz[2]:.2f}",
-        "--size_x", f"{box_size:.1f}",
-        "--size_y", f"{box_size:.1f}",
-        "--size_z", f"{box_size:.1f}",
-        "--exhaustiveness", str(exhaustiveness),
-        "--num_modes", "5",
-        "-o", str(out_pdbqt),
-    ]
+    receptor_input = prepare_receptor_pdbqt(receptor_pdb)
+    n_cpus = max(1, os.cpu_count() or 2)
 
-    # Add --flexres if flexible residue string is provided
-    if flexres_str:
-        cmd.extend(["--flexres", flexres_str])
+    def build_cmd(flex_arg: Optional[str], exh: int) -> List[str]:
+        c = [
+            str(smina_path),
+            "-r", str(receptor_input),
+            "-l", str(ligand_pdbqt),
+            "--center_x", f"{center_xyz[0]:.2f}",
+            "--center_y", f"{center_xyz[1]:.2f}",
+            "--center_z", f"{center_xyz[2]:.2f}",
+            "--size_x", f"{box_size:.1f}",
+            "--size_y", f"{box_size:.1f}",
+            "--size_z", f"{box_size:.1f}",
+            "--exhaustiveness", str(exh),
+            "--num_modes", "5",
+            "--cpu", str(n_cpus),
+            "--seed", "42",
+            "-o", str(out_pdbqt),
+        ]
+        if flex_arg:
+            c.extend(["--flexres", flex_arg])
+        return c
 
+    ran_ok = False
     try:
-        subprocess.run(cmd, capture_output=True, text=True, timeout=240)
+        res = subprocess.run(build_cmd(flexres_str, exhaustiveness), capture_output=True, text=True, timeout=timeout_s)
+        ran_ok = (res.returncode == 0 and out_pdbqt.exists() and out_pdbqt.stat().st_size > 0)
     except Exception:
-        pass
+        ran_ok = False
 
-    ser_og = np.array(center_xyz)
+    if not ran_ok and flexres_str:
+        try:
+            subprocess.run(build_cmd(None, min(exhaustiveness, 8)), capture_output=True, text=True, timeout=180)
+        except Exception:
+            pass
+
     return parse_all_smina_modes(
         out_pdbqt_path=out_pdbqt,
         ser_og=ser_og,

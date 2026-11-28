@@ -528,12 +528,11 @@ def audit_active_site(pdb_path):
         qry_his is not None and qry_his.get_resname() == "HIS"
     )
 
-    # Build --flexres string for Smina (keep catalytic Ser rigid so ser_og_coord remains exact)
+    # Build --flexres string for Smina (keep catalytic Ser rigid so ser_og_coord remains exact;
+    # exclude buried Asp to prevent combinatorial search explosion and keep His-Asp H-bond intact)
     flex_res_ids = []
     if qry_his is not None:
         flex_res_ids.append(f"{qry_chain.id}:{qry_his.id[1]}")
-    if qry_asp is not None:
-        flex_res_ids.append(f"{qry_chain.id}:{qry_asp.id[1]}")
     if qry_w159_equiv is not None and qry_w159_equiv.get_resname() in ["TRP", "TYR", "PHE"]:
         flex_res_ids.append(f"{qry_chain.id}:{qry_w159_equiv.id[1]}")
     elif qry_w185_equiv is not None and qry_w185_equiv.get_resname() in ["TRP", "TYR", "PHE"]:
@@ -675,16 +674,56 @@ for name, conf in ligands_config.items():
 
 # Cell 10: Flexible Smina Docking & Near-Attack Conformation (NAC)
 add_md("""## 10. Tier 6: Flexible-Receptor Smina Docking (--flexres) & Multi-Mode NAC
-Docks 2-HE(MHET) and 3PET into each relaxed design centered on catalytic Ser $O\\gamma$ ($20 \\times 20 \\times 20\\text{ \\AA}$ box):
-- Passes `-l lig_conf["sdf"]` directly to Smina (native SDF support, robust against PDBQT conversion failures).
-- Includes 0-byte guard on SDF outputs to prevent crashes on failed docking runs.
-- Passes `--flexres A:<ser>,A:<his>,A:<asp>,A:<trp>` for flexible active-site side chains.
-- Uses `--exhaustiveness 16` for expanded side-chain conformational space.
+Docks 2-HE(MHET) and 3PET into each OpenMM-relaxed design centered on catalytic Ser $O\\gamma$:
+- Pre-converts relaxed PDBs to united-atom PDBQT via `obabel -xr` (merging ~2,000 nonpolar hydrogens while keeping polar `HD` hydrogens and exact chain/residue IDs), eliminating per-run PDB perception overhead.
+- Passes `-l lig_conf["sdf"]` directly to Smina (native SDF support, robust for SMARTS ester matching).
+- Tunes receptor flexibility and search budget for Colab's CPU threads (`--cpu`):
+  - **2-HE(MHET):** `--flexres` on catalytic His + Trp clamp (2 residues), `--exhaustiveness 8`, `18 x 18 x 18` Å box.
+  - **3PET Trimer (~21 ligand torsions):** `--flexres` on gating Trp clamp (1 residue), `--exhaustiveness 4`, `20 x 20 x 20` Å box.
+- Includes **resume caching** (skips existing non-empty `.sdf` outputs) and **automatic rigid-relaxed fallback** if a flexible run exceeds its timeout.
 - Parses **all 5 output modes** within $\\le 1.5\\text{ kcal/mol}$ of the top mode to capture true near-attack conformations without false-negative mode truncation.
 - Accurately evaluates Bürgi-Dunitz angle trajectory by pairing each ester carbon $C_k$ with its bonded carbonyl oxygen $O_k$:
 $$d_{\\text{attack}} \\le 3.5\\text{ \\AA} \\quad \\text{and} \\quad \\theta_{\\text{Bürgi-Dunitz}} = \\angle(O\\gamma \\cdots C_{\\text{ester}} = O_{\\text{carbonyl}}) \\in [95^\\circ, 115^\\circ] \\quad \\text{and} \\quad \\Delta G_{\\text{bind}} \\le -5.0\\text{ kcal/mol}$$""")
 add_code("""import math
 from rdkit import Chem
+
+RECEPTOR_PDBQT_DIR = WORKSPACE / "receptor_pdbqts"
+RECEPTOR_PDBQT_DIR.mkdir(exist_ok=True)
+SMINA_EXE = shutil.which("smina") or "/usr/local/bin/smina"
+if not pathlib.Path(SMINA_EXE).exists():
+    raise FileNotFoundError(f"Smina binary not found at {SMINA_EXE}. Please run Step 2 first.")
+OBABEL_EXE = shutil.which("obabel")
+N_CPUS = max(1, os.cpu_count() or 2)
+
+def prepare_receptor_pdbqt(pdb_path):
+    \"\"\"Convert all-atom OpenMM PDB to united-atom PDBQT once (merges nonpolar H, preserves chain & resnums).\"\"\"
+    pdbqt_path = RECEPTOR_PDBQT_DIR / f"{pdb_path.stem}.pdbqt"
+    if pdbqt_path.exists() and pdbqt_path.stat().st_size > 0:
+        return pdbqt_path
+    if OBABEL_EXE:
+        res = subprocess.run(
+            [OBABEL_EXE, str(pdb_path), "-O", str(pdbqt_path), "-xr"],
+            capture_output=True, text=True
+        )
+        if res.returncode == 0 and pdbqt_path.exists() and pdbqt_path.stat().st_size > 0:
+            return pdbqt_path
+    return pdb_path
+
+def select_flexres_for_ligand(flexres_str, lig_name):
+    \"\"\"Trim --flexres to avoid combinatorial timeouts:
+    - If an older 3-residue string (His,Asp,Trp) is passed, drop buried Asp.
+    - Use His+Trp (2 residues) for 2-HE(MHET) and Trp clamp (1 residue) for 21-torsion 3PET.
+    \"\"\"
+    if not flexres_str or (isinstance(flexres_str, float) and np.isnan(flexres_str)):
+        return None
+    parts = [p.strip() for p in str(flexres_str).split(",") if p.strip()]
+    if not parts:
+        return None
+    if len(parts) >= 3:
+        parts = [parts[0], parts[-1]]  # Keep His + Trp, drop buried Asp
+    if lig_name == "3pet":
+        return parts[-1]  # 1 gating Trp clamp residue for 21-torsion trimer
+    return ",".join(parts[:2])
 
 def calc_bd_angle(ser_og, ester_c, carbonyl_o):
     v_c_to_ser = ser_og - ester_c
@@ -776,60 +815,106 @@ def parse_all_docking_modes_sdf(out_sdf_path, ser_og, ester_smarts, max_energy_d
         "best_mode": best["mode"]
     }
 
-def run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_sdf):
+def run_flexible_docking(receptor_path, ser_coord, flexres_str, lig_conf, out_sdf,
+                         box_size=18.0, exhaustiveness=8, timeout_s=360):
     ser_og = np.array(ser_coord)
-    cmd = [
-        "/usr/local/bin/smina",
-        "-r", str(pdb_path),
-        "-l", str(lig_conf["sdf"]),  # Use RDKit SDF directly (no Meeko/obabel needed)
-        "--center_x", f"{ser_coord[0]:.2f}",
-        "--center_y", f"{ser_coord[1]:.2f}",
-        "--center_z", f"{ser_coord[2]:.2f}",
-        "--size_x", "20.0", "--size_y", "20.0", "--size_z", "20.0",
-        "--exhaustiveness", "16",
-        "--num_modes", "5",
-        "-o", str(out_sdf)
-    ]
 
-    if flexres_str:
-        cmd.extend(["--flexres", flexres_str])
+    # Resume cache: reuse completed non-empty SDF outputs
+    if out_sdf.exists() and out_sdf.stat().st_size > 0:
+        return parse_all_docking_modes_sdf(
+            out_sdf, ser_og, lig_conf["ester_smarts"], max_energy_diff=1.5
+        )
 
+    def build_cmd(flex_arg, exh):
+        c = [
+            str(SMINA_EXE),
+            "-r", str(receptor_path),
+            "-l", str(lig_conf["sdf"]),
+            "--center_x", f"{ser_coord[0]:.2f}",
+            "--center_y", f"{ser_coord[1]:.2f}",
+            "--center_z", f"{ser_coord[2]:.2f}",
+            "--size_x", f"{box_size:.1f}", "--size_y", f"{box_size:.1f}", "--size_z", f"{box_size:.1f}",
+            "--exhaustiveness", str(exh),
+            "--num_modes", "5",
+            "--cpu", str(N_CPUS),
+            "--seed", "42",
+            "-o", str(out_sdf)
+        ]
+        if flex_arg:
+            c.extend(["--flexres", flex_arg])
+        return c
+
+    ran_ok = False
     try:
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=240)
-        if res.returncode != 0:
+        res = subprocess.run(build_cmd(flexres_str, exhaustiveness), capture_output=True, text=True, timeout=timeout_s)
+        if res.returncode == 0 and out_sdf.exists() and out_sdf.stat().st_size > 0:
+            ran_ok = True
+        elif res.returncode != 0:
             print(f"Smina warning ({out_sdf.name}): {res.stderr.strip()[:200]}")
+    except subprocess.TimeoutExpired:
+        print(f"Smina flex timeout after {timeout_s}s ({out_sdf.name}); falling back to rigid OpenMM-relaxed receptor...")
     except Exception as e:
         print(f"Smina exception ({out_sdf.name}): {e}")
+
+    # Fallback to rigid docking on the already OpenMM-relaxed receptor if flexres failed/timed out
+    if not ran_ok and flexres_str:
+        out_sdf.unlink(missing_ok=True)
+        try:
+            res_fb = subprocess.run(build_cmd(None, min(exhaustiveness, 8)), capture_output=True, text=True, timeout=180)
+            if res_fb.returncode != 0:
+                print(f"Smina rigid fallback warning ({out_sdf.name}): {res_fb.stderr.strip()[:200]}")
+                out_sdf.unlink(missing_ok=True)
+        except Exception as e:
+            print(f"Smina rigid fallback exception ({out_sdf.name}): {e}")
+            out_sdf.unlink(missing_ok=True)
 
     return parse_all_docking_modes_sdf(
         out_sdf, ser_og, lig_conf["ester_smarts"], max_energy_diff=1.5
     )
 
-print(f"Executing flexible-receptor reactive docking across {len(df_triads)} designs...")
+print(f"Preparing united-atom PDBQT receptors and running Smina docking on {N_CPUS} CPU thread(s) across {len(df_triads)} designs...")
 docking_results = []
 t_dock_start = time.time()
+
+lig_params = {
+    "2he_mhet": {"box_size": 18.0, "exhaustiveness": 8, "timeout_s": 360},
+    "3pet":     {"box_size": 20.0, "exhaustiveness": 4, "timeout_s": 480},
+}
 
 for idx, (_, row) in enumerate(df_triads.iterrows()):
     qid = row["id"]
     ser_coord = row["ser_og_coord"]
-    flexres_str = row.get("flexres_str")
+    flexres_raw = row.get("flexres_str")
     if ser_coord is None:
         continue
 
     pdb_path = RELAX_DIR / f"{qid}_relaxed.pdb"
     if not pdb_path.exists():
         pdb_path = PDB_DIR / f"{qid}.pdb"
+    receptor_path = prepare_receptor_pdbqt(pdb_path)
 
+    t_one = time.time()
     entry = {"id": qid}
     for lig_name, lig_conf in ligands_config.items():
         out_dock = DOCK_DIR / f"{qid}_{lig_name}_docked.sdf"
-        d_res = run_flexible_docking(pdb_path, ser_coord, flexres_str, lig_conf, out_dock)
+        lp = lig_params[lig_name]
+        lig_flex = select_flexres_for_ligand(flexres_raw, lig_name)
+        d_res = run_flexible_docking(
+            receptor_path, ser_coord, lig_flex, lig_conf, out_dock,
+            box_size=lp["box_size"], exhaustiveness=lp["exhaustiveness"], timeout_s=lp["timeout_s"]
+        )
         for k, v in d_res.items():
             entry[f"{lig_name}_{k}"] = v
 
     docking_results.append(entry)
+    dt = time.time() - t_one
+    print(
+        f"  [{idx+1:>3}/{len(df_triads)}] {qid:<26} ({dt:.1f}s | total {time.time()-t_dock_start:.0f}s) "
+        f"2HE: aff={entry['2he_mhet_affinity']:.2f}, d={entry['2he_mhet_attack_dist']:.2f}A, NAC={entry['2he_mhet_is_nac']} | "
+        f"3PET: aff={entry['3pet_affinity']:.2f}, d={entry['3pet_attack_dist']:.2f}A"
+    )
     if (idx + 1) % 10 == 0 or (idx + 1) == len(df_triads):
-        print(f"  [{idx+1:>3}/{len(df_triads)}] Docked {qid:<28} ({time.time() - t_dock_start:.1f}s)")
+        pd.DataFrame(docking_results).to_csv(WORKSPACE / "smina_flexible_docking_results.tsv", sep="\t", index=False)
 
 df_docking = pd.DataFrame(docking_results)
 df_docking.to_csv(WORKSPACE / "smina_flexible_docking_results.tsv", sep="\t", index=False)

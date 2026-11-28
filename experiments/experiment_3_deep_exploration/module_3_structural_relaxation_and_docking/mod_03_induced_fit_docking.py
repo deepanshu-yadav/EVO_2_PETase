@@ -177,7 +177,7 @@ def main():
     parser.add_argument("--refs_dir", type=pathlib.Path, default=CURRENT_DIR / "references")
     parser.add_argument("--out_dir", type=pathlib.Path, default=CURRENT_DIR / "outputs")
     parser.add_argument("--plddt_cutoff", type=float, default=80.0)
-    parser.add_argument("--exhaustiveness", type=int, default=16, help="Smina docking exhaustiveness")
+    parser.add_argument("--exhaustiveness", type=int, default=8, help="Smina docking exhaustiveness")
     parser.add_argument("--skip_folding", action="store_true", help="Skip ESMFold and use existing PDBs")
     parser.add_argument("--skip_relaxation", action="store_true", help="Skip OpenMM local relaxation")
     parser.add_argument("--skip_docking", action="store_true", help="Skip Smina docking")
